@@ -6,31 +6,5 @@
       "command": "npm install"
     }
   ]
-
-  // // These tasks can be run from CodeSandbox. Running one will open a log in the app.
-  // "tasks": {
-  //   "dev": {
-  //     "name": "dev",
-  //     "command": "npm run dev",
-  //     "runAtStart": true,
-  //     "preview": {
-  //       "port": 3000
-  //     }
-  //   },
-  //   "build": {
-  //     "name": "build",
-  //     "command": "npm run build",
-  //     "runAtStart": false
-  //   },
-  //   "start": {
-  //     "name": "start",
-  //     "command": "pnpm run start",
-  //     "runAtStart": false
-  //   },
-  //   "lint": {
-  //     "name": "lint",
-  //     "command": "nnpm run lint",
-  //     "runAtStart": false
-  //   }
-  }
+}
 
