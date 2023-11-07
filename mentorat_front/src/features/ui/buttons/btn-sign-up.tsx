@@ -31,6 +31,3 @@ export const BtnSignUpSocial: React.FC<btnSignUpProps> = ({label,type = "button"
     );
 };
 
-// export default BtnSignUp;
-
-
