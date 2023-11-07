@@ -12,7 +12,7 @@ export const TextSignUp: React.FC<textSignUp> = ({ type, placeholder }) => {
       <div className="mb-4">
         <label
           htmlFor={type}
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-neutral-300"
         >
           {type}
         </label>
@@ -21,7 +21,7 @@ export const TextSignUp: React.FC<textSignUp> = ({ type, placeholder }) => {
           name={type}
           id={type}
           placeholder={placeholder}
-          className="bg-gray-50 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 required text-neutral-300 text-sm font-medium font-['Inter'] leading-tight placeholder:text-zinc-500 placeholder:text-base placeholder:font-normal placeholder:leading-normal"
+          className="bg-transparent border border-zinc-700 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 required text-neutral-300 text-sm font-medium leading-tight placeholder:text-zinc-500 placeholder:text-base placeholder:font-normal placeholder:leading-normal"
         />
       </div>
     </>

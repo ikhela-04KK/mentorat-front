@@ -14,27 +14,26 @@ const listInput = [
 export default function login() {
   return (
     <>
-      <div className=" bg-[#05010D] relative h-screen grid grid-cols-2">
-        <div className="flex flex-col  items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <Link
-            href="#"
-            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-          />
 
-          <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
+      <div className="bg-[#05010D] relative h-screen grid grid-cols-2">
+
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        
+
+          <div className="w-full bg-[#05010D] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <Image
-                className=""
+                className="mx-auto"
                 width={48}
                 height={48}
                 src="/logo.svg"
                 alt="logo"
               />
-              <h1 className="text-center tracking-tight md:text-2xl text-neutral-100 text-3xl font-semibold font-['Inter'] leading-9 ">
-                Bienvenu à nouveau
+              <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 ">
+                Bienvenue à nouveau
               </h1>
-              <p className="text-center text-neutral-400 text-base font-normal leading-normal">
-                {"Bienvenu à nouveau ! Veuillez saisir vos coordonnées"}
+              <p className="text-center text-neutral-400 text-base font-normal leading-normal px-11">
+                {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
               </p>
               <form
                 className="bg-mentorat-linear space-y-4 md:space-y-6"
@@ -73,24 +72,18 @@ export default function login() {
                     href="#"
                     className="text-sm text-primary-600 hover:underline mb-14 text-neutral-300 font-semibold leading-tight"
                   >
-                    Mot de passe oublié?
+                    Mot de passe oublié
                   </a>
                 </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-[#7E56D8] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center text-base leading-normal"
-                >
-                  {" "}
-                  S inscrire
-                </button>
-
-                <p className="lg:text-center text-sm font-light text-gray-500">
-                  Vous n avez pas de compte?
+                <Btn.BtnSignUp label="S'inscrire" type="submit" />
+                <Btn.BtnSignUpSocial  label="Se connecter avec Google" type="submit" />
+                <p className="sm:text-center text-sm font-light text-gray-500">
+                  Vous n'avez pas de compte?
                   <a
                     href="#"
-                    className="text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
+                    className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
-                    S inscrire
+                    S'inscrire
                   </a>
                 </p>
               </form>
