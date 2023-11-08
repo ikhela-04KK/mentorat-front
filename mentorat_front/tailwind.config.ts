@@ -20,7 +20,7 @@ const config: Config = {
         'mentorat-grid':'#CECFD2'
       },
       screens:{
-        'lm':{'max':'320px'}
+        'lm':{'max':'391px'}
       }, 
     },
   },

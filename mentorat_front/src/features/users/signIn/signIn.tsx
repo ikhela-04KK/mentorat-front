@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import * as Btn from "@features/ui/buttons/btn-sign-in";
+import * as Btn from "@features/ui/buttons/btn-sign-up";
 import * as text from "@features/ui/text-field/text-entry-sign-in";
 import * as input from "@features/ui/checkbox/checkbox-sign-up";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type: "Email", placeholder: "Entrer votre email" },
-  { type: "Mot de passe", placeholder: "••••••••••" },
+  { type: "Nom", placeholder: "Entrer votre nom" },
+  { type: "Courriel", placeholder: "Saissez votre adresse e-mail" },
+  { type: "password", placeholder: "Saissez votre mot de pass" },
+
 ];
 
 export default function login() {
@@ -35,23 +37,23 @@ export default function login() {
                 alt="logo"
               />
               <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 lm:text-[1.729rem]">
-                Bienvenue à nouveau
+                Inscrivez-vous
               </h1>
               <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
-                {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
+                {"Commencez votre essaie gratuit de 30 jours."}
               </p>
               </div>
               <form
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
                 action="#"
               >
-                <div> 
+                <div>
                   {listInput.map(
                     (
                       item: { type: string; placeholder: string },
                       idx: number,
                     ) => (
-                      <text.TextSignUp
+                      <text.TextSignIn
                         key={idx}
                         type={item.type}
                         placeholder={item.placeholder}
@@ -64,16 +66,8 @@ export default function login() {
 
                 {/* forgot mot de passe  */}
                     <a href="#"
-                      className="text-right block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-300 font-semibold leading-tight">
-                      Mot de passe oublié
-                    </a>
-
-                  <div className="mt-9 flex items-center">
-                    {/* tu as mis le checkpbox dans une div */}
-                      <input.CheckboxSignUp type="checkbox" label="Se souvenir pendant 30 jours" />
-                  </div>
-
-               
+                      className="text-left block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-400 font-normal leading-normal">
+                   Doit comporter au moins 8 caractères. </a>
                 </div>
 
                 <Btn.BtnSignUp label="S'inscrire" type="submit" />
@@ -82,12 +76,12 @@ export default function login() {
                   type="submit"
                 />
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
-                  Vous n'avez pas de compte?
+                  Vous avez déjà un compte ?
                   <a
                     href="#"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
-                    S'inscrire
+                    Commencer
                   </a>
                 </p>
               </form>
