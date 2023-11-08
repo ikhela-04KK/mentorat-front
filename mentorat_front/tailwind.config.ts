@@ -20,8 +20,8 @@ const config: Config = {
         'mentorat-grid':'#CECFD2'
       },
       screens:{
-        'miniphone':{'max':'360px'}
-      }
+        'lm':{'max':'320px'}
+      }, 
     },
   },
   plugins: [],

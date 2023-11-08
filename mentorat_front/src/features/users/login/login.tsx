@@ -14,29 +14,35 @@ const listInput = [
 export default function login() {
   return (
     <>
+      <div className="bg-[#05010D] relative h-screen grid grid-cols-1 lg:grid-cols-2">
+        {/* pour le footer de la page qui est en bas */}
+        <div className="absolute bottom-0 left-0 p-2 bg-black leading-tight ll:p-0.5">
+          <p className="text-neutral-400 text-sm font-normal w-full h-full p-8">
+            {" "}
+            Powerby@Ikhela{" "}
+          </p>
+        </div>
 
-      <div className="bg-[#05010D] relative h-screen grid grid-cols-2">
-
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        
-
-          <div className="w-full bg-[#05010D] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ll:pr-0 ll:pl-0">
+          <div className="h-[700px] max-w-[360px] bg-[#05010D] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 flex items-center pt-[32px] ">
+            <div className="p-6 space-y-4 md:space-y-8 sm:p-8 relative bottom-9">
+              <div className="">
               <Image
-                className="mx-auto"
+                className="mx-auto mb-4"
                 width={48}
                 height={48}
                 src="/logo.svg"
                 alt="logo"
               />
-              <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 ">
+              <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 ll:text-[1.729rem]">
                 Bienvenue à nouveau
               </h1>
-              <p className="text-center text-neutral-400 text-base font-normal leading-normal px-11">
+              <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
                 {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
               </p>
+              </div>
               <form
-                className="bg-mentorat-linear space-y-4 md:space-y-6"
+                className="bg-mentorat-linear space-y-6 md:space-y-6 ll:mt-8"
                 action="#"
               >
                 <div>
@@ -54,30 +60,28 @@ export default function login() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start mt-9">
-                    <div className="flex items-center h-5">
-                      <input.CheckboxSignUp type="checkbox" label="remember" />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label
-                        htmlFor="remember"
-                        className="text-neutral-300 text-sm font-medium leading-tight"
-                      >
-                        Se souvenir pendant 30 jours
-                      </label>
-                    </div>
+                <div className="">
+
+                {/* forgot mot de passe  */}
+                    <a href="#"
+                      className="text-right block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-300 font-semibold leading-tight">
+                      Mot de passe oublié
+                    </a>
+
+                  <div className="mt-9 flex items-center">
+                    {/* tu as mis le checkpbox dans une div */}
+                      <input.CheckboxSignUp type="checkbox" label="Se souvenir pendant 30 jours" />
                   </div>
-                  <a
-                    href="#"
-                    className="text-sm text-primary-600 hover:underline mb-14 text-neutral-300 font-semibold leading-tight"
-                  >
-                    Mot de passe oublié
-                  </a>
+
+               
                 </div>
+
                 <Btn.BtnSignUp label="S'inscrire" type="submit" />
-                <Btn.BtnSignUpSocial  label="Se connecter avec Google" type="submit" />
-                <p className="sm:text-center text-sm font-light text-gray-500">
+                <Btn.BtnSignUpSocial
+                  label="Se connecter avec Google"
+                  type="submit"
+                />
+                <p className="sm:text-center text-sm font-light text-gray-500 ll:text-center">
                   Vous n'avez pas de compte?
                   <a
                     href="#"
@@ -92,7 +96,7 @@ export default function login() {
         </div>
 
         {/* left image */}
-        <div className="relative w-full overflow-hidden">
+        <div className="relative w-full overflow-hidden hidden lg:block">
           <Image
             src="/globule.png"
             width={720}
