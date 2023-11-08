@@ -77,12 +77,12 @@ export default function login() {
                 />
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous avez déjà un compte ?
-                  <a
-                    href="#"
+                  <Link
+                    href="/login"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     Commencer
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>

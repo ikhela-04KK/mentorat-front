@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import * as Btn from "@features/ui/buttons/btn-sign-in";
-import * as text from "@features/ui/text-field/text-entry-sign-in";
+import * as Btn from "@features/ui/buttons/btn-sign-up";
+import * as text from "@features/ui/text-field/text-entry-sign-up";
 import * as input from "@features/ui/checkbox/checkbox-sign-up";
 
 // itérer sur une liste de contenu pour aller plus rapidement
@@ -83,12 +83,12 @@ export default function login() {
                 />
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous n'avez pas de compte?
-                  <a
-                    href="#"
+                  <Link
+                    href="/register"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     S'inscrire
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>
