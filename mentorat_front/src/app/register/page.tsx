@@ -1,12 +1,9 @@
 import Image from "next/image";
-// import Login from "@/features/users/login/login";
-import SignIn from "@/features/users/signIn/signIn";
-
-// forUsername
+import Register from "@/features/users/register/register";
 export default function Home() {
   return (
     <>
-      <SignIn />
+      <Register />
     </>
   );
 }

@@ -9,7 +9,6 @@ const listInput = [
   { type: "text", label:"Nom", placeholder: "Entrer votre nom" },
   { type: "email",label:"Courriel", placeholder: "Saissez votre adresse e-mail" },
   { type: "password",label:"Mot de pass", placeholder: "Saissez votre mot de pass" },
-
 ];
 
 export default function login() {
@@ -78,7 +77,7 @@ export default function login() {
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous avez déjà un compte ?
                   <Link
-                    href="/login"
+                    href="/register"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     Commencer
