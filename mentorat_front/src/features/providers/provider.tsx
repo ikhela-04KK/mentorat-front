@@ -7,6 +7,7 @@ interface Props{
     children : ReactNode;
 }
 
+// declaration de l'utilisation de session 
 const Providers = ({children}:Props) =>{
     return <SessionProvider> {children}</SessionProvider>
 };

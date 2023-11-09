@@ -1,7 +1,7 @@
 "use client";
 
 type textSign = {
-  type?: "text" | "password" | "email" | string;
+  type?: "text" | "password" | "email" | "name"| string;
   label:string;
   placeholder: string;
 };

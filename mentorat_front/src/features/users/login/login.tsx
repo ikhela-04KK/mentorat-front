@@ -77,7 +77,7 @@ export default function login() {
                
                 </div>
 
-                <Btn.BtnSign label="Commencer" type="submit" />
+                <Btn.BtnSign label="Commencer" type="submit" href="/api/auth/login" />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
@@ -85,7 +85,7 @@ export default function login() {
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous n'avez pas de compte?
                   <Link
-                    href="/api/auth/login"
+                    href="/register"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     S'inscrire

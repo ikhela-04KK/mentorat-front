@@ -6,7 +6,7 @@ import * as text from "@features/ui/text-field/text-entry-sign";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type: "text", label:"Nom", placeholder: "Entrer votre nom" },
+  { type: "name", label:"Nom", placeholder: "Entrer votre nom" },
   { type: "email",label:"Courriel", placeholder: "Saissez votre adresse e-mail" },
   { type: "password",label:"Mot de pass", placeholder: "Saissez votre mot de pass" },
 ];
@@ -64,12 +64,12 @@ export default function login() {
                 <div className="">
 
                 {/* forgot mot de passe  */}
-                    <a href="#"
+                    <Link href="#"
                       className="text-left block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-400 font-normal leading-normal">
-                   Doit comporter au moins 8 caractères. </a>
+                   Doit comporter au moins 8 caractères. </Link>
                 </div>
 
-                <Btn.BtnSign label="S'inscrire" type="submit" />
+                <Btn.BtnSign label="S'inscrire" type="submit" href="/api/auth/register" />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
@@ -77,7 +77,7 @@ export default function login() {
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous avez déjà un compte ?
                   <Link
-                    href="/register"
+                    href="/login"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     Commencer
