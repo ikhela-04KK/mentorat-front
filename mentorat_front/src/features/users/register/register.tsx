@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import * as Btn from "@features/ui/buttons/btn-sign-up";
-import * as text from "@features/ui/text-field/text-entry-sign-in";
-import * as input from "@features/ui/checkbox/checkbox-sign-up";
+import * as Btn from "@features/ui/buttons/btn-sign";
+import * as text from "@features/ui/text-field/text-entry-sign";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
@@ -53,7 +52,7 @@ export default function login() {
                       item: { type: string; label:string; placeholder: string },
                       idx: number,
                     ) => (
-                      <text.TextSignIn
+                      <text.TextRegister
                         key={idx}
                         type={item.type}
                         label={item.label}
@@ -71,8 +70,8 @@ export default function login() {
                    Doit comporter au moins 8 caractères. </a>
                 </div>
 
-                <Btn.BtnSignUp label="S'inscrire" type="submit" />
-                <Btn.BtnSignUpSocial
+                <Btn.BtnSign label="S'inscrire" type="submit" />
+                <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
                 />

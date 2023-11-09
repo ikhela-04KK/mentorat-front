@@ -1,13 +1,10 @@
 import React from "react";
-import Image from "next/image";
-
-type checkboxSignUp = {
+type checkbox = {
   type: "checkbox" | string;
   label?: string;
-  name: string;
 };
 
-export const CheckboxSignUp: React.FC<checkboxSignUp> = ({ type, label }) => {
+export const Checkbox: React.FC<checkbox> = ({ type, label }) => {
   return (
     <>
       <input

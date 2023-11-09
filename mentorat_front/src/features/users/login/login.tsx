@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import * as Btn from "@features/ui/buttons/btn-sign-up";
-import * as text from "@features/ui/text-field/text-entry-sign-up";
-import * as input from "@features/ui/checkbox/checkbox-sign-up";
+import * as Btn from "@features/ui/buttons/btn-sign";
+import * as text from "@features/ui/text-field/text-entry-sign";
+import * as input from "@features/ui/checkbox/checkbox-sign";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
@@ -51,7 +51,7 @@ export default function login() {
                       item: { type: string; label:string; placeholder: string },
                       idx: number,
                     ) => (
-                      <text.TextSignUp
+                      <text.TextLogin
                         key={idx}
                         type={item.type}
                         label={item.label}
@@ -71,14 +71,14 @@ export default function login() {
 
                   <div className="mt-9 flex items-center">
                     {/* tu as mis le checkpbox dans une div */}
-                      <input.CheckboxSignUp type="checkbox" label="Se souvenir pendant 30 jours" />
+                      <input.Checkbox type="checkbox" label="Se souvenir pendant 30 jours" />
                   </div>
 
                
                 </div>
 
-                <Btn.BtnSignUp label="Commencer" type="submit" />
-                <Btn.BtnSignUpSocial
+                <Btn.BtnSign label="Commencer" type="submit" />
+                <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
                 />
