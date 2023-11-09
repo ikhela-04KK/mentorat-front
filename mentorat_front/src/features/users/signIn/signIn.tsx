@@ -7,9 +7,9 @@ import * as input from "@features/ui/checkbox/checkbox-sign-up";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type: "Nom", placeholder: "Entrer votre nom" },
-  { type: "Courriel", placeholder: "Saissez votre adresse e-mail" },
-  { type: "password", placeholder: "Saissez votre mot de pass" },
+  { type: "text", label:"Nom", placeholder: "Entrer votre nom" },
+  { type: "email",label:"Courriel", placeholder: "Saissez votre adresse e-mail" },
+  { type: "password",label:"Mot de pass", placeholder: "Saissez votre mot de pass" },
 
 ];
 
@@ -50,12 +50,13 @@ export default function login() {
                 <div>
                   {listInput.map(
                     (
-                      item: { type: string; placeholder: string },
+                      item: { type: string; label:string; placeholder: string },
                       idx: number,
                     ) => (
                       <text.TextSignIn
                         key={idx}
                         type={item.type}
+                        label={item.label}
                         placeholder={item.placeholder}
                       />
                     ),

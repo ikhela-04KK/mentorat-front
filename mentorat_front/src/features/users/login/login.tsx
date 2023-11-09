@@ -7,8 +7,8 @@ import * as input from "@features/ui/checkbox/checkbox-sign-up";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type: "Email", placeholder: "Entrer votre email" },
-  { type: "Mot de passe", placeholder: "••••••••••" },
+  { type:"email" ,label: "Email", placeholder: "Entrer votre email" },
+  { type: "password", label:"Mot de pass", placeholder: "••••••••••" },
 ];
 
 export default function login() {
@@ -48,12 +48,13 @@ export default function login() {
                 <div> 
                   {listInput.map(
                     (
-                      item: { type: string; placeholder: string },
+                      item: { type: string; label:string; placeholder: string },
                       idx: number,
                     ) => (
                       <text.TextSignUp
                         key={idx}
                         type={item.type}
+                        label={item.label}
                         placeholder={item.placeholder}
                       />
                     ),
@@ -76,7 +77,7 @@ export default function login() {
                
                 </div>
 
-                <Btn.BtnSignUp label="S'inscrire" type="submit" />
+                <Btn.BtnSignUp label="Commencer" type="submit" />
                 <Btn.BtnSignUpSocial
                   label="Se connecter avec Google"
                   type="submit"

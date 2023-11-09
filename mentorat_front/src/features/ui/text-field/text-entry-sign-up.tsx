@@ -3,10 +3,11 @@ import Link from "next/link";
 
 type textSignUp = {
   type?: "text" | "password" | "email" | string;
+  label:string;
   placeholder: string;
 };
 
-export const TextSignUp: React.FC<textSignUp> = ({ type, placeholder }) => {
+export const TextSignUp: React.FC<textSignUp> = ({ type, label, placeholder }) => {
   return (
     <>
       <div className="mb-4">
@@ -14,7 +15,7 @@ export const TextSignUp: React.FC<textSignUp> = ({ type, placeholder }) => {
           htmlFor={type}
           className="block mb-2 text-sm font-medium text-neutral-300"
         >
-          {type}
+          {label}
         </label>
         <input
           type={type}
