@@ -29,6 +29,7 @@ const SignupPage = () =>{
       email: "",
       password: "",
   });
+  
   const register = async () =>{
     const res = await fetch(Backend_URL +"auth/register",{
       method: "POST",
@@ -45,10 +46,11 @@ const SignupPage = () =>{
       alert(res.statusText)
       return;
     }
+
     const response = await res.json();
     alert("User Registerd");
     console.log(response);
-
+  };
   
  
     return (
@@ -108,7 +110,7 @@ const SignupPage = () =>{
                    Doit comporter au moins 8 caractères. </Link>
                 </div>
 
-                <Btn.BtnSign label="S'inscrire" type="submit" href="/api/auth/register" />
+                <Btn.BtnSign label="S'inscrire" type="submit" href="/api/auth/register" onClick={register}/>
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
@@ -140,5 +142,5 @@ const SignupPage = () =>{
       </div>
     </>
   );
-
-// export default Register;
+};
+export default SignupPage;
