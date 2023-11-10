@@ -6,54 +6,70 @@ import * as text from "@features/ui/text-field/text-entry-sign";
 
 // importation de librairy constants
 import { Backend_URL } from "@/lib/Constants";
-import React, {useRef} from "react";
+import React, { ChangeEvent, useRef } from "react";
 
 // le type du Form
 type FormInputs = {
-  name:string;
-  email:string;
-  password:string;
-}
+  name: string;
+  email: string;
+  password: string;
+};
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type: "name", label:"Nom", placeholder: "Entrer votre nom" },
-  { type: "email",label:"Courriel", placeholder: "Saissez votre adresse e-mail" },
-  { type: "password",label:"Mot de pass", placeholder: "Saissez votre mot de pass" },
+  { type: "name", label: "Nom", placeholder: "Entrer votre nom" },
+  {
+    type: "email",
+    label: "Courriel",
+    placeholder: "Saissez votre adresse e-mail",
+  },
+  {
+    type: "password",
+    label: "Mot de pass",
+    placeholder: "Saissez votre mot de pass",
+  },
 ];
 
-
-const SignupPage = () =>{
+const SignupPage = () => {
   const data = useRef<FormInputs>({
-      name: "",
-      email: "",
-      password: "",
+    name: "",
+    email: "",
+    password: "",
   });
-  
-  const register = async () =>{
-    const res = await fetch(Backend_URL +"auth/register",{
+  // stocker des valeurs temporaires qui ne neccessite par de re-rendu
+  const handleInputChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    // changeEvent est geneerique de base donc il ne fournit pas d'erreur
+    data.current = {
+      ...data.current,
+      [e.target.name]: e.target.value,
+    };
+  };
+
+  const handleFormSubmitted = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    e.preventDefault();
+    const res = await fetch(Backend_URL + "/auth/register", {
       method: "POST",
       body: JSON.stringify({
         name: data.current.name,
         email: data.current.email,
         password: data.current.password,
       }),
-      headers:{
+      headers: {
         "Content-Type": "application/json",
       },
     });
-    if(!res.ok){
-      alert(res.statusText)
-      return;
+    if (!res.ok) {
+      // alert(res.statusText)
+      const response = await res.json();
+      // alert("User Registerd");
+      console.log(response);
     }
-
-    const response = await res.json();
-    alert("User Registerd");
-    console.log(response);
+    return null;
+    //  sinon faire une redirection vars .............>
   };
-  
- 
-    return (
+  return (
     <>
       <div className="bg-[#05010D] relative h-screen grid grid-cols-1 lg:grid-cols-2">
         {/* pour le footer de la page qui est en bas */}
@@ -68,19 +84,19 @@ const SignupPage = () =>{
           <div className="h-[700px] max-w-[360px] bg-[#05010D] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 flex items-center pt-[32px] ">
             <div className="p-6 space-y-4 md:space-y-8 sm:p-8 relative bottom-9">
               <div className="">
-              <Image
-                className="mx-auto mb-4"
-                width={48}
-                height={48}
-                src="/logo.svg"
-                alt="logo"
-              />
-              <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 lm:text-[1.729rem]">
-                Inscrivez-vous
-              </h1>
-              <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
-                {"Commencez votre essaie gratuit de 30 jours."}
-              </p>
+                <Image
+                  className="mx-auto mb-4"
+                  width={48}
+                  height={48}
+                  src="/logo.svg"
+                  alt="logo"
+                />
+                <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 lm:text-[1.729rem]">
+                  Inscrivez-vous
+                </h1>
+                <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
+                  {"Commencez votre essaie gratuit de 30 jours."}
+                </p>
               </div>
               <form
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
@@ -89,7 +105,11 @@ const SignupPage = () =>{
                 <div>
                   {listInput.map(
                     (
-                      item: { type: string; label:string; placeholder: string },
+                      item: {
+                        type: string;
+                        label: string;
+                        placeholder: string;
+                      },
                       idx: number,
                     ) => (
                       <text.TextRegister
@@ -97,20 +117,29 @@ const SignupPage = () =>{
                         type={item.type}
                         label={item.label}
                         placeholder={item.placeholder}
+                        onChange={handleInputChanged}
                       />
                     ),
                   )}
                 </div>
 
                 <div className="">
-
-                {/* forgot mot de passe  */}
-                    <Link href="#"
-                      className="text-left block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-400 font-normal leading-normal">
-                   Doit comporter au moins 8 caractères. </Link>
+                  {/* forgot mot de passe  */}
+                  <Link
+                    href="#"
+                    className="text-left block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-400 font-normal leading-normal"
+                  >
+                    Doit comporter au moins 8 caractères.{" "}
+                  </Link>
                 </div>
 
-                <Btn.BtnSign label="S'inscrire" type="submit" href="/api/auth/register" onClick={register}/>
+                <Btn.BtnSign
+                  label="S'inscrire"
+                  // href="https://kv66j8-8000.csb.app/auth/register"
+                  // method="POST"
+                  type="submit"
+                  onClick={handleFormSubmitted}
+                />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"

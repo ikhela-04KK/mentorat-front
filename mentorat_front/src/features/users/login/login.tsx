@@ -7,8 +7,8 @@ import * as input from "@features/ui/checkbox/checkbox-sign";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type:"email" ,label: "Email", placeholder: "Entrer votre email" },
-  { type: "password", label:"Mot de pass", placeholder: "••••••••••" },
+  { type:"email" ,label: "Email", name:"username" ,placeholder: "Entrer votre email" },
+  { type: "password", label:"Mot de pass",name:"password", placeholder: "••••••••••" },
 ];
 
 export default function login() {
@@ -48,7 +48,7 @@ export default function login() {
                 <div> 
                   {listInput.map(
                     (
-                      item: { type: string; label:string; placeholder: string },
+                      item: { type: string; label:string;name:string; placeholder: string },
                       idx: number,
                     ) => (
                       <text.TextLogin
@@ -56,6 +56,7 @@ export default function login() {
                         type={item.type}
                         label={item.label}
                         placeholder={item.placeholder}
+                        name ={item.name}
                       />
                     ),
                   )}
@@ -77,7 +78,7 @@ export default function login() {
                
                 </div>
 
-                <Btn.BtnSign label="Commencer" type="submit" href="/api/auth/login" />
+                <Btn.BtnSign label="Commencer" type="submit" href="https://kv66j8-8000.csb.app/auth/login" method="POST" />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"

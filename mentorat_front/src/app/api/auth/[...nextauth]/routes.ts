@@ -2,6 +2,7 @@ import { Backend_URL } from "@/lib/Constants";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextRequest } from "next/server";
 
 // // credentials type 
 // type credentials =  {
@@ -35,7 +36,7 @@ export const authOptions: NextAuthOptions = {
             type: "password" 
         }
       },
-      async authorize(credentials:CredentialsProvider, req:Request) {
+      async authorize(credentials:CredentialsProvider, req:NextRequest) {
         if (!credentials?.username || !credentials?.password) return null;
         const { username, password } = credentials;
         const res = await fetch(Backend_URL + "/auth/login", {
