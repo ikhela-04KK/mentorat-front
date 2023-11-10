@@ -1,1 +1,2 @@
-export const Backend_URL ="https://8000-debug-ikhela04kk-mentorat-f4fdx9a9btg.ws-eu106.gitpod.io/"
+export const Backend_URL ="https://kv66j8-8000.csb.app/"
+// Backend_URL ="postgresql://postgres:posgres@localhost:5432/nextauthapp?shema=public"

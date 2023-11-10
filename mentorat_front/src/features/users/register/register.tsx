@@ -4,6 +4,17 @@ import Image from "next/image";
 import * as Btn from "@features/ui/buttons/btn-sign";
 import * as text from "@features/ui/text-field/text-entry-sign";
 
+// importation de librairy constants
+import { Backend_URL } from "@/lib/Constants";
+import React, {useRef} from "react";
+
+// le type du Form
+type FormInputs = {
+  name:string;
+  email:string;
+  password:string;
+}
+
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
   { type: "name", label:"Nom", placeholder: "Entrer votre nom" },
@@ -11,8 +22,36 @@ const listInput = [
   { type: "password",label:"Mot de pass", placeholder: "Saissez votre mot de pass" },
 ];
 
-export default function login() {
-  return (
+
+const SignupPage = () =>{
+  const data = useRef<FormInputs>({
+      name: "",
+      email: "",
+      password: "",
+  });
+  const register = async () =>{
+    const res = await fetch(Backend_URL +"auth/register",{
+      method: "POST",
+      body: JSON.stringify({
+        name: data.current.name,
+        email: data.current.email,
+        password: data.current.password,
+      }),
+      headers:{
+        "Content-Type": "application/json",
+      },
+    });
+    if(!res.ok){
+      alert(res.statusText)
+      return;
+    }
+    const response = await res.json();
+    alert("User Registerd");
+    console.log(response);
+
+  
+ 
+    return (
     <>
       <div className="bg-[#05010D] relative h-screen grid grid-cols-1 lg:grid-cols-2">
         {/* pour le footer de la page qui est en bas */}
@@ -101,4 +140,5 @@ export default function login() {
       </div>
     </>
   );
-}
+
+// export default Register;
