@@ -27,16 +27,18 @@ const listIcon = [
     },
 ];
 
-const Avatar: React.FC<person> = ({ person, size=40 }) => {
+const Avatar: React.FC<person> = ({ person, size}) => {
     return (
         <>
+        <div className=" rounded-full border border-solid border-white mr-4">
             <Image
-                className="rounded-full border border-solid border-white pr-8"
-                src={"/avatar-0.svg"}
-                width={size}
-                height={size}
+                src={"/avatar.png"}
+                width={40}
+                height={40}
                 alt={person}
+                className="rounded-full"
             />
+        </div>
 
             <div className="flex items-center">
                 {listIcon.map(
