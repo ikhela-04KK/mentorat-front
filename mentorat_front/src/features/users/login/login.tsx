@@ -7,8 +7,8 @@ import * as input from "@features/ui/checkbox/checkbox-sign";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
-  { type:"email" ,label: "Email", name:"username" ,placeholder: "Entrer votre email" },
-  { type: "password", label:"Mot de pass",name:"password", placeholder: "••••••••••" },
+  { type: "email", label: "Email", name: "username", placeholder: "Entrer votre email" },
+  { type: "password", label: "Mot de pass", name: "password", placeholder: "••••••••••" },
 ];
 
 export default function login() {
@@ -27,28 +27,28 @@ export default function login() {
           <div className="h-[700px] max-w-[360px] bg-[#05010D] rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 flex items-center pt-[32px] ">
             <div className="p-6 space-y-4 md:space-y-8 sm:p-8 relative bottom-9">
               <div className="">
-              <Image
-                className="mx-auto mb-4"
-                width={48}
-                height={48}
-                src="/logo.svg"
-                alt="logo"
-              />
-              <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 lm:text-[1.729rem]">
-                Bienvenue à nouveau
-              </h1>
-              <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
-                {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
-              </p>
+                <Image
+                  className="mx-auto mb-4"
+                  width={48}
+                  height={48}
+                  src="/logo.svg"
+                  alt="logo"
+                />
+                <h1 className="text-center tracking-tight md:text-3xl text-neutral-100 text-3xl font-semibold leading-9 lm:text-[1.729rem]">
+                  Bienvenue à nouveau
+                </h1>
+                <p className="text-center text-neutral-400 text-base font-normal leading-normal px-2.5 mt-[12px] ">
+                  {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
+                </p>
               </div>
               <form
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
                 action="#"
               >
-                <div> 
+                <div>
                   {listInput.map(
                     (
-                      item: { type: string; label:string;name:string; placeholder: string },
+                      item: { type: string; label: string; name: string; placeholder: string },
                       idx: number,
                     ) => (
                       <text.TextLogin
@@ -56,7 +56,7 @@ export default function login() {
                         type={item.type}
                         label={item.label}
                         placeholder={item.placeholder}
-                        name ={item.name}
+                        name={item.name}
                       />
                     ),
                   )}
@@ -64,18 +64,18 @@ export default function login() {
 
                 <div className="">
 
-                {/* forgot mot de passe  */}
-                    <a href="#"
-                      className="text-right block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-300 font-semibold leading-tight">
-                      Mot de passe oublié
-                    </a>
+                  {/* forgot mot de passe  */}
+                  <a href="#"
+                    className="text-right block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-300 font-semibold leading-tight">
+                    Mot de passe oublié
+                  </a>
 
                   <div className="mt-9 flex items-center">
                     {/* tu as mis le checkpbox dans une div */}
-                      <input.Checkbox type="checkbox" label="Se souvenir pendant 30 jours" />
+                    <input.Checkbox type="checkbox" label="Se souvenir pendant 30 jours" />
                   </div>
 
-               
+
                 </div>
 
                 <Btn.BtnSign label="Commencer" type="submit" href="https://kv66j8-8000.csb.app/auth/login" method="POST" />
@@ -84,12 +84,12 @@ export default function login() {
                   type="submit"
                 />
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
-                  Vous n'avez pas de compte?
+                  Vous n`avez pas de compte?
                   <Link
                     href="/register"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
-                    S'inscrire
+                    S`inscrire
                   </Link>
                 </p>
               </form>

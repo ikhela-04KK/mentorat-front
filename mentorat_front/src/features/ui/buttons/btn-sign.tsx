@@ -7,7 +7,11 @@ type btnSignProps = {
     href?:string;
     onClick?:any;
     method?:string;
-}; 
+};
+
+// React.Fc<> = ({label,type="button", href,method}) 
+
+
 
 export const BtnSign: React.FC<btnSignProps> = ({label,type = "button", href, method}) =>{
     return (
