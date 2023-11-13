@@ -11,14 +11,14 @@ export const Principal:React.FC<avatar> = ({label}) =>{
 
     return (
         <>
-            <div className="max-w-[92px] max-h-[28px]">
+            <div className="w-[92px] h-[28px]">
                 <p className="font-semibold text-lg text-[rgb(245,245,246)] first-letter:uppercase">{label}</p>
             </div>
         </>
     )
 }
 
-export const location:React.FC<avatar> = ({label}) =>{
+export const Location:React.FC<avatar> = ({label}) =>{
     return (
         <>
             <p className="font-normal text-sm text-[#94969c]">{label}</p>

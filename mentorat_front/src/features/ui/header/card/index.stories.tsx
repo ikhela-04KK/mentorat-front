@@ -1,19 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {Online} from './online';
+import { Card } from '.';
 
-const meta:Meta<typeof Online> = {
-    title: 'Example/badge/Online',
-    component: Online,
+const meta:Meta<typeof location> = {
+    title: 'Example/Avatar/Card',
+    component: Card,
     // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
     tags: ['autodocs'],
 } 
 export default meta;
 
-type Story = StoryObj<typeof Online>;
+type Story = StoryObj<typeof Card>;
 
-export const BadgeOnline: Story = {
+export const BaseAvatarCard: Story = {
     args: {
-        name:"Online"
+        
     },
 };
-

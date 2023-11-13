@@ -9,8 +9,8 @@ type person = {
 export const Certified: React.FC<person> = ({person}) =>{
     return (
         <>
-            <div className="rounded-full border border-solid border-white mr-4">
-                <span className="absolute top-[50px] left-[50px]">
+            <div className="relative rounded-full border border-solid border-white mr-4">
+                <span className="block w-4 h-4 absolute top-8 left-8">
                     <Image 
                     src="/certified.svg" 
                     width={16}

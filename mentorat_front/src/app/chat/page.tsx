@@ -1,5 +1,6 @@
 import HeaderChat from "@/features/chat/header-chat";
-
+import { Card } from "@/features/ui/header/card";
+import Image from "next/image";
 export default function ListFm(){
     return (
         <>
@@ -11,8 +12,9 @@ export default function ListFm(){
                             <div className="flex items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
                                 <HeaderChat title="logo" size={40}/>
                             </div>
-                            <div className="">
-
+                            <div className="pt-5 px-4 flex">
+                                <Card />
+                                <Image className="self-start" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
                             </div>
                         </div>
                         <div className="conversationList"></div>
@@ -22,4 +24,4 @@ export default function ListFm(){
             </div>
         </>
     );
-}
+}    
