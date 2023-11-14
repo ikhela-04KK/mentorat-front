@@ -16,6 +16,28 @@
   }
 }
 
+@layer base {
+  /* width */
+  ::-webkit-scrollbar {
+    @apply w-0
+  }
+  
+  /* Track */
+  /* ::-webkit-scrollbar-track {
+    @apply bg-inherit
+  } */
+  
+  /* Handle */
+  /* ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-400 rounded-xl
+  } */
+  
+  /* Handle on hover */
+  /* ::-webkit-scrollbar-thumb:hover {
+    @apply bg-violet-700 */
+  /* } */
+}
+
 .min-h-calc{
   min-height: calc(100vh - 4rem);
   margin-top: 4rem
@@ -23,25 +45,29 @@
 
 .chat-layout{
     border-top: 1px solid #dfdfdf;
-    /* height: calc(100vh - 4rem); */
-    height:100%;
+    height: calc(100vh);
+    /* height:100%; */
     display: grid;
     grid-template-columns: 518px 1fr auto;
     grid-template-rows: 89px 1fr;
-    /* overflow-y: scroll;  use this when its possible*/ 
+    overflow-y: scroll; 
+
 }
 
 .chat-layout .chatTopbar{
   grid-area: 1/1/2/4;
   display: grid;
   grid-template-columns: 518px auto;
+
 }
 
 .chat-layout .conversationList{
-    border-right: 1px solid #dfdfdf;
+    border-right: 1px solid #1F242F;
     height: 100%;
     overflow: hidden;
     grid-area: 2/1/3/2;
+    overflow: hidden;
+    background-color:#0c111d ;
 }
 
 .chat-layout .chatStreamContainer{
@@ -50,5 +76,6 @@
   grid-area: 2/2/3/3;
   display: grid;
   grid-template-rows: 1fr auto;
-  /* overflow-y: hidden; */
+  overflow-y: hidden;
+  background-color: #0c111d;
 }
