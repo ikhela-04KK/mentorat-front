@@ -1,10 +1,14 @@
 "use client";
+
+import { ChangeEventHandler } from "react";
+
 interface textSign extends React.InputHTMLAttributes<HTMLInputElement> {
     label:string;
 }
 
 interface textSenderMessage extends React.InputHTMLAttributes<HTMLInputElement>{
   name:string;
+  onChange?:ChangeEventHandler<HTMLInputElement>;
 }
 // capturer la requete 
 export const TextRegister: React.FC<textSign> = ({ type, label, placeholder }) => {
@@ -52,7 +56,7 @@ export const TextLogin: React.FC<textSign> = ({ type, label,name, placeholder })
   );
 };
 
-export const TextMessage:React.FC<textSenderMessage> = ({name, type, placeholder}) =>{
+export const TextMessage:React.FC<textSenderMessage> = ({name, type, placeholder,onChange}) =>{
   return (
     <>
       <label
@@ -63,6 +67,7 @@ export const TextMessage:React.FC<textSenderMessage> = ({name, type, placeholder
           <input
             type={type}
             name={name}
+            onChange={onChange}
             id={type}
             placeholder={placeholder}
             className="bg-transparent sm:text-sm w-full p-2.5  text-neutral-300 text-sm font-medium placeholder:text-zinc-500 placeholder:text-base placeholder:font-normal  px-3.5 py-2.5 bg-gray-900 rounded-lg shadow border border-zinc-700"

@@ -1,14 +1,19 @@
-import React from 'react'; 
+import React, { MouseEventHandler } from 'react'; 
 import Image from "next/image"
 
-type btnSignProps = {
+// type btnSignProps = {
+//     label?:string;
+//     type? : "button"| "submit" | "reset"; 
+//     href?:string;
+//     method?:string;
+// };
+interface btnSignProps extends React.InputHTMLAttributes<HTMLButtonElement>{
     label?:string;
     type? : "button"| "submit" | "reset"; 
     href?:string;
-    onClick?:any;
-    method?:string;
-};
-
+    method?:string;  
+    onClick?:MouseEventHandler<HTMLButtonElement>;
+}
 // React.Fc<> = ({label,type="button", href,method}) 
 
 
@@ -38,9 +43,10 @@ export const BtnSignSocial: React.FC<btnSignProps> = ({label,type = "button"}) =
     );
 };
 
-export const BtnSendMessage:React.FC<btnSignProps> = ({type="button"}) =>{
+export const BtnSendMessage:React.FC<btnSignProps> = ({type="button",onClick}) =>{
+
     return (
-        <button type={type} className="w-11 h-11 p-3 bg-violet-500 rounded-lg shadow border border-violet-500 justify-center items-center gap-2 flex">
+        <button type={type} className="w-11 h-11 p-3 bg-violet-500 rounded-lg shadow border border-violet-500 justify-center items-center gap-2 flex" onClick={onClick}>
             <Image className="w-5 h-5 relative" src={"/icon-send.svg"} width={20} height={20} alt={'send'} />
         </button>
     );

@@ -1,4 +1,8 @@
-import { person } from "@/features/ui/avatar/online/online";
+
+
+export type Message = {
+    date:string;
+}
 
 export type Info = {
     username:string; 
@@ -10,7 +14,5 @@ export type Content = {
     backgroundColor:string;
 }
 
-export type Av = {
-    avatar:React.ComponentType<person>
-}
-export type Chat = Info & Content & Av
+export type typeMessage =  { username: string; timestamp: string; content: string;  }
+export type Chat = Info & Content 

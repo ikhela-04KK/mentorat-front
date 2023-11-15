@@ -29,6 +29,7 @@ const listIcon = [
     // },
 ];
 
+
 const Avatar: React.FC<person> = () => {
     return (
         <>
