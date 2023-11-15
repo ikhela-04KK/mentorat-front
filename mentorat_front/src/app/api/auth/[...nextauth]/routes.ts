@@ -2,7 +2,7 @@ import { Backend_URL } from "@/lib/Constants";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { NextRequest } from "next/server";
+
 
 // // credentials type 
 // type credentials =  {

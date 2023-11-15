@@ -2,7 +2,7 @@ import React from 'react';
 import Image from "next/image"
 
 type btnSignProps = {
-    label:string;
+    label?:string;
     type? : "button"| "submit" | "reset"; 
     href?:string;
     onClick?:any;
@@ -34,6 +34,14 @@ export const BtnSignSocial: React.FC<btnSignProps> = ({label,type = "button"}) =
             />
             {label}
 
+        </button>
+    );
+};
+
+export const BtnSendMessage:React.FC<btnSignProps> = ({type="button"}) =>{
+    return (
+        <button type={type} className="w-11 h-11 p-3 bg-violet-500 rounded-lg shadow border border-violet-500 justify-center items-center gap-2 flex">
+            <Image className="w-5 h-5 relative" src={"/icon-send.svg"} width={20} height={20} alt={'send'} />
         </button>
     );
 };
