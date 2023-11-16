@@ -17,7 +17,8 @@
     "next-auth": "^4.24.4",
     "react": "^18",
     "react-docgen": "^7.0.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-spinners": "^0.13.8"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.3",

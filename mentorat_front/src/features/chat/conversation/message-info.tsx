@@ -118,11 +118,10 @@ export const ChatStream: React.FC = () => {
               username={message.username}
               timestamp={message.timestamp}
               content={message.content}
-              backgroundColor={message.username === "Anita Cryuz" ? "violet-800" : "gray-900"}
+              backgroundColor={message.username === "Aziz" ? "violet-500" : "gray-900"}
             />
           </div>
         ))}
-       
       </div>
 
       <TextSend sendMessage={sendMessage} />
