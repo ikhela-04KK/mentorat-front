@@ -7,8 +7,7 @@ import {useRouter} from "next/navigation";
 
 // importation de librairy constants
 import { Backend_URL } from "@/lib/Constants";
-import React, { ChangeEvent, FormEvent, useRef } from "react";
-import { NextResponse } from "next/server";
+import React, { FormEvent, useRef } from "react";
 
 
 // le type du Form
@@ -82,10 +81,6 @@ const Router = useRouter();
       
       Router.push("/selection-role")
 
-    // const response = await res.json();
-    //   alert("User Registerd");
-    //   console.log("correcte")
-    //   console.log(response);
   }catch(e:any){
     console.error("Erreur de l'appel à API: " ,e.message)
   }

@@ -22,7 +22,6 @@ const SignInButton = () => {
         </Link>
       </div>
     );
-  // Session doensn't exist ----> no dashboard --> register
   return (
     <Login />
   );

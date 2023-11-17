@@ -1,4 +1,3 @@
-import { ChooseAvtar } from "@/features/ui/avatar/choose-avatar";
 import { CheickBoxChoice } from "@/features/ui/checkbox/checkbox-sign";
 import React from "react";
 
