@@ -3,10 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import * as Btn from "@features/ui/buttons/btn-sign";
 import * as text from "@features/ui/text-field/text-entry-sign";
+import {useRouter} from "next/navigation";
 
 // importation de librairy constants
 import { Backend_URL } from "@/lib/Constants";
-import React, { ChangeEvent, useRef } from "react";
+import React, { ChangeEvent, FormEvent, useRef } from "react";
+import { NextResponse } from "next/server";
+
 
 // le type du Form
 type FormInputs = {
@@ -36,19 +39,29 @@ const SignupPage = () => {
     email: "",
     password: "",
   });
+const Router = useRouter();
+
+
   // stocker des valeurs temporaires qui ne neccessite par de re-rendu
-  const handleInputChanged = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChanged:React.ChangeEventHandler<HTMLInputElement> = (e) => {
     // changeEvent est geneerique de base donc il ne fournit pas d'erreur
     data.current = {
       ...data.current,
       [e.target.name]: e.target.value,
     };
   };
+  console.log(4444444444)
+  // const Router = useRouter();
 
   const handleFormSubmitted = async (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: FormEvent<HTMLFormElement>
   ) => {
+    
+    // for CORS 
+
+
     e.preventDefault();
+    try{
     const res = await fetch(Backend_URL + "/auth/register", {
       method: "POST",
       body: JSON.stringify({
@@ -60,13 +73,22 @@ const SignupPage = () => {
         "Content-Type": "application/json",
       },
     });
-    if (!res.ok) {
-      // alert(res.statusText)
+    
       const response = await res.json();
+      console.log("entry")
       // alert("User Registerd");
+      console.log("correcte")
       console.log(response);
-    }
-    return null;
+      
+      Router.push("/selection-role")
+
+    // const response = await res.json();
+    //   alert("User Registerd");
+    //   console.log("correcte")
+    //   console.log(response);
+  }catch(e:any){
+    console.error("Erreur de l'appel à API: " ,e.message)
+  }
     //  sinon faire une redirection vars .............>
   };
   return (
@@ -98,9 +120,8 @@ const SignupPage = () => {
                   {"Commencez votre essaie gratuit de 30 jours."}
                 </p>
               </div>
-              <form
+              <form onSubmit={handleFormSubmitted}
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
-                action="#"
               >
                 <div>
                   {listInput.map(
@@ -135,10 +156,10 @@ const SignupPage = () => {
 
                 <Btn.BtnSign
                   label="S'inscrire"
-                  // href="https://kv66j8-8000.csb.app/auth/register"
+                  // href={`${Backend_URL}/auth/register`}
                   // method="POST"
                   type="submit"
-                  onClick={handleFormSubmitted}
+                  // onClick={handleFormSubmitted}
                 />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"

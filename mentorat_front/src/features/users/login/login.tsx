@@ -78,7 +78,7 @@ export default function login() {
 
                 </div>
 
-                <Btn.BtnSign label="Commencer" type="submit" href="https://kv66j8-8000.csb.app/auth/login" method="POST" />
+                <Btn.BtnSign label="Commencer" type="submit" href="/api/auth/login" method="POST" />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"
