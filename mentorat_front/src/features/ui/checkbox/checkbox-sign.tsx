@@ -33,39 +33,45 @@ export const Checkbox: React.FC<checkbox> = ({ type, label }) => {
 
 // todo: je dois utiliser multer pour enregistrer les images afin de pouvoir les partagés dans toutes l'applicationn
 const dataCheck = [
-
-  {  label: "Professor" },
-  {  label: "Student" }
+  {label: "TEACHER"},
+  {label: "STUDENT"}
 ]
+
+
 export const CheickBoxChoice: React.FC<checkbox> = () => {
 
-
   const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
-  const router = useRouter()
+  const router = useRouter();
 
+  // for selectedSubmit
+  const [selectedRole, setSelectedRole] = useState('');   
+
+
+  // for handle a image
   const handledImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = (e) => {
+        const fileContent = e?.target?.result as string;
+        sessionStorage.setItem('image', fileContent); 
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
+
+  // for submitted
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const formData = new FormData(event.currentTarget)
-    console.log(formData.get("Student"));
-    const response = await fetch(`${Backend_URL}/selection-role`, {
-        method:'POST',
-        body:formData,
+    const formData = new FormData(event.currentTarget);
+    formData.forEach((value,key) =>{
+      if(key ==="role"){
+        sessionStorage.setItem("role",value.toString())
+      }
     })
-    const data = response.json()
-    console.log(data); 
-    router.push('/chat')
-
+    router.push("/register");
   }
   useEffect(()=>{
             // Si une image est sélectionnée, soumet automatiquement le formulaire
@@ -78,10 +84,9 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
               }
           }
       }, [selectedImage]);
-
-
   const submitForm = () => {
   }
+  
   return (
     <>
       <form onSubmit={onSubmit} name="choice-user" className='flex items-center flex-col gap-y-8 justify-center min-h-screen bg-[#1F242F]' encType="multipart/form-data" >

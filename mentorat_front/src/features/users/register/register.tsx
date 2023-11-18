@@ -58,12 +58,16 @@ const Router = useRouter();
     
     // for CORS 
 
-
+    const storedFormData = sessionStorage.getItem('tempUserRole'); 
+    const formDataObject = storedFormData ? JSON.parse(storedFormData) :{}
+    console.log(storedFormData)
+    
     e.preventDefault();
     try{
     const res = await fetch(Backend_URL + "/auth/register", {
       method: "POST",
       body: JSON.stringify({
+        ...formDataObject,
         name: data.current.name,
         email: data.current.email,
         password: data.current.password,
@@ -79,7 +83,7 @@ const Router = useRouter();
       console.log("correcte")
       console.log(response);
       
-      Router.push("/selection-role")
+      Router.push("/chat")
 
   }catch(e:any){
     console.error("Erreur de l'appel à API: " ,e.message)
