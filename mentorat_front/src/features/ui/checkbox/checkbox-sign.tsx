@@ -1,14 +1,22 @@
 // import { ChooseAvtar } from "../avatar/choose-avatar";
-"use client"
+"use client";
 import { Backend_URL } from "@/lib/Constants";
 import Image from "next/image"
-import {useRouter } from "next/navigation";
+import {useRouter}from "next/navigation";
 import React, { useState, FormEvent, useEffect } from "react"
 
 type checkbox = {
   type: "checkbox" | string;
   label?: string;
 };
+
+
+
+// todo: je dois utiliser multer pour enregistrer les images afin de pouvoir les partagés dans toutes l'applicationn
+const dataCheck = [
+  {label: "TEACHER"},
+  {label: "STUDENT"}
+]
 
 
 export const Checkbox: React.FC<checkbox> = ({ type, label }) => {
@@ -31,21 +39,10 @@ export const Checkbox: React.FC<checkbox> = ({ type, label }) => {
   );
 };
 
-// todo: je dois utiliser multer pour enregistrer les images afin de pouvoir les partagés dans toutes l'applicationn
-const dataCheck = [
-  {label: "TEACHER"},
-  {label: "STUDENT"}
-]
-
-
 export const CheickBoxChoice: React.FC<checkbox> = () => {
 
+  const Router = useRouter()
   const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
-  const router = useRouter();
-
-  // for selectedSubmit
-  const [selectedRole, setSelectedRole] = useState('');   
-
 
   // for handle a image
   const handledImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,25 +50,54 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = (e) => {
-        const fileContent = e?.target?.result as string;
-        sessionStorage.setItem('image', fileContent); 
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
+  
+
 
   // for submitted
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+      event.preventDefault();
+      console.log(event.currentTarget)
+      const formData = new FormData(event.currentTarget); // contain file image and role user (student or teacher)
+      const formdata = new FormData(); // contain file image and role user (student or teacher)
 
-    const formData = new FormData(event.currentTarget);
-    formData.forEach((value,key) =>{
-      if(key ==="role"){
-        sessionStorage.setItem("role",value.toString())
-      }
-    })
-    router.push("/register");
+
+      const name:any = sessionStorage.getItem("name") ;
+      const email:any = sessionStorage.getItem("email");
+      const password:any = sessionStorage.getItem("password");
+
+      console.log("pourquoi ça ne passe pas ")
+      formdata.append("name",name) // add new field
+      formdata.append("email",email) // add new field
+      formdata.append("password",password) // add new field
+      
+      formData.forEach((value,key) =>{
+        if (key ==="file"){
+          console.log(value);
+
+          formdata.append("file",value)
+        }
+        if (key ==="role"){
+          formdata.append("role",value)
+        }
+      })
+      formdata.append("avatar", "\"\"");
+
+      const Options = {
+        method: 'POST',
+        body: formdata,
+      };
+
+      fetch("http://localhost:8000/auth/register", Options)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      Router.push("/chat")
   }
   useEffect(()=>{
             // Si une image est sélectionnée, soumet automatiquement le formulaire
@@ -84,8 +110,7 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
               }
           }
       }, [selectedImage]);
-  const submitForm = () => {
-  }
+
   
   return (
     <>
@@ -135,7 +160,7 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
             <span className="sr-only">Choose profile photo</span>
             <input type="file" name="file" onChange={handledImageChange} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"/>
           </label>
-          <input id="sub" type="submit" onClick={submitForm} />
+          <input id="sub" type="submit" />
         </div>
       </form>
     </>

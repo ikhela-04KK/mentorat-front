@@ -8,7 +8,7 @@ import {useRouter} from "next/navigation";
 // importation de librairy constants
 import { Backend_URL } from "@/lib/Constants";
 import React, { FormEvent, useRef } from "react";
-
+// import { useRouter} from "next/router";
 
 // le type du Form
 type FormInputs = {
@@ -16,6 +16,7 @@ type FormInputs = {
   email: string;
   password: string;
 };
+
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
@@ -38,56 +39,54 @@ const SignupPage = () => {
     email: "",
     password: "",
   });
-const Router = useRouter();
+  const Router =  useRouter()
 
 
   // stocker des valeurs temporaires qui ne neccessite par de re-rendu
-  const handleInputChanged:React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleInputChanged: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     // changeEvent est geneerique de base donc il ne fournit pas d'erreur
     data.current = {
       ...data.current,
       [e.target.name]: e.target.value,
     };
   };
-  console.log(4444444444)
-  // const Router = useRouter();
 
-  const handleFormSubmitted = async (
-    e: FormEvent<HTMLFormElement>
-  ) => {
-    
-    // for CORS 
 
-    const storedFormData = sessionStorage.getItem('tempUserRole'); 
-    const formDataObject = storedFormData ? JSON.parse(storedFormData) :{}
-    console.log(storedFormData)
-    
+  const handleFormSubmitted = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try{
-    const res = await fetch(Backend_URL + "/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        ...formDataObject,
+
+
+    try {
+    
+      // const res01 = await fetch("/register");
+      // console.log(res01)
+      const userData = {
         name: data.current.name,
         email: data.current.email,
-        password: data.current.password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    
-      const response = await res.json();
-      console.log("entry")
-      // alert("User Registerd");
-      console.log("correcte")
-      console.log(response);
-      
-      Router.push("/chat")
+        password: data.current.password
+      };
+            
+      // Store the JSON string in the session storage
+      sessionStorage.setItem("name",userData.name );
+      sessionStorage.setItem("email",userData.email );
+      sessionStorage.setItem("password",userData.password );
 
-  }catch(e:any){
-    console.error("Erreur de l'appel à API: " ,e.message)
-  }
+
+
+      
+
+      // const response = await res.json();
+      console.log("entry");
+      // alert("User Registerd");
+      console.log("correcte");
+      // console.log(response);
+
+      Router.push("/selection-role");
+    } catch (e: any) {
+      console.error("Erreur de l'appel à API: ", e.message);
+    }
     //  sinon faire une redirection vars .............>
   };
   return (
@@ -119,7 +118,8 @@ const Router = useRouter();
                   {"Commencez votre essaie gratuit de 30 jours."}
                 </p>
               </div>
-              <form onSubmit={handleFormSubmitted}
+              <form
+                onSubmit={handleFormSubmitted}
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
               >
                 <div>
@@ -130,7 +130,7 @@ const Router = useRouter();
                         label: string;
                         placeholder: string;
                       },
-                      idx: number,
+                      idx: number
                     ) => (
                       <text.TextRegister
                         key={idx}
@@ -139,7 +139,7 @@ const Router = useRouter();
                         placeholder={item.placeholder}
                         onChange={handleInputChanged}
                       />
-                    ),
+                    )
                   )}
                 </div>
 
