@@ -4,6 +4,8 @@ import Image from "next/image";
 import * as Btn from "@features/ui/buttons/btn-sign";
 import * as text from "@features/ui/text-field/text-entry-sign";
 import * as input from "@features/ui/checkbox/checkbox-sign";
+import React, { FormEvent } from "react";
+import { signIn } from "next-auth/react";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
@@ -12,6 +14,44 @@ const listInput = [
 ];
 
 export default function login() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const data = useRef<FormInputs>({
+  //   username: "",
+  //   password: "",
+  // });
+  
+  // const handleInputChanged: React.ChangeEventHandler<HTMLInputElement> = (
+  //   e
+  // ) => {
+  //   // changeEvent est geneerique de base donc il ne fournit pas d'erreur
+  //   data.current = {
+  //     ...data.current,
+  //     [e.target.name]: e.target.value,
+  //   };
+  // };
+
+  const handleSubmitted = async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    try {
+
+      // for seeiing my username formulaire 
+      const formdata = new FormData(event.currentTarget); 
+      const username = formdata.get("username"); 
+      const password = formdata.get("password")
+
+
+    const response = await signIn('credentials', {
+      username:username,
+      password:password,
+      redirect:false   
+      });
+    console.log(response);
+    }
+    catch (e:any){
+      console.log("Error de l'appel à l'API: ", e.message)
+    }
+    }
+
   return (
     <>
       <div className="bg-[#05010D] relative h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -41,7 +81,7 @@ export default function login() {
                   {"Bienvenue à nouveau ! Veuillez saisir vos coordonnées."}
                 </p>
               </div>
-              <form
+              <form onSubmit={handleSubmitted}
                 className="bg-mentorat-linear space-y-6 md:space-y-6 lm:mt-8"
                 action="#"
               >
@@ -57,6 +97,7 @@ export default function login() {
                         label={item.label}
                         placeholder={item.placeholder}
                         name={item.name}
+              
                       />
                     ),
                   )}
@@ -77,8 +118,10 @@ export default function login() {
 
 
                 </div>
+                {/* <Link href="/api/auth/signin"> */}
+                <Btn.BtnSign label="Commencer" type="submit" />
+                {/* </Link> */}
 
-                <Btn.BtnSign label="Commencer" type="submit" href="/api/auth/login" method="POST" />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
                   type="submit"

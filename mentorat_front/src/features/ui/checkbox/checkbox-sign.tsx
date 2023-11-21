@@ -49,7 +49,7 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = (e) => {
+      reader.onloadend = () => {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
@@ -99,17 +99,17 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
 
       Router.push("/chat")
   }
-  useEffect(()=>{
-            // Si une image est sélectionnée, soumet automatiquement le formulaire
-            if (selectedImage) {
-              const sub: HTMLInputElement | null = document.querySelector("#sub");
-              if (sub) {
-                  sub.click();
-              } else {
-                  console.log("Il n'y a rien");
-              }
-          }
-      }, [selectedImage]);
+  // useEffect(()=>{
+  //           // Si une image est sélectionnée, soumet automatiquement le formulaire
+  //           if (selectedImage) {
+  //             const sub: HTMLInputElement | null = document.querySelector("#sub");
+  //             if (sub) {
+  //                 sub.click();
+  //             } else {
+  //                 console.log("Il n'y a rien");
+  //             }
+  //         }
+  //     }, [selectedImage]);
 
   
   return (

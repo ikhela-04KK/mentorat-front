@@ -167,7 +167,7 @@ const SignupPage = () => {
                 <p className="sm:text-center text-sm font-light text-gray-500 lm:text-center">
                   Vous avez déjà un compte ?
                   <Link
-                    href="/login"
+                    href="/api/auth/signin"
                     className="ml-1 text-primary-600 hover:underline mrleading-tight text-neutral-300 text-sm font-semibold "
                   >
                     Commencer
