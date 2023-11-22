@@ -4,6 +4,14 @@ import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
 import React, { useState } from "react";
 import { TextSend } from "./text-field-sms";
 
+
+type friendMessage = {
+  username:string , 
+  content:string, 
+  online:boolean, 
+  whoam:string, 
+  source:string | ""
+}
 // Exemple de données de messages pour deux utilisateurs
 // const messages = [
 //   {
@@ -71,10 +79,10 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor }) 
 );
 
 // ChatMessage component
-export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor }) => (
+export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor,online,source }) => (
   <div className="w-96 pr-8 h-full items-start">
     <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
-      <Online person={username} />
+      <Online person={username} online ={online} source={source}/>
       <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
         <MessageInfo username={username} timestamp={timestamp} />
         <MessageContent content={content} backgroundColor={backgroundColor} />
@@ -84,19 +92,22 @@ export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, back
 );
 
 // ChatSteam component
-export const ChatStream: React.FC = () => {
+export const ChatStream: React.FC<friendMessage>= ({username , content, online,source}) => {
 
   const [messages, setMessages] = useState([
     {
-      username: "Anita Cruz",
+      username: username,
       timestamp: "Jeudi 12h30",
-      content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
+      content: content,
+      online:online,
+      whoam:"friend",
+      source:source
       // backgroundColor: "gray-900",
     },
   ]);
 
   const sendMessage = (newMessage: typeMessage) => {
-    setMessages([...messages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
   return (
@@ -106,19 +117,21 @@ export const ChatStream: React.FC = () => {
          {/* Date component */}
         <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
           {/* ... */}
-          <DtMessage date="Aujourg'hui" />
+          <DtMessage date="Aujourd'hui" />
         </div>
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-[118px] flex ${message.username === "Anita Cruz" ? "justify-start" : "justify-end"
+            className={`w-full h-[118px] flex ${message.whoam === "friend" ? "justify-start" : "justify-end"
               } mb-8 mt-8`}
           >
             <ChatMessage
+              online={message.online}
               username={message.username}
               timestamp={message.timestamp}
               content={message.content}
-              backgroundColor={message.username === "Aziz" ? "violet-500" : "gray-900"}
+              source={message.source}
+              backgroundColor={message.whoam === "friend" ? "gray-500" : "violet-500"}
             />
           </div>
         ))}

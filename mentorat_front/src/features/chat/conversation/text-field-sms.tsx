@@ -30,6 +30,7 @@ import React, { KeyboardEventHandler, useEffect, useState } from "react";
 
 
 export const TextSend: React.FC<any> = ({ sendMessage }) => {
+    
 
     const [messageInput, setMessageInput] = useState('');
     // const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ export const TextSend: React.FC<any> = ({ sendMessage }) => {
 
     const handleSend = async () => {
         const newMessage = {
-            username: "Aziz",
+            username: "vous",
             timestamp: getCurrentTimestamp(),
             content: messageInput,
         };

@@ -71,7 +71,6 @@ export const TextMessage:React.FC<textSenderMessage> = ({name, type, placeholder
             type={type}
             name={name}
             onChange={onChange}
-            // onKeyDown={onKeyDown}
             onInput={onInput}
             id={type}
             placeholder={placeholder}

@@ -8,11 +8,13 @@ import ProfileBar from "@features/ui/header/profile";
 
 type headerChat = {
     title:string; 
-    size?:number; 
-    imageUrl?:string;
+    size:number; 
+    source?:string;
+    label:string;
+    nofification:number;
 }
 
-const HeaderChat:React.FC<headerChat> = ({title,size}) => {
+const HeaderChat:React.FC<headerChat> = ({title,size,source,label, nofification}) => {
     return (
         <>
             <header className="h-[72px] min-w-[454px] px-8 flex justify-between"> 
@@ -22,7 +24,7 @@ const HeaderChat:React.FC<headerChat> = ({title,size}) => {
                     <p className="pl-2.5 self-center">Untitled UI</p>
                     </div> {/*pour le logo */}
                     <div className="flex items-center">
-                        <ProfileBar person="user" size={40}/>
+                        <ProfileBar source={source} label={label} notification={nofification}/>
                     </div> {/*pour les icones */}
             </header>
         </>

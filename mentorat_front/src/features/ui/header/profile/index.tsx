@@ -3,12 +3,11 @@
 import Image from "next/image";
 import React from "react";
 import { Standard } from "../../avatar/standard/standard";
-import { Notification } from "../../badge/notification";
 
 type person = {
-    person: string;
-    size: number;
+    label: string;
     source?:string;
+    notification:number;
 };
 
 const listIcon = [
@@ -22,18 +21,14 @@ const listIcon = [
         size:40,
         source:"seeting.svg",
     },
-    // {
-    //     person: "notification",
-    //     size:40,
-    //     source:"notification.svg",
-    // },
+
 ];
 
 
-const Avatar: React.FC<person> = () => {
+const Avatar: React.FC<person> = ({label, source,notification}) => {
     return (
         <>
-            <Standard label="avatar" />
+            <Standard label={label} source={source} /> {/*put the source variable */}
 
             <div className="flex items-center">
                 {listIcon.map(
@@ -57,7 +52,7 @@ const Avatar: React.FC<person> = () => {
                 )}
                 <div className="ml-1 relative">
                     <span className="absolute left-4 w-5 h-5 px-1 bg-red-700 rounded-full inline-flex justify-center items-center">
-                        <span className=" text-white text-xs font-medium">44</span>
+                        <span className=" text-white text-xs font-medium">{notification}</span>
                     </span>
                     <Image
                                 className="p-2"

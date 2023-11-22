@@ -13,7 +13,9 @@ const SignInButton = () => {
   if (session && session.user){
     return (
       <div className="flex gap-4 ml-auto">
-        <p className="text-sky-600">user: {session.user.name}</p>
+        <p className="text-sky-600">user: {session.user.name}</p>  
+         {/*mettre l'élément du chat  */}
+        
         
         <Link
           href={"/api/auth/signout"}
