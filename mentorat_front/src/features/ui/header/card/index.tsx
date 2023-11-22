@@ -28,7 +28,7 @@ export const Card:React.FC<cardHeader>=({certified, source, location, online, us
                 <div className="w-full h-7">
                     <Location label={location} />
                 </div>
-            </div>F
+            </div>
         </>
     );  
 }

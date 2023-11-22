@@ -21,6 +21,14 @@ const messages: friendMessage[] = [
         location:"Abidjan, Côte d'Ivoire",
         online:false
     },
+    {
+        username: "marie",
+        message: "Salut, bb tu vas?",
+        source: "avatar02.svg",
+        certified:true, 
+        location:"pananma, France",
+        online:true
+    },
     // Ajoutez autant d'objets que nécessaire 
 ];
 

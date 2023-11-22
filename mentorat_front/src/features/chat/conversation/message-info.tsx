@@ -1,7 +1,7 @@
 "use client";
 import { Online } from "@features/ui/avatar/online/online";
 import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextSend } from "./text-field-sms";
 
 
@@ -10,7 +10,8 @@ type friendMessage = {
   content:string, 
   online:boolean, 
   whoam:string, 
-  source:string | ""
+  source:string | "", 
+  timestamp:string
 }
 // Exemple de données de messages pour deux utilisateurs
 // const messages = [
@@ -82,8 +83,9 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor }) 
 export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor,online,source }) => (
   <div className="w-96 pr-8 h-full items-start">
     <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
-      <Online person={username} online ={online} source={source}/>
-      <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
+      
+{username !="vous" && <Online person={username} online ={online} source={source}/>
+}      <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
         <MessageInfo username={username} timestamp={timestamp} />
         <MessageContent content={content} backgroundColor={backgroundColor} />
       </div>
@@ -94,19 +96,34 @@ export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, back
 // ChatSteam component
 export const ChatStream: React.FC<friendMessage>= ({username , content, online,source}) => {
 
-  const [messages, setMessages] = useState([
-    {
+  const [messages, setMessages] = useState<friendMessage[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Ajouter le premier message après le rendu du composant
+    const initialMessage: friendMessage = {
       username: username,
       timestamp: "Jeudi 12h30",
       content: content,
-      online:online,
-      whoam:"friend",
-      source:source
+      online: online,
+      whoam: "friend",
+      source: source,
       // backgroundColor: "gray-900",
-    },
-  ]);
+    };
+    
+    setMessages([initialMessage]);
+  }, [username, content, online, source]);
 
-  const sendMessage = (newMessage: typeMessage) => {
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = (newMessage: friendMessage): void => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
@@ -135,6 +152,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
             />
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <TextSend sendMessage={sendMessage} />

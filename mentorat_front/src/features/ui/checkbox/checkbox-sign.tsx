@@ -70,7 +70,6 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
       const email:any = sessionStorage.getItem("email");
       const password:any = sessionStorage.getItem("password");
 
-      console.log("pourquoi ça ne passe pas ")
       formdata.append("name",name) // add new field
       formdata.append("email",email) // add new field
       formdata.append("password",password) // add new field
