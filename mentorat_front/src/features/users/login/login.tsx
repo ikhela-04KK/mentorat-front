@@ -40,12 +40,15 @@ export default function login() {
       const password = formdata.get("password")
 
 
-    const response = await signIn('credentials', {
+    const res = await signIn('credentials', {
       username:username,
       password:password,
       redirect:false   
       });
-    console.log(response);
+    console.log("Quelle reponse retourn tu? ")
+    console.log(res);
+    // if (res?.ok) router.push('/chat')
+
     }
     catch (e:any){
       console.log("Error de l'appel à l'API: ", e.message)

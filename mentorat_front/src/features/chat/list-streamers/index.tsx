@@ -1,6 +1,6 @@
 // pour la creation de composant de liste deroulant
 "use client";
-import React from "react"; 
+import React, { MouseEventHandler, useState } from "react"; 
 import Image from "next/image";
 
 export type friendMessage  = {
@@ -12,6 +12,13 @@ export type friendMessage  = {
     online:boolean,
 
 }
+
+// Decrire le type attendues par les props de la liste enusuite rentre dans les items
+interface ListProps {
+    setUserInfo: (userInfo:friendMessage) => void;
+}
+
+
 const messages: friendMessage[] = [
     {
         username: "John",
@@ -33,8 +40,15 @@ const messages: friendMessage[] = [
 ];
 
 
-export const List:React.FC<any> = ({setUserInfo})=>{
+export const List:React.FC<ListProps> = ({setUserInfo})=>{
+    const [liClicks, setLiClicks] = useState<boolean[]>(Array(messages.length).fill(false)); 
 
+    function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number){
+        const newClicks = [...liClicks];
+        newClicks[idx] = true;
+        setLiClicks(newClicks)
+        setUserInfo(item);
+    }
     return (
         <>
                 <ul role="list" className="relative divide-y divide-[#1f242f] m-0 overflow-y-auto h-full">
@@ -52,7 +66,12 @@ export const List:React.FC<any> = ({setUserInfo})=>{
                             idx:number,
                         ) =>
                         (
-                            <li onClick={() => setUserInfo(item)} className={`relative flex justify-between py-4 px-6  last:h-[70px] ${idx < 3 ? 'bg-slate-900' : ''}`} key={idx}>
+
+                            // si je clique sur le li alors le bg-slate-900 est retiré et le bg-violet-500 est retiré 
+                            // ${idx < 3 ? 'bg-slate-900' : ''}`} key={idx} pour dire que seul les 3 premiers éléments doivent avoir une certaine propriété 
+                            
+
+                            <li onClick={(e) => handleClick(e,item,idx)} className={`cursor-pointer relative flex justify-between py-4 px-6  last:h-[70px] ${liClicks[idx] ? 'bg-transparent': 'bg-slate-900'}`} key={idx}>
                                 <div className="flex items-center">
                                     <Image className="h-10 w-10 rounded-full" src={item.source} alt="" width={40} height={40} />
                                     <div className="ml-3">
@@ -62,7 +81,7 @@ export const List:React.FC<any> = ({setUserInfo})=>{
                                 </div>
                                 <div className="flex flex-col gap-2 items-center ">
                                     <p className="text-white text-sm font-medium">12:23</p>
-                                    <span className="w-2.5 h-2.5 bg-violet-500 rounded-full"> </span>
+                                    <span className={`w-2.5 h-2.5 ${liClicks[idx] ? 'bg-opacity' : 'bg-violet-500'} rounded-full`} > </span>
                                 </div>
                             </li>
                         ),

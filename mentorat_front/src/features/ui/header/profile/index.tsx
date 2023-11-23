@@ -28,8 +28,9 @@ const listIcon = [
 const Avatar: React.FC<person> = ({label, source,notification}) => {
     return (
         <>
-            <Standard label={label} source={source} /> {/*put the source variable */}
+            <Standard label={label} source={source}  /> {/*put the source variable */}
 
+            
             <div className="flex items-center">
                 {listIcon.map(
                     (
