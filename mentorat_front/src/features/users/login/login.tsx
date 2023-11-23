@@ -121,9 +121,9 @@ export default function login() {
 
 
                 </div>
-                {/* <Link href="/api/auth/signin"> */}
+                <Link href="/chat">
                 <Btn.BtnSign label="Commencer" type="submit" />
-                {/* </Link> */}
+                </Link>
 
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
