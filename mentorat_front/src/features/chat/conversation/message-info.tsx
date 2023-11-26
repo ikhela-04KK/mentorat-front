@@ -2,7 +2,8 @@
 import { Online } from "@features/ui/avatar/online/online";
 import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
 import React, { useEffect, useRef, useState } from "react";
-import { TextSend } from "./text-field-sms";
+import { TextSend, TextSpinner } from "./text-field-sms";
+
 
 
 type friendMessage = {
@@ -52,6 +53,7 @@ type friendMessage = {
 //   },
 // ];
 
+
 export const DtMessage: React.FC<Message> = ({ date }) => {
   return (
     <>
@@ -98,7 +100,8 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
 
   const [messages, setMessages] = useState<friendMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+  const [loading, getLoading] = useState()
+
   useEffect(() => {
     // Ajouter le premier message après le rendu du composant
     const initialMessage: friendMessage = {
@@ -132,11 +135,13 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
       {/* First message block */}
       <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
          {/* Date component */}
+
         <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
           {/* ... */}
           <DtMessage date="Aujourd'hui" />
         </div>
-        {messages.map((message, index) => (
+   {
+        messages.map((message, index) => (
           <div
             key={index}
             className={`w-full h-[118px] flex ${message.whoam === "friend" ? "justify-start" : "justify-end"
@@ -151,11 +156,12 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
               backgroundColor={message.whoam === "friend" ? "gray-500" : "violet-500"}
             />
           </div>
-        ))}
+        ))
+      }
         <div ref={messagesEndRef} />
       </div>
 
-      <TextSend sendMessage={sendMessage} />
+      <TextSend sendMessage={sendMessage}  getLoading={getLoading}/>
     </>
   )
 }

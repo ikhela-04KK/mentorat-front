@@ -11,7 +11,7 @@ export const Principal:React.FC<avatar> = ({label}) =>{
 
     return (
         <>
-            <div className="w-[92px] h-[28px]">
+            <div className="h-[28px] mr-2">
                 <p className="font-semibold text-lg text-[rgb(245,245,246)] first-letter:uppercase">{label}</p>
             </div>
         </>

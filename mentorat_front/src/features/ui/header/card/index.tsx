@@ -15,12 +15,12 @@ export type cardHeader = {
 export const Card:React.FC<cardHeader>=({certified, source, location, online, username})=>{
     return (
         <>
-            <div className="pr-4">
+            <div className="pr-4 ">
                 <Certified certified={certified} source={source} /> {/*ou non certifié */}
             </div>
 
             <div className="w-[826px]">
-                <div className="w-full h-7 flex items-center gap-1.5">
+                <div className="w-full h-7 flex items-center">
                         <Principal label={username} />
                         <Online online={online} /> 
                 </div>

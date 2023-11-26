@@ -10,6 +10,7 @@ export type friendMessage  = {
     certified:boolean,
     location:string, 
     online:boolean,
+    
 
 }
 

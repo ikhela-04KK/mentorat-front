@@ -1,7 +1,7 @@
 import { TextMessage } from "@/features/ui/text-field/text-entry-sign";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
 import React, { KeyboardEventHandler, useEffect, useState } from "react";
-// import {SyncLoader} from "react-spinners";
+import {SyncLoader} from "react-spinners";
 
 // const handleFormSubmitted = async (
 //     e: React.MouseEvent<HTMLButtonElement>,
@@ -28,12 +28,25 @@ import React, { KeyboardEventHandler, useEffect, useState } from "react";
 //     //  sinon faire une redirection vars .............>
 //   };
 
+export type propsSpinner ={
+    loading:boolean;
+}
+export const TextSpinner:React.FC<propsSpinner> = ({loading})=>{
+    return (
+        <div className="border border-gray-[#85888E] rounded-tr-lg rounded-bl-lg rounded-br-lg ">
+        <span className="inline-flex">
+        {loading && <SyncLoader color="#85888E" size={8} />}
+        </span>
+    </div> 
+    )
+}
 
-export const TextSend: React.FC<any> = ({ sendMessage }) => {
+
+export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
     
 
     const [messageInput, setMessageInput] = useState('');
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const getCurrentTimestamp = () => {
         const now = new Date();
@@ -51,7 +64,7 @@ export const TextSend: React.FC<any> = ({ sendMessage }) => {
         sendMessage(newMessage);
         setMessageInput('');
 
-         // Simulation de l'envoi (attente de 1 seconde)
+        //   Simulation de l'envoi (attente de 1 seconde)
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         // sendMessage(newMessage);
         // setMessageInput('');
@@ -59,26 +72,21 @@ export const TextSend: React.FC<any> = ({ sendMessage }) => {
 
     };
 
-    // const handleInput: React.FormEventHandler<HTMLInputElement>= (e) => {
-    //     // setLoading(true); // Activer le spinner pendant la saisie
-    //     setTimeout(() => {
-    //       setLoading(false); // Désactiver le spinner après un court délai après la saisie
-    //     }, 500);
-    //     return setMessageInput(e.currentTarget.value);
-    // };
+    const handleInput: React.FormEventHandler<HTMLInputElement>= (e) => {
+        setLoading(true); // Activer le spinner pendant la saisie
+        getLoading(loading)
+        setTimeout(() => {
+          setLoading(false); // Désactiver le spinner après un court délai après la saisie
+        }, 500);
+        return setMessageInput(e.currentTarget.value);
+    };
     
 
 
     return (
         <div className="h-[86px] px-6 pb-6 pt-5  border-t border-gray-800 flex justify-between items-center">
-            <TextMessage name="message" type="text" value={messageInput} placeholder="message" onChange={(e)=>setMessageInput(e.target.value)}  />{/*onKeyDown={handleKeyDown} */}
-            <BtnSendMessage type="submit" onClick={handleSend} />{ /*onInput={handleInput}}
-            {/* <div className="border border-gray-[#85888E] rounded-tr-lg rounded-bl-lg rounded-br-lg ">
-                <span className="absolute flex">
-                {loading && <SyncLoader color="#85888E" size={8} />}
-                </span>
-            </div> */}
-
+            <TextMessage name="message" type="text" value={messageInput} onInput={handleInput} placeholder="message" />{/*onKeyDown={handleKeyDown} */}
+            <BtnSendMessage type="submit" onClick={handleSend} />
         </div>
     );
 }

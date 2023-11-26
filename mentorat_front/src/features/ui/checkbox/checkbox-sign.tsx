@@ -116,7 +116,7 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
       <form onSubmit={onSubmit} name="choice-user" className='flex items-center flex-col gap-y-8 justify-center min-h-screen bg-[#1F242F]' encType="multipart/form-data" >
         <div className='w-full max-w-sm px-10 py-8 mx-auto bg-[#171C24] rounded-lg shadow-xl text-[#F0F0F0] '>
           <div className='max-w-md mx-auto'>
-            <p className='text-[#F0F0F0]'>Choice your stauts</p>
+            <p className='text-[#F0F0F0] text-center'>Choice your stauts</p>
 
             {dataCheck.map(
               (
@@ -126,7 +126,7 @@ export const CheickBoxChoice: React.FC<checkbox> = () => {
                 },
                 idx: number,
               ) => (
-                <div className="relative flex items-start py-4 ml-2 " key={idx}>
+                <div className="relative flex justify-center py-4 ml-2 " key={idx}>
                   <input id={item.label} type="radio" className="hidden peer" name="role" value={item.label} />
                   <label htmlFor={item.label} className="inline-flex items-center justify-between w-auto p-2 font-medium tracking-tight border rounded-lg cursor-pointer bg-brand-light text-brand-black border-violet-500 peer-checked:border-violet-400 peer-checked:bg-violet-800 peer-checked:text-white peer-checked:font-semibold peer-checked:decoration-brand-dark decoration-2">
                     <div className="flex items-center justify-center w-full">
