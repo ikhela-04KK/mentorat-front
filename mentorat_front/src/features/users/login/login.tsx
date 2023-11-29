@@ -47,7 +47,6 @@ export default function login() {
     const res = await signIn('credentials', {
       username:username,
       password:password,
-      redirect:false   
       });
 
       console.log("retourne credentials")

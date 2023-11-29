@@ -15,9 +15,9 @@ import {Socket, io} from "socket.io-client";
 
 
 export default function ListFm(){
-    const { data: session } = useSession();
-    console.log("ma session est null")
-    
+    const { data: session,status } = useSession();
+    console.log(session?.user) 
+    console.log(status) 
     // J'attend au montage de l'élément avant d'émettre la connection au socket 
     useEffect(() => {
         const socket:Socket = io("http://localhost:8000/chats",{
