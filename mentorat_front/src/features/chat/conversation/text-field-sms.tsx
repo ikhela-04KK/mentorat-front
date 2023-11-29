@@ -48,6 +48,8 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
     const [messageInput, setMessageInput] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // for socket
+
     const getCurrentTimestamp = () => {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
@@ -55,11 +57,15 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
         return `Aujourd'hui ${hours}:${minutes}`;
     };
 
+    // impementez private le cocket qui envoie
+    
+    
     const handleSend = async () => {
         const newMessage = {
             username: "vous",
             timestamp: getCurrentTimestamp(),
             content: messageInput,
+            // to
         };
         sendMessage(newMessage);
         setMessageInput('');

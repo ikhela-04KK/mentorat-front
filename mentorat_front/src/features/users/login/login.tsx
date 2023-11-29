@@ -6,6 +6,7 @@ import * as text from "@features/ui/text-field/text-entry-sign";
 import * as input from "@features/ui/checkbox/checkbox-sign";
 import React, { FormEvent } from "react";
 import { signIn } from "next-auth/react";
+// import { useRouter, useRouter } from "next/navigation";
 
 // itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
@@ -13,7 +14,9 @@ const listInput = [
   { type: "password", label: "Mot de pass", name: "password", placeholder: "••••••••••" },
 ];
 
+
 export default function login() {
+  
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const data = useRef<FormInputs>({
   //   username: "",
@@ -32,6 +35,7 @@ export default function login() {
 
   const handleSubmitted = async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    
     try {
 
       // for seeiing my username formulaire 
@@ -39,14 +43,15 @@ export default function login() {
       const username = formdata.get("username"); 
       const password = formdata.get("password")
 
-
+    
     const res = await signIn('credentials', {
       username:username,
       password:password,
       redirect:false   
       });
-    console.log("Quelle reponse retourn tu? ")
-    console.log(res);
+
+      console.log("retourne credentials")
+      console.log(res)
     // if (res?.ok) router.push('/chat')
 
     }
@@ -121,9 +126,9 @@ export default function login() {
 
 
                 </div>
-                <Link href="/chat">
+                {/* <Link href="/chat"> */}
                 <Btn.BtnSign label="Commencer" type="submit" />
-                </Link>
+                {/* </Link> */}
 
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"

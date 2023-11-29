@@ -10,8 +10,6 @@ export type friendMessage  = {
     certified:boolean,
     location:string, 
     online:boolean,
-    
-
 }
 
 // Decrire le type attendues par les props de la liste enusuite rentre dans les items
@@ -19,6 +17,7 @@ interface ListProps {
     setUserInfo: (userInfo:friendMessage) => void;
 }
 
+// c'est ici que je dois capturer les messages provenant des autres utilsateurs 
 
 const messages: friendMessage[] = [
     {

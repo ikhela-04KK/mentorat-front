@@ -4,8 +4,6 @@ import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
 import React, { useEffect, useRef, useState } from "react";
 import { TextSend, TextSpinner } from "./text-field-sms";
 
-
-
 type friendMessage = {
   username:string , 
   content:string, 
@@ -64,7 +62,7 @@ export const DtMessage: React.FC<Message> = ({ date }) => {
       </div>
     </>
   )
-}
+} 
 
 
 export const MessageInfo: React.FC<Info> = ({ username, timestamp }) => (
@@ -140,7 +138,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
           {/* ... */}
           <DtMessage date="Aujourd'hui" />
         </div>
-   {
+  {
         messages.map((message, index) => (
           <div
             key={index}
@@ -161,7 +159,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
         <div ref={messagesEndRef} />
       </div>
 
-      <TextSend sendMessage={sendMessage}  getLoading={getLoading}/>
+      <TextSend sendMessage={sendMessage} getLoading={getLoading}/>
     </>
   )
 }

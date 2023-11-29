@@ -3,13 +3,49 @@ import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";
 import {List, friendMessage} from "@/features/chat/list-streamers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatStream } from "@/features/chat/conversation/message-info";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
+// import socket from "../api/socket/socket";
+import {Socket, io} from "socket.io-client"; 
+
+
+
+// capture tout les évènements 
+
 
 export default function ListFm(){
     const { data: session } = useSession();
+    console.log("ma session est null")
+    
+    const socket:Socket = io("http://localhost:8000/chats",{
+        extraHeaders: {
+            "Authorization": `Bearer ${session?.backendToken.accessToken}`  // ignored
+        },
+        autoConnect:false
+    });
+    console.log(socket)
+    
+    useEffect(() => {
+        // Se connecter au serveur Socket.io
+    
+        // Écouter les événements du serveur
+        console.log("Setup socket for handle events ")
+        socket.connect()
+        socket.on('users', (data) => {
+            console.log('Message from server:', data);
+        });
+    
+        // Nettoyer la connexion lors du démontage du composant
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+    
+
+
+    
 
     const defaultState:friendMessage = {
         username: "",
@@ -18,7 +54,6 @@ export default function ListFm(){
         certified:false, 
         location:"",
         online:false
-        
     }
     
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
@@ -28,6 +63,7 @@ export default function ListFm(){
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
         setCliked((prevClicked) => !prevClicked)    }
 
+    // N'importe sur le clik permet de fermer la boites modal
     function handleMainClick(){
         if (clicked){
             setCliked(false)

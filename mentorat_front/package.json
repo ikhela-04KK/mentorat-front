@@ -18,7 +18,8 @@
     "react": "^18",
     "react-docgen": "^7.0.1",
     "react-dom": "^18",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.3",
