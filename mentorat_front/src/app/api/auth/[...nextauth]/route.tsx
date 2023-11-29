@@ -19,7 +19,7 @@ async function refreshToken(token: JWT): Promise<JWT> {
 
     return {
         ...token,
-        backendTokens: response,
+        backendToken: response,
     };
 }
 
