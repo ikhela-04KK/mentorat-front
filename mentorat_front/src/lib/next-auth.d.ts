@@ -26,7 +26,7 @@ declare module "next-auth/jwt" {
       role:string;
       avatar:string;
     };
-    backendToken: {
+    backendTokens: {
       accessToken: string;
       refreshToken: string;
       expiresIn:number;
