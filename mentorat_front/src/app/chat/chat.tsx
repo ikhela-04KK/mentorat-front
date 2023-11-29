@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { ChatStream } from "@/features/chat/conversation/message-info";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
-// import socket from "../api/socket/socket";
 import {Socket, io} from "socket.io-client"; 
 
 
@@ -19,20 +18,18 @@ export default function ListFm(){
     const { data: session } = useSession();
     console.log("ma session est null")
     
-    const socket:Socket = io("http://localhost:8000/chats",{
-        extraHeaders: {
-            "Authorization": `Bearer ${session?.backendToken.accessToken}`  // ignored
-        },
-        autoConnect:false
-    });
-    console.log(socket)
-    
+    // J'attend au montage de l'élément avant d'émettre la connection au socket 
     useEffect(() => {
-        // Se connecter au serveur Socket.io
-    
-        // Écouter les événements du serveur
+        const socket:Socket = io("http://localhost:8000/chats",{
+            extraHeaders: {
+                "Authorization": `Bearer ${session?.backendToken.accessToken}`  // ignored
+            },
+            autoConnect:false
+        });
+        console.log(socket);       
+
         console.log("Setup socket for handle events ")
-        socket.connect()
+        socket.connect() // lancer la connection au socket
         socket.on('users', (data) => {
             console.log('Message from server:', data);
         });
@@ -41,12 +38,8 @@ export default function ListFm(){
         return () => {
             socket.disconnect();
         };
-    }, []);
+    }, [session?.backendToken.accessToken]);
     
-
-
-    
-
     const defaultState:friendMessage = {
         username: "",
         message: "",
