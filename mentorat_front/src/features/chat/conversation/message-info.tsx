@@ -128,6 +128,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
     scrollToBottom();
   }, [messages]);
 
+  // c'est ici on implemente le message qui sera envoyé au socket 
   const sendMessage = (newMessage: friendMessage): void => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };

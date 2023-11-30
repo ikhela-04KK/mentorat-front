@@ -18,31 +18,6 @@ export default function ListFm(){
     const { data: session,status } = useSession();
     console.log(session?.user) 
     console.log(status) 
-    // J'attend au montage de l'élément avant d'émettre la connection au socket 
-    useEffect(() => {
-        const socket:Socket = io("http://localhost:8000/chats",{
-            extraHeaders: {
-                "Authorization": `Bearer ${session?.backendToken.accessToken}`  // ignored
-            },
-            autoConnect:false
-        });
-        console.log(socket);       
-
-        console.log("Setup socket for handle events ")
-        socket.connect() // lancer la connection au socket
-        // typer les data qui sont ici en fonction de ce que le server va envoyé
-        socket.on('users', (data) => {
-            console.log('Message from server:', data);
-        });
-    
-
-
-        // Nettoyer la connexion lors du démontage du composant
-        return () => {
-            socket.disconnect();
-        };
-    }, [session?.backendToken.accessToken]);
-    
     const defaultState:friendMessage = {
         username: "",
         message: "",
@@ -51,11 +26,74 @@ export default function ListFm(){
         location:"",
         online:false
     }
-    
-    const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
-    console.log(userInfo)
+
 
     const [clicked, setCliked] = useState(false); 
+    const [socket, setSocket] = useState<Socket | undefined>();
+        
+    const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
+    const [messages, setMessages] = useState<friendMessage[]>([]);
+    
+    console.log(userInfo)
+    // J'attend au montage de l'élément avant d'émettre la connection au socket 
+    useEffect(() => {
+        console.log(11111111111111111111)
+        if (session?.backendToken.accessToken) {
+          const newSocket: Socket = io('http://localhost:8000/chats', {
+            extraHeaders: {
+              Authorization: `Bearer ${session?.backendToken.accessToken}`
+            },
+            autoConnect: false
+          });
+    
+        //   mettre à jour l'état du scoket 
+          setSocket(newSocket);
+    
+          return () => {
+            newSocket.disconnect();
+          };
+        }
+      }, [session?.backendToken.accessToken]);
+
+    // Effect pour gérer les événements du socket après la connexion
+  useEffect(() => {
+    if (socket) {
+      socket.connect();
+
+      // Ajoutez ici la gestion des événements du socket, par exemple :
+      socket.on('users', (data) => {
+        console.log('Message from server:', data);
+      });
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [socket]);
+
+
+  useEffect(() => {
+    socket?.on('private_message', (args) => {
+        console.log("pour les test")
+        console.log("sokcet")
+        console.log(args)
+         // Mettre à jour la liste des messages
+      setMessages((prevMessages) => [...prevMessages, args]);
+      setUserInfo((prev) => ({
+        ...prev,
+        id:args.id, 
+        to:args.to,
+        username: args.username,
+        message: args.message,
+        source: args.source,
+        certified: args.certified,
+        location: args.location,
+        online: args.online,
+      }));
+    });
+  }, [socket, setUserInfo]);
+
+    // gerer le click pour le toggle pour se deconnecté 
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
         setCliked((prevClicked) => !prevClicked)    }
 
@@ -90,7 +128,7 @@ export default function ListFm(){
 
                         </div>
                         <div className="conversationList">
-                            <List  setUserInfo={setUserInfo} />  
+                            <List  setUserInfo={setUserInfo} messages={messages} />  
                         </div>
                         {/* <div className="chatStreamContainer">
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source}/>
