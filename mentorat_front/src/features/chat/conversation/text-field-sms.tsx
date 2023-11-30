@@ -59,7 +59,7 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
 
     // impementez private le cocket qui envoie
     
-    
+    // 
     const handleSend = async () => {
         const newMessage = {
             username: "vous",

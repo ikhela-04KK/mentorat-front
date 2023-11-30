@@ -94,7 +94,7 @@ export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, back
 );
 
 // ChatSteam component
-export const ChatStream: React.FC<friendMessage>= ({username , content, online,source}) => {
+export const ChatStream: React.FC<friendMessage>= ({username , content, online,source,whoam}) => {
 
   const [messages, setMessages] = useState<friendMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -107,13 +107,17 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
       timestamp: "Jeudi 12h30",
       content: content,
       online: online,
-      whoam: "friend",
+      whoam: whoam,
       source: source,
       // backgroundColor: "gray-900",
     };
     
     setMessages([initialMessage]);
-  }, [username, content, online, source]);
+  }, [username, content, online, source,whoam]);
+
+  // first socket 
+  
+
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {

@@ -30,10 +30,13 @@ export default function ListFm(){
 
         console.log("Setup socket for handle events ")
         socket.connect() // lancer la connection au socket
+        // typer les data qui sont ici en fonction de ce que le server va envoyé
         socket.on('users', (data) => {
             console.log('Message from server:', data);
         });
     
+
+
         // Nettoyer la connexion lors du démontage du composant
         return () => {
             socket.disconnect();
@@ -87,7 +90,7 @@ export default function ListFm(){
 
                         </div>
                         <div className="conversationList">
-                            <List setUserInfo={setUserInfo} />  
+                            <List  setUserInfo={setUserInfo} />  
                         </div>
                         {/* <div className="chatStreamContainer">
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source}/>
