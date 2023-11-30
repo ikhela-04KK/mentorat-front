@@ -18,7 +18,7 @@ export default function ListFm(){
     console.log(status) 
     const defaultState:friendMessage = {
         username: "",
-        message: "",
+        message: [""],
         source: "",
         certified:false, 
         location:"",
@@ -73,26 +73,7 @@ export default function ListFm(){
   }, [socket]);
 
 
-  useEffect(() => {
-    socket?.on('private_message', (args) => {
-        console.log("pour les test")
-        console.log("sokcet")
-        console.log(args)
-         // Mettre à jour la liste des messages
-      setMessages((prevMessages) => [...prevMessages, args]);
-      // setUserInfo((prev) => ({
-      //   ...prev,
-      //   id:args.id, 
-      //   to:args.to,
-      //   username: args.username,
-      //   message: args.message,
-      //   source: args.source,
-      //   certified: args.certified,
-      //   location: args.location,
-      //   online: args.online,
-      // }));
-    });
-  }, [socket, setMessages]);
+
 
     // gerer le click pour le toggle pour se deconnecté 
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
@@ -104,6 +85,28 @@ export default function ListFm(){
             setCliked(false)
         }
     }
+    useEffect(() => {
+      socket?.on('private_message', (args) => {
+        console.log("pour les tests")
+        console.log("socket")
+        console.log(args)
+    
+        // Trouver l'utilisateur dans le tableau messages
+        const userIndex = messages.findIndex((user) => user.username === args.username);
+    
+        if (userIndex !== -1) {
+          // Si l'utilisateur existe, mettre à jour ses messages
+          setMessages((prevMessages) => {
+            const newMessages = [...prevMessages];
+            newMessages[userIndex].message.push(args.message);
+            return newMessages;
+          });
+        } else {
+          // Si l'utilisateur n'existe pas, l'ajouter au tableau messages
+          setMessages((prevMessages) => [...prevMessages, args]);
+        }
+      });
+    }, [messages, socket]);
 
     return (
         <>
@@ -129,7 +132,7 @@ export default function ListFm(){
 
                         </div>
                         <div className="conversationList">
-                            <List  setUserInfo={setUserInfo} messages={messages} setClick={setClick} />  
+                            <List setUserInfo={setUserInfo} messages={messages} setClick={setClick} />  
                         </div>
                         {/* <div className="chatStreamContainer">
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source}/>
@@ -137,9 +140,10 @@ export default function ListFm(){
                         <div className="chatStreamContainer">
                         {click &&(
 
-                            <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source} timestamp={"Jeudi 12h30"} />
-                            )}
-
+                           messages.map((user) => (
+                            <ChatStream key={user.username} username={user.username} content={user.message} online={userInfo.online} whoam={"friend"} source={userInfo.source} timestamp={"Jeudi 12h30"} />
+                            ))
+                        )}
                         </div>
 
 

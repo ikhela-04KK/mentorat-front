@@ -6,11 +6,13 @@ import { TextSend, TextSpinner } from "./text-field-sms";
 
 type friendMessage = {
   username:string , 
-  content:string, 
+  content:string[] |string, 
   online:boolean, 
   whoam:string, 
   source:string | "", 
   timestamp:string
+  backgroundColor?:string
+  
 }
 // Exemple de données de messages pour deux utilisateurs
 // const messages = [
@@ -80,14 +82,32 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor }) 
 );
 
 // ChatMessage component
-export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor,online,source }) => (
+export const ChatMessage: React.FC<friendMessage> = ({ username, timestamp, content, online, source, whoam ,backgroundColor}) => (
   <div className="w-96 pr-8 h-full items-start">
     <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
-      
-{username !="vous" && <Online person={username} online ={online} source={source}/>
-}      <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
+
+      {username !== "vous" && <Online person={username} online={online} source={source} />}
+      <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
         <MessageInfo username={username} timestamp={timestamp} />
-        <MessageContent content={content} backgroundColor={backgroundColor} />
+
+        {/* Check if content is an array */}
+        {Array.isArray(content) ? (
+          // Render each item in the array
+          content.map((line, index) => (
+            <MessageContent
+              key={index}
+              content={line}
+              backgroundColor={whoam === "vous" ? "violet-500" : "gray-500"}
+            />
+          ))
+        ) : (
+          // Render a single content if it's not an array
+          <MessageContent
+            content={content}
+            backgroundColor={whoam === "vous" ? "violet-500" : "gray-500"}
+          />
+        )}
+
       </div>
     </div>
   </div>
@@ -134,35 +154,37 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
   };
 
   return (
-    <>
-      {/* First message block */}
-      <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
-         {/* Date component */}
+      <>
+        {/* First message block */}
+        <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
+          {/* Date component */}
 
-        <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
-          {/* ... */}
-          <DtMessage date="Aujourd'hui" />
-        </div>
-  {
-        messages.map((message, index) => (
-          <div
-            key={index}
-            className={`w-full h-[118px] flex ${message.whoam === "friend" ? "justify-start" : "justify-end"
-              } mb-8 mt-8`}
-          >
-            <ChatMessage
-              online={message.online}
-              username={message.username}
-              timestamp={message.timestamp}
-              content={message.content}
-              source={message.source}
-              backgroundColor={message.whoam === "friend" ? "gray-500" : "violet-500"}
-            />
+          <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
+            {/* ... */}
+            <DtMessage date="Aujourd'hui" />
           </div>
-        ))
-      }
-        <div ref={messagesEndRef} />
-      </div>
+    {
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={`w-full h-[118px] flex ${message.whoam === "friend" ? "justify-start" : "justify-end"
+                } mb-8 mt-8`}
+            >
+              
+              <ChatMessage
+                online={message.online}
+                username={message.username}
+                timestamp={message.timestamp}
+                content={message.content}
+                source={message.source}
+                backgroundColor={message.whoam === "friend" ? "gray-500" : "violet-500"}
+                whoam={"friend"}
+              />
+            </div>
+          ))
+        }
+          <div ref={messagesEndRef} />
+        </div>
 
       <TextSend sendMessage={sendMessage} getLoading={getLoading}/>
     </>

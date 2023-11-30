@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export type friendMessage  = {
     username:string, 
-    message:string,
+    message:string[],
     source:string,
     certified:boolean,
     location:string, 
@@ -32,14 +32,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                 <ul role="list" className="relative divide-y divide-[#1f242f] m-0 overflow-y-auto h-full">
                     {messages.map(
                         (
-                            item:{
-                                username:string;
-                                message:string; 
-                                source:string; 
-                                certified:boolean; 
-                                location:string; 
-                                online:boolean;
-                            }, 
+                            item:friendMessage, 
                             idx:number,
                         ) =>
                         (
@@ -48,7 +41,9 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                                     <Image className="h-10 w-10 rounded-full" src={`/${item.source}`} alt="" width={40} height={40} />
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-[#f5f5f6]">{item.username}</p>
-                                        <p className="text-sm font-normal text-[#94969c]">{item.message}</p>
+                                        {item.message.map((msg, index) => (
+                                        <p key={index} className="text-sm font-normal text-[#94969c]">{msg}</p>
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center ">
