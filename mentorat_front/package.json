@@ -19,7 +19,9 @@
     "react-docgen": "^7.0.1",
     "react-dom": "^18",
     "react-spinners": "^0.13.8",
-    "socket.io-client": "^4.7.2"
+    "sharp": "^0.33.0",
+    "socket.io-client": "^4.7.2",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.3",
