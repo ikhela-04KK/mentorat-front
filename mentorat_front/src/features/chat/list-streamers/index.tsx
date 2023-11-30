@@ -14,9 +14,10 @@ export type friendMessage  = {
 interface ListProps {
     setUserInfo: (userInfo:friendMessage) => void;
     messages:friendMessage[];
+    setClick:(click:boolean) => void;
 }
 
-export const List:React.FC<ListProps> = ({setUserInfo, messages } )=>{
+export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
     const [liClicks, setLiClicks] = useState<boolean[]>(Array(messages.length).fill(false)); 
 
     function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number){
@@ -24,6 +25,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages } )=>{
         newClicks[idx] = true;
         setLiClicks(newClicks)
         setUserInfo(item);
+        setClick(newClicks[idx]);
     }
     return (
         <>

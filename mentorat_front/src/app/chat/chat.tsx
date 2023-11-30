@@ -12,8 +12,6 @@ import {Socket, io} from "socket.io-client";
 
 
 // capture tout les évènements 
-
-
 export default function ListFm(){
     const { data: session,status } = useSession();
     console.log(session?.user) 
@@ -30,6 +28,9 @@ export default function ListFm(){
 
     const [clicked, setCliked] = useState(false); 
     const [socket, setSocket] = useState<Socket | undefined>();
+
+    const [click, setClick] = useState(false)
+    console.log("est ce que ça marche: " , click)
         
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
     const [messages, setMessages] = useState<friendMessage[]>([]);
@@ -37,7 +38,7 @@ export default function ListFm(){
     console.log(userInfo)
     // J'attend au montage de l'élément avant d'émettre la connection au socket 
     useEffect(() => {
-        console.log(11111111111111111111)
+        console.log(1111111111111)
         if (session?.backendToken.accessToken) {
           const newSocket: Socket = io('http://localhost:8000/chats', {
             extraHeaders: {
@@ -79,19 +80,19 @@ export default function ListFm(){
         console.log(args)
          // Mettre à jour la liste des messages
       setMessages((prevMessages) => [...prevMessages, args]);
-      setUserInfo((prev) => ({
-        ...prev,
-        id:args.id, 
-        to:args.to,
-        username: args.username,
-        message: args.message,
-        source: args.source,
-        certified: args.certified,
-        location: args.location,
-        online: args.online,
-      }));
+      // setUserInfo((prev) => ({
+      //   ...prev,
+      //   id:args.id, 
+      //   to:args.to,
+      //   username: args.username,
+      //   message: args.message,
+      //   source: args.source,
+      //   certified: args.certified,
+      //   location: args.location,
+      //   online: args.online,
+      // }));
     });
-  }, [socket, setUserInfo]);
+  }, [socket, setMessages]);
 
     // gerer le click pour le toggle pour se deconnecté 
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
@@ -115,7 +116,7 @@ export default function ListFm(){
                                 <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={0} /> 
                             </div>
 
-                            {userInfo.username &&(
+                            {click &&(
 
                             <div className="pt-5 px-4 flex bg-[#0c111d] border-b border-gray-800">
                                 <Card certified={userInfo.certified} source={userInfo.source} location={userInfo.location} online={userInfo.online} username={userInfo.username} />
@@ -128,13 +129,13 @@ export default function ListFm(){
 
                         </div>
                         <div className="conversationList">
-                            <List  setUserInfo={setUserInfo} messages={messages} />  
+                            <List  setUserInfo={setUserInfo} messages={messages} setClick={setClick} />  
                         </div>
                         {/* <div className="chatStreamContainer">
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source}/>
                         </div> */}
                         <div className="chatStreamContainer">
-                        {userInfo.username &&(
+                        {click &&(
 
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source} timestamp={"Jeudi 12h30"} />
                             )}
