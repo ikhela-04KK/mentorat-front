@@ -16,6 +16,8 @@ const listInput = [
 
 
 export default function login() {
+ 
+
   
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const data = useRef<FormInputs>({
@@ -37,8 +39,7 @@ export default function login() {
     event.preventDefault()
     
     try {
-
-      // for seeiing my username formulaire 
+     
       const formdata = new FormData(event.currentTarget); 
       const username = formdata.get("username"); 
       const password = formdata.get("password")

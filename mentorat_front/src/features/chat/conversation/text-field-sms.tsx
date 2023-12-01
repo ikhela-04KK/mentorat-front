@@ -62,11 +62,18 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
     // 
     const handleSend = async () => {
         const newMessage = {
+            id: "id_placeholder",
             username: "vous",
+            to: "destinataire", 
+            message: messageInput,
+            certified: false, 
+            location: "Abidjan,Bonoua",
+            source: "avatar02.svg", 
             timestamp: getCurrentTimestamp(),
             content: messageInput,
             // to
         };
+
         sendMessage(newMessage);
         setMessageInput('');
 
@@ -75,13 +82,17 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
         // sendMessage(newMessage);
         // setMessageInput('');
         // setLoading(false); // Désactiver le spinner de chargement
-
+        // if (socket) {
+        //     socket.emit('send_message', newMessage);
+        //   }
+        // };
     };
 
+    
     const handleInput: React.FormEventHandler<HTMLInputElement>= (e) => {
         setLoading(true); // Activer le spinner pendant la saisie
         getLoading(loading)
-        setTimeout(() => {
+        setTimeout(() => {  
           setLoading(false); // Désactiver le spinner après un court délai après la saisie
         }, 500);
         return setMessageInput(e.currentTarget.value);

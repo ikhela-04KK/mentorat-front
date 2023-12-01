@@ -1,5 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
+
+    // // for winston
+    // future: {
+    //     webpack5: false,
+    //   },
+    // webpack: (config) => {
+    //   config.resolve.fallback = { path: false,fs: false };
+  
+    //   return config;
+    // },
+    images:{
+        remotePatterns: [
+            {
+              protocol: 'https',
+              hostname: 'avatars.githubusercontent.com',
+              port: '',
+            },
+            {
+                protocol:'https',
+                hostname:'cloudflare-ipfs.com',
+                port:'',
+            }
+          ],
+        },
     async headers() {
         return [
             {

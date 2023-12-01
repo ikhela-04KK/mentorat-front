@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import { ChatStream } from "@/features/chat/conversation/message-info";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
-import {Socket, io} from "socket.io-client"; 
-
-
+import {Socket, io} from "socket.io-client";
+// import { logging } from "@/utils/log4js/log4";
+import log from "loglevel"
 
 // capture tout les évènements 
 export default function ListFm(){
+
     const { data: session,status } = useSession();
     console.log(session?.user) 
     console.log(status) 
@@ -30,15 +31,15 @@ export default function ListFm(){
     const [socket, setSocket] = useState<Socket | undefined>();
 
     const [click, setClick] = useState(false)
-    console.log("est ce que ça marche: " , click)
-        
+    log.info("est ce que ça marche: " , click)
+
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
+
+
     const [messages, setMessages] = useState<friendMessage[]>([]);
     
-    console.log(userInfo)
     // J'attend au montage de l'élément avant d'émettre la connection au socket 
     useEffect(() => {
-        console.log(1111111111111)
         if (session?.backendToken.accessToken) {
           const newSocket: Socket = io('http://localhost:8000/chats', {
             extraHeaders: {
@@ -56,14 +57,15 @@ export default function ListFm(){
         }
       }, [session?.backendToken.accessToken]);
 
-    // Effect pour gérer les événements du socket après la connexion
+
+  // Afficher la liste de utilisateurs connectés
   useEffect(() => {
     if (socket) {
       socket.connect();
 
       // Ajoutez ici la gestion des événements du socket, par exemple :
       socket.on('users', (data) => {
-        console.log('Message from server:', data);
+        log.error('Message from server:', data);
       });
 
       return () => {
@@ -75,24 +77,19 @@ export default function ListFm(){
 
   useEffect(() => {
     socket?.on('private_message', (args) => {
-        console.log("pour les test")
-        console.log("sokcet")
-        console.log(args)
          // Mettre à jour la liste des messages
-      setMessages((prevMessages) => [...prevMessages, args]);
-      // setUserInfo((prev) => ({
-      //   ...prev,
-      //   id:args.id, 
-      //   to:args.to,
-      //   username: args.username,
-      //   message: args.message,
-      //   source: args.source,
-      //   certified: args.certified,
-      //   location: args.location,
-      //   online: args.online,
-      // }));
+    // Update the messages only if the username is not present
+      
+      console.log("Entrer here")
+      setMessages((prevMessages) => {
+        if(!prevMessages.some(message => message.username === args.username)){
+          return  [...prevMessages, args]
+        }
+         return prevMessages
+      });
+      // setMessages((prevMessages) => [...prevMessages, args]);
     });
-  }, [socket, setMessages]);
+  }, [socket]);
 
     // gerer le click pour le toggle pour se deconnecté 
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
@@ -102,8 +99,21 @@ export default function ListFm(){
     function handleMainClick(){
         if (clicked){
             setCliked(false)
-        }
+        } 
     }
+
+    // function isDuplicateUsername(username:string):boolean{
+    //   return messages.some((item) =>item.username == username)
+    // }
+
+    // if (isDuplicateUsername(userInfo.username)) {
+    //   const duplicateUser = messages.find((item) => item.username === userInfo.username);
+    //   // if (duplicateUser) {
+    //   //   setUserInfo(duplicateUser);
+    //   // }
+    //   console.log(duplicateUser)
+    // }
+
 
     return (
         <>
@@ -120,14 +130,15 @@ export default function ListFm(){
 
                             <div className="pt-5 px-4 flex bg-[#0c111d] border-b border-gray-800">
                                 <Card certified={userInfo.certified} source={userInfo.source} location={userInfo.location} online={userInfo.online} username={userInfo.username} />
-                                <div onClick={(e) => handleClicked(e)} className="block cursor-pointer">  
-                                    <Image className="self-start" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
-                                    <Dropdown visible={clicked ? 'block' : ''}/>
-                                </div>
                             </div>
                             )}
+                            <div onClick={(e) => handleClicked(e)} className="block cursor-pointer" >  
+                                    <Image className="absolute right-[50px] top-[35px]" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
+                                    <Dropdown visible={clicked ? 'block' : ''}/>
+                                </div>
 
                         </div>
+                        {/* reccupere la liste des utilisateurs déjà dans la liste ici grace au props et verifier le duplicatata si ça existe mettre dans la chatBox */}
                         <div className="conversationList">
                             <List  setUserInfo={setUserInfo} messages={messages} setClick={setClick} />  
                         </div>
@@ -136,41 +147,12 @@ export default function ListFm(){
                         </div> */}
                         <div className="chatStreamContainer">
                         {click &&(
-
                             <ChatStream  username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source} timestamp={"Jeudi 12h30"} />
                             )}
-
                         </div>
-
-
                     </section>
                 </main>
             </div>
         </>
     );
-}    
-    //  utilisationd de la session 
-    // export type cardHeader = {
-    //     certified:boolean, 
-    //     source:string, 
-    //     location:string, 
-    //     online:boolean, 
-    //     username:string
-    // }
-
-    // type headerChat = {
-    //     title:string; 
-    //     size:number; 
-    //     source:string;
-    //     label:string;
-    //     nofification:number;
-    // }
-
-    // provide de default value for my state 
-    // const defaultState: IFormEntry = {
-    //     type: '';
-    //     toFrom: '';
-    //     details: '';
-    //     amount: 0
-    //   }
-    //   const [formEntry, setformEntry] = useState<IformEntry>(defaultState);
+}   

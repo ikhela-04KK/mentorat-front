@@ -4,21 +4,10 @@ import Image from "next/image";
 import * as Btn from "@features/ui/buttons/btn-sign";
 import * as text from "@features/ui/text-field/text-entry-sign";
 import {useRouter} from "next/navigation";
-
-// importation de librairy constants
-import { Backend_URL } from "@/lib/Constants";
 import React, { FormEvent, useRef } from "react";
-// import { useRouter} from "next/router";
-
-// le type du Form
-type FormInputs = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { FormInputs } from "@/lib/type";
 
 
-// itérer sur une liste de contenu pour aller plus rapidement
 const listInput = [
   { type: "name", label: "Nom", placeholder: "Entrer votre nom" },
   {
@@ -34,60 +23,50 @@ const listInput = [
 ];
 
 const SignupPage = () => {
+
+
+  const Router =  useRouter()
+
+  // * Recuperer les données du formulaires sans re-render de la page register afin de conserver l'état actuelle du formulaire et recuperer les données 
   const data = useRef<FormInputs>({
     name: "",
     email: "",
     password: "",
   });
-  const Router =  useRouter()
-
-
-  // stocker des valeurs temporaires qui ne neccessite par de re-rendu
   const handleInputChanged: React.ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
-    // changeEvent est geneerique de base donc il ne fournit pas d'erreur
     data.current = {
       ...data.current,
       [e.target.name]: e.target.value,
     };
   };
-
-
   const handleFormSubmitted = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-
     try {
+
     
-      // const res01 = await fetch("/register");
-      // console.log(res01)
       const userData = {
         name: data.current.name,
         email: data.current.email,
         password: data.current.password
       };
-            
+    
+    
+
       // Store the JSON string in the session storage
       sessionStorage.setItem("name",userData.name );
       sessionStorage.setItem("email",userData.email );
       sessionStorage.setItem("password",userData.password );
 
-
-
-      
-
-      // const response = await res.json();
-      console.log("entry");
-      // alert("User Registerd");
+      // * mettre ceci dans un log afin de mieux avoir la generation de type 
       console.log("correcte");
-      // console.log(response);
 
       Router.push("/selection-role");
     } catch (e: any) {
       console.error("Erreur de l'appel à API: ", e.message);
     }
-    //  sinon faire une redirection vars .............>
   };
   return (
     <>
@@ -144,7 +123,6 @@ const SignupPage = () => {
                 </div>
 
                 <div className="">
-                  {/* forgot mot de passe  */}
                   <Link
                     href="#"
                     className="text-left block mb-[0px] text-sm text-primary-600 hover:underline text-neutral-400 font-normal leading-normal"
@@ -155,10 +133,7 @@ const SignupPage = () => {
 
                 <Btn.BtnSign
                   label="S'inscrire"
-                  // href={`${Backend_URL}/auth/register`}
-                  // method="POST"
                   type="submit"
-                  // onClick={handleFormSubmitted}
                 />
                 <Btn.BtnSignSocial
                   label="Se connecter avec Google"
@@ -177,8 +152,6 @@ const SignupPage = () => {
             </div>
           </div>
         </div>
-
-        {/* left image */}
         <div className="relative w-full overflow-hidden hidden lg:block">
           <Image
             src="/globule.png"

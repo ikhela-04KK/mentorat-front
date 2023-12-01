@@ -17,15 +17,28 @@ interface ListProps {
     setClick:(click:boolean) => void;
 }
 
+
+
 export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
     const [liClicks, setLiClicks] = useState<boolean[]>(Array(messages.length).fill(false)); 
 
-    function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number){
+    
+// function isDuplicateUsername(username:string):boolean{
+//     return messages.some((item) => item.username === username)
+// }
+    console.log()
+    function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number)
+    {
         const newClicks = [...liClicks];
         newClicks[idx] = true;
         setLiClicks(newClicks)
         setUserInfo(item);
         setClick(newClicks[idx]);
+
+        // if(!isDuplicateUsername(item.username)){
+        // setUserInfo(item);
+        // setClick(newClicks[idx]);
+        // }
     }
     return (
         <>

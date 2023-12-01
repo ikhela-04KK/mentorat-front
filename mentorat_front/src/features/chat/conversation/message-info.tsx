@@ -109,14 +109,10 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
       online: online,
       whoam: whoam,
       source: source,
-      // backgroundColor: "gray-900",
     };
     
     setMessages([initialMessage]);
-  }, [username, content, online, source,whoam]);
-
-  // first socket 
-  
+  }, [username, content, online, source,whoam]);  
 
 
   const scrollToBottom = () => {
@@ -131,6 +127,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
   // c'est ici on implemente le message qui sera envoyé au socket 
   const sendMessage = (newMessage: friendMessage): void => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
+  
   };
 
   return (

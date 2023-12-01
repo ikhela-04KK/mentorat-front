@@ -1,7 +1,7 @@
 // creation du header navigation 
 // pour la creation de composant de liste deroulant
 
-"use client";
+
 import React from "react"; 
 import Image from "next/image";
 import ProfileBar from "@features/ui/header/profile";
