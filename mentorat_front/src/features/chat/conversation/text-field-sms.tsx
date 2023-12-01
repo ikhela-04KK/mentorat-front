@@ -43,7 +43,7 @@ export const TextSpinner:React.FC<propsSpinner> = ({loading})=>{
 
 
 export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
-    
+    //  
 
     const [messageInput, setMessageInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -58,8 +58,6 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
     };
 
     // impementez private le cocket qui envoie
-    
-    // 
     const handleSend = async () => {
         const newMessage = {
             id: "id_placeholder",
@@ -70,7 +68,6 @@ export const TextSend: React.FC<any> = ({ sendMessage,getLoading } ) => {
             location: "Abidjan,Bonoua",
             source: "avatar02.svg", 
             timestamp: getCurrentTimestamp(),
-            content: messageInput,
             // to
         };
 

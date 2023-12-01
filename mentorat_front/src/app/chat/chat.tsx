@@ -134,7 +134,7 @@ export default function ListFm(){
                             )}
                             <div onClick={(e) => handleClicked(e)} className="block cursor-pointer" >  
                                     <Image className="absolute right-[50px] top-[35px]" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
-                                    <Dropdown visible={clicked ? 'block' : ''}/>
+                                    <Dropdown visible={ clicked ? 'block' : ''}/>
                                 </div>
 
                         </div>

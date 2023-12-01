@@ -92,7 +92,12 @@ export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, back
     </div>
   </div>
 );
-
+export const getCurrentTimestamp = () => {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  return ` ${hours}:${minutes}`;
+};
 // ChatSteam component
 export const ChatStream: React.FC<friendMessage>= ({username , content, online,source,whoam}) => {
 
@@ -104,7 +109,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
     // Ajouter le premier message après le rendu du composant
     const initialMessage: friendMessage = {
       username: username,
-      timestamp: "Jeudi 12h30",
+      timestamp:getCurrentTimestamp(),
       content: content,
       online: online,
       whoam: whoam,
@@ -126,6 +131,8 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
 
   // c'est ici on implemente le message qui sera envoyé au socket 
   const sendMessage = (newMessage: friendMessage): void => {
+  
+    console.log(newMessage)
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   
   };
@@ -161,7 +168,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
         <div ref={messagesEndRef} />
       </div>
 
-      <TextSend sendMessage={sendMessage} getLoading={getLoading}/>
+      <TextSend  sendMessage={sendMessage} getLoading={getLoading}/>
     </>
   )
 }
