@@ -1,3 +1,8 @@
 "use client"; 
 
-const error = 
+const error = ({}) =>{
+
+    
+}
+
+export default error
