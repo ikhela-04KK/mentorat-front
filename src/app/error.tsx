@@ -4,7 +4,7 @@ const error = ({}) =>{
 
     return(
         <>
-            <h1>ccc</h1>
+            <h1>cccc</h1>
         </>
     )
 }
