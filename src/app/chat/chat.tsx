@@ -9,11 +9,10 @@ import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import {Socket, io} from "socket.io-client";
 // import { logging } from "@/utils/log4js/log4";
-import log from "loglevel"
 
+import log from "loglevel";
 // capture tout les évènements 
 export default function ListFm(){
-
     const { data: session,status } = useSession();
     console.log(session?.user) 
     console.log(status) 
@@ -24,20 +23,15 @@ export default function ListFm(){
         certified:false, 
         location:"",
         online:false
-    }
+    } 
 
 
     const [clicked, setCliked] = useState(false); 
     const [socket, setSocket] = useState<Socket | undefined>();
-
     const [click, setClick] = useState(false)
     log.info("est ce que ça marche: " , click)
-
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState); 
-
-
     const [messages, setMessages] = useState<friendMessage[]>([]);
-    
     // J'attend au montage de l'élément avant d'émettre la connection au socket 
     useEffect(() => {
         if (session?.backendToken.accessToken) {
@@ -47,49 +41,41 @@ export default function ListFm(){
             },
             autoConnect: false
           });
-    
         //   mettre à jour l'état du scoket 
           setSocket(newSocket);
-    
           return () => {
             newSocket.disconnect();
           };
         }
       }, [session?.backendToken.accessToken]);
-
-
-  // Afficher la liste de utilisateurs connectés
-  useEffect(() => {
-    if (socket) {
-      socket.connect();
-
-      // Ajoutez ici la gestion des événements du socket, par exemple :
-      socket.on('users', (data) => {
-        log.error('Message from server:', data);
-      });
-
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [socket]);
-
-
-  useEffect(() => {
-    socket?.on('private_message', (args) => {
-         // Mettre à jour la liste des messages
-    // Update the messages only if the username is not present
-      
-      console.log("Entrer here")
-      setMessages((prevMessages) => {
-        if(!prevMessages.some(message => message.username === args.username)){
-          return  [...prevMessages, args]
+      // Afficher la liste de utilisateurs connectés
+      useEffect(() => {
+        if (socket) {
+          socket.connect();
+          // Ajoutez ici la gestion des événements du socket, par exemple :
+          socket.on('users', (data) => {
+            log.error('Message from server:', data);
+          });
+          return () => {
+            socket.disconnect();
+          };
         }
-         return prevMessages
-      });
-      // setMessages((prevMessages) => [...prevMessages, args]);
-    });
-  }, [socket]);
+      }, [socket]);
+      useEffect(() => {
+        socket?.on('private_message', (args) => {
+            // Mettre à jour la liste des messages
+        // Update the messages only if the username is not present
+          
+          console.log("Entrer here")
+          setMessages((prevMessages) => {
+            if(!prevMessages.some(message => message.username === args.username)){
+              return  [...prevMessages, args]
+            }
+            return prevMessages
+          });
+          // setMessages((prevMessages) => [...prevMessages, args]);
+        });
+      }, [socket]);
 
     // gerer le click pour le toggle pour se deconnecté 
     function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){

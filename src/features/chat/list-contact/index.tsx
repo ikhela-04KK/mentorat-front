@@ -46,8 +46,6 @@ function handleMainClick(){
 }
 
 
-  
-
   return (
     <>
             <header className="bg-[#0c111D] flex text-white items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
@@ -75,8 +73,12 @@ function handleMainClick(){
             <input type="text" className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search user" />
           </div>
         </div>
+
+      {/* contient la liste des utilsiateurs */}
         <ul className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-100 " >
           { USERS.map((USER,index) =>(
+
+          // contient un seul utilisateur 
           <li key={index}>
             <div className="peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
                 {/* <input id="peer-checked checkbox-item-11" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/> */}
@@ -90,6 +92,7 @@ function handleMainClick(){
           )}
           {/* ... (Repeat the pattern for other list items) ... */}
         </ul>
+
         <Link className="flex items-center p-3 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 hover:underline" href={''}>
           <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />

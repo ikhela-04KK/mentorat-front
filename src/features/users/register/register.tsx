@@ -27,6 +27,8 @@ const SignupPage = () => {
 
   const Router =  useRouter()
 
+
+
   // * Recuperer les données du formulaires sans re-render de la page register afin de conserver l'état actuelle du formulaire et recuperer les données 
   const data = useRef<FormInputs>({
     name: "",

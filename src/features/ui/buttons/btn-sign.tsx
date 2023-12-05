@@ -7,8 +7,13 @@ import Image from "next/image"
 //     href?:string;
 //     method?:string;
 // };
+interface tailleDimension {
+    w?:string; 
+    h?:string;
+}
 interface btnSignProps extends React.InputHTMLAttributes<HTMLButtonElement>{
     label?:string;
+    taille?:tailleDimension;
     type? : "button"| "submit" | "reset"; 
     href?:string;
     method?:string;  
@@ -18,9 +23,9 @@ interface btnSignProps extends React.InputHTMLAttributes<HTMLButtonElement>{
 
 
 
-export const BtnSign: React.FC<btnSignProps> = ({label,type = "button", href, method}) =>{
+export const BtnSign: React.FC<btnSignProps> = ({label,type = "button", href, method, taille}) =>{
     return (
-        <button  type={type} formAction={href} formMethod={method} className="w-full text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg  text-center text-base leading-normal px-4 py-2.5 bg-violet-500  shadow border border-violet-500">
+        <button  type={type} formAction={href} formMethod={method} className={` ${taille?.w ? taille?.w : 'w-full'}  text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none ${taille?.h ? taille?.h : ''}focus:ring-primary-300 font-medium rounded-lg  text-center text-base leading-normal px-4  py-2.5 bg-violet-500  shadow border border-violet-500`}>
             {label}
             
         </button>
@@ -46,7 +51,7 @@ export const BtnSignSocial: React.FC<btnSignProps> = ({label,type = "button"}) =
 export const BtnSendMessage:React.FC<btnSignProps> = ({type="button",onClick}) =>{
 
     return (
-        <button type={type} className="w-11 h-11 p-3 bg-violet-500 rounded-lg shadow border border-violet-500 justify-center items-center gap-2 flex" onClick={onClick}>
+        <button type={type} title='send' className="w-11 h-11 p-3 bg-violet-500 rounded-lg shadow border border-violet-500 justify-center items-center gap-2 flex" onClick={onClick}>
             <Image className="w-5 h-5 relative" src={"/icon-send.svg"} width={20} height={20} alt={'send'} />
         </button>
     );

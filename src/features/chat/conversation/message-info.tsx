@@ -73,8 +73,8 @@ export const MessageInfo: React.FC<Info> = ({ username, timestamp }) => (
 );
 
 // MessageContent component
-export const MessageContent: React.FC<Content> = ({ content, backgroundColor }) => (
-  <div className={`px-3.5 py-2.5 bg-${backgroundColor} rounded-tr-lg rounded-bl-lg rounded-br-lg border border-gray-800 items-center gap-2 flex`}>
+export const MessageContent: React.FC<Content> = ({ content, backgroundColor, extendsClass }) => (
+  <div className={` px-3.5 py-2.5 bg-${backgroundColor} bg-opacity-40 rounded-tr-lg ${extendsClass ? extendsClass : ''} rounded-bl-lg border border-gray-800 rounded-br-lg  items-center gap-2 flex`}>
     <p className="grow shrink basis-0 text-neutral-100 text-base font-normal ">{content}</p>
   </div>
 );

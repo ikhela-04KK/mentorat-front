@@ -39,14 +39,14 @@ const nextConfig = {
             }
         ]
     },
-    // config for debugging
-    webpack(config) {
-        config.output = config.output || {};
-        config.output.devtoolModuleFilenameTemplate = function (info) {
-            return "file:///" + encodeURI(info.absoluteResourcePath);
-        };
-        return config;
-    },
+    // // config for debugging
+    // webpack(config) {
+    //     config.output = config.output || {};
+    //     config.output.devtoolModuleFilenameTemplate = function (info) {
+    //         return "file:///" + encodeURI(info.absoluteResourcePath);
+    //     };
+    //     return config;
+    // },
 }
 
 

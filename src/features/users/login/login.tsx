@@ -6,6 +6,7 @@ import * as text from "@features/ui/text-field/text-entry-sign";
 import * as input from "@features/ui/checkbox/checkbox-sign";
 import React, { FormEvent } from "react";
 import { signIn } from "next-auth/react";
+
 // import { useRouter, useRouter } from "next/navigation";
 
 // itérer sur une liste de contenu pour aller plus rapidement
@@ -16,7 +17,6 @@ const listInput = [
 
 
 export default function login() {
- 
 
   
   // eslint-disable-next-line react-hooks/rules-of-hooks

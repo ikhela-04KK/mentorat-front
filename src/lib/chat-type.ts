@@ -14,6 +14,7 @@ export type Info = {
 export type Content = {
     content:string; 
     backgroundColor:string;
+    extendsClass?:string;
 }
 
 export type Online = {
