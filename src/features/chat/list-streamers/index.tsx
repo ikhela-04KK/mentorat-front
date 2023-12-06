@@ -7,9 +7,9 @@ export type friendMessage  = {
     username:string, 
     message:string,
     source:string,
-    certified:boolean,
+    certified:boolean |false,
     location:string, 
-    online:boolean,
+    online:boolean |false,
 }
 // Decrire le type attendues par les props de la liste enusuite rentre dans les items
 interface ListProps {
@@ -48,9 +48,9 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                                 username:string;
                                 message:string; 
                                 source:string; 
-                                certified:boolean; 
+                                certified:boolean;   //pas besoin
                                 location:string; 
-                                online:boolean;
+                                online:boolean; // pas besoin
                             }, 
                             idx:number,
                         ) =>
