@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";

@@ -30,7 +30,7 @@ type friendMessage = {
 //     content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
 //   },
 //   {
-//     username: "Aziz",
+//     username: "Aziz",  
 //     timestamp: "Jeudi 12h35",
 //     content: "Salut Anita, je pense que tu devrais faire un test de grossesse pour être sûr.",
 //   },

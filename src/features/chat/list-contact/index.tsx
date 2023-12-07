@@ -7,7 +7,11 @@ import { faker } from '@faker-js/faker';
 import HeaderChat from '../header-chat';
 import { useSession } from 'next-auth/react';
 import { Dropdown } from '@/features/ui/header/profile/dropdown/dropdown';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {Socket, io} from "socket.io-client"; 
+import { Online } from '@/features/ui/badge/online';
+import { SignalGreen } from '@/features/ui/badge/green-sign';
+
 
 type User ={
   avatar:string, 
@@ -15,13 +19,66 @@ type User ={
 }
 
 
-
-
 export default function Contact() {
 
-    const { data: session,status } = useSession();
-    console.log(session?.user) 
-    console.log(status) 
+  const { data: session,status } = useSession();
+  console.log(session?.user) 
+  console.log(status) 
+
+  const [socket, setSocket ] = useState<Socket>()
+  const [userSocket,setUserSocket] = useState<object[]>()
+  const [userDatabase, setUserDatabase] = useState<object[]>()
+
+useEffect(() => {
+        if (session?.backendToken.accessToken) {
+          const newSocket: Socket = io('http://localhost:8000/chats', {
+            extraHeaders: {
+              Authorization: `Bearer ${session?.backendToken.accessToken}`
+            },
+            autoConnect: false
+          });
+          
+          // mettre à jour l'état du scoket 
+          setSocket(newSocket);
+          return () => {
+            newSocket.disconnect();
+          };
+        }
+      }, [session?.backendToken.accessToken]);
+
+      // Afficher la liste de utilisateurs connectés
+      useEffect(() => {
+        if (socket) {
+          socket.connect();
+          socket.on('users', (data) => {
+            console.log('Message from socket:', data);
+            setUserSocket(data)
+          });
+        }
+      }, [socket]);
+
+      // to make a request to dataabse for sending all users in my database 
+      useEffect(() =>{
+        const options = {
+          method:"POST", 
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session?.backendToken.accessToken}`
+            // You can add more headers
+          }
+        }
+        async () =>{
+          const userDatabase = await fetch("http://localhost:8000/contacts/:id", options)
+          const result = await userDatabase.json()
+          console.log('Message from server:');
+          console.log(result)
+          setUserDatabase(result)
+          return result
+        }
+      },[session?.backendToken.accessToken])
+
+
+
 
   function createRandomUser(): User{
     return {
@@ -80,12 +137,16 @@ function handleMainClick(){
 
           // contient un seul utilisateur 
           <li key={index}>
-            <div className="peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
+            <div className="relative peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
                 {/* <input id="peer-checked checkbox-item-11" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/> */}
                 <Link href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
                     <Image className="w-6 h-6 me-2 rounded-full" src={USER.avatar} alt="Jese image" width={24} height={24} />
-                    {USER.username}
+                    { USER.username}
+                    <div className ="absolute bottom-1 left-10">
+                        <SignalGreen online={true} />
+                    </div>
                 </Link>
+                
             </div>
           </li>
           )
@@ -97,7 +158,7 @@ function handleMainClick(){
           <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
           </svg>
-         {" Delete users"} 
+        {" Delete users"} 
         </Link>
       </div>
     </main>
