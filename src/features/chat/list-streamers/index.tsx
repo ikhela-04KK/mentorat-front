@@ -25,7 +25,6 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
 // function isDuplicateUsername(username:string):boolean{
 //     return messages.some((item) => item.username === username)
 // }
-    console.log()
     function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number)
     {
         const newClicks = [...liClicks];
@@ -45,6 +44,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                     {messages.map(
                         (
                             item:{
+                                
                                 username:string;
                                 message:string; 
                                 source:string; 

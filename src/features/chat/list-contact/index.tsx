@@ -5,163 +5,249 @@ import Link from 'next/link';
 
 import { faker } from '@faker-js/faker';
 import HeaderChat from '../header-chat';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { Dropdown } from '@/features/ui/header/profile/dropdown/dropdown';
 import { useState, useEffect } from 'react';
-import {Socket, io} from "socket.io-client"; 
+import { Socket, io } from "socket.io-client";
 import { Online } from '@/features/ui/badge/online';
 import { SignalGreen } from '@/features/ui/badge/green-sign';
+import FloatChat from '../float-options/float-chat/float-chat';
+import { useRouter } from 'next/navigation';
 
 
-type User ={
-  avatar:string, 
-  username:string
+type user = {
+  id: number,
+  name: string,
+  avatar: string,
+  email: string,
 }
 
+type userSokcet = {
+  idSocket: string | number,
+  idUser: number,
+  name: string,
+}
 
 export default function Contact() {
 
-  const { data: session,status } = useSession();
-  console.log(session?.user) 
-  console.log(status) 
 
-  const [socket, setSocket ] = useState<Socket>()
-  const [userSocket,setUserSocket] = useState<object[]>()
-  const [userDatabase, setUserDatabase] = useState<object[]>()
+  const [socket, setSocket] = useState<Socket>()
+  const [userSocket, setUserSocket] = useState<userSokcet[]>()
+  const [userDatabase, setUserDatabase] = useState<user[]>()
+  const Router = useRouter()
 
-useEffect(() => {
-        if (session?.backendToken.accessToken) {
-          const newSocket: Socket = io('http://localhost:8000/chats', {
-            extraHeaders: {
-              Authorization: `Bearer ${session?.backendToken.accessToken}`
-            },
-            autoConnect: false
-          });
-          
-          // mettre à jour l'état du scoket 
-          setSocket(newSocket);
-          return () => {
-            newSocket.disconnect();
-          };
-        }
-      }, [session?.backendToken.accessToken]);
 
-      // Afficher la liste de utilisateurs connectés
-      useEffect(() => {
-        if (socket) {
-          socket.connect();
-          socket.on('users', (data) => {
-            console.log('Message from socket:', data);
-            setUserSocket(data)
-          });
-        }
-      }, [socket]);
+  useEffect(() => {
+    const initializeSocket = async () => {
+      const session = await getSession();
 
-      // to make a request to dataabse for sending all users in my database 
-      useEffect(() =>{
+      if (session?.backendToken.accessToken) {
+        const newSocket: Socket = io('http://localhost:8000/chats', {
+          extraHeaders: {
+            Authorization: `Bearer ${session.backendToken.accessToken}`,
+          },
+          autoConnect: false,
+        });
+
+        // mettre à jour l'état du socket
+        setSocket(newSocket);
+
+        return () => {
+          newSocket.disconnect();
+        };
+      }
+    };
+
+    initializeSocket();
+  }, []);
+
+  // Afficher la liste de utilisateurs connectés
+  useEffect(() => {
+    if (socket) {
+      socket.connect();
+      socket.on('users', (data) => {
+        console.log('Message from socket:', data);
+        setUserSocket(data)
+      });
+    }
+  }, [socket]);
+
+  // to make a request to dataabse for sending all users in my database 
+  useEffect(() => {
+
+    async function userSend() {
+      const session = await getSession();
+      console.log(session?.user)
+      // const idUser = session?.user.id
+      console.log("ikhela ikhela ikhela")
+      // console.log(idUser)
+      // console.log(status) 
+
+      try {
         const options = {
-          method:"POST", 
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session?.backendToken.accessToken}`
-            // You can add more headers
-          }
-        }
-        async () =>{
-          const userDatabase = await fetch("http://localhost:8000/contacts/:id", options)
-          const result = await userDatabase.json()
-          console.log('Message from server:');
-          console.log(result)
-          setUserDatabase(result)
-          return result
-        }
-      },[session?.backendToken.accessToken])
+          method: "GET",
+        };
+
+        const user = await fetch(`http://localhost:8000/chats/contacts/${session?.user.id}`, options);
+        const result = await user.json();
+
+        console.log('Message from server:');
+        console.log(result);
+
+        // Vérifier si le composant est toujours monté avant de mettre à jour l'état
+        setUserDatabase(result);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Gérer l'erreur selon vos besoins
+      }
+    };
+    userSend();
+  }, []);
 
 
 
 
-  function createRandomUser(): User{
-    return {
-      avatar: faker.image.avatar(), 
-      username: faker.internet.userName()
+
+  const [clicked, setCliked] = useState(false);
+
+  function handleClicked(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    setCliked((prevClicked) => !prevClicked)
+  }
+
+  // // N'importe sur le clik permet de fermer la boites modal
+  function handleMainClick() {
+    if (clicked) {
+      setCliked(false)
     }
   }
-  const USERS: User[] = faker.helpers.multiple(createRandomUser,{
-    count:100
-  })
+  const { data: session, status: status } = useSession()
+  const [showModal, setShowModal] = useState(false);
+  const [showInfo, setShowInfo] = useState<user>()
 
-  const [clicked, setCliked] = useState(false); 
 
-  function handleClicked(e:React.MouseEvent<HTMLElement,MouseEvent>){
-    setCliked((prevClicked) => !prevClicked)    }
+  const handleClick = (e:React.MouseEvent<HTMLLIElement, MouseEvent>, user:user, index:number) => {
+    // Mettez à jour l'état pour afficher la boîte modale
+    setShowModal(true);
+    setShowInfo(user)
+  };
 
-// N'importe sur le clik permet de fermer la boites modal
-function handleMainClick(){
-    if (clicked){
-        setCliked(false)
+  const closeModal = () => {
+    // Mettez à jour l'état pour masquer la boîte modale
+    setShowModal(false);
+  };
+
+  // useEffect to send message 
+    const [message, setMessage] = useState(''); 
+
+  useEffect(()=>{
+    
+    async function envoie () {
+      const session = await getSession();
+      console.log(session?.user)
+
+
+      try {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: `chat ${session?.user.name} with ${showInfo?.name}`,
+            content: 'Est ce que tu vas',
+            to: showInfo?.id,
+          }),
+        }
+        const message = await fetch(`http://localhost:8000/chats/user/${session?.user.id}`, options);
+        const result = await message.json();
+
+        console.log('Message from server:');
+        console.log(result);
+
+          Router.push("/chat")
+
+    } catch(error){
+
     } 
-}
+    envoie()
+  } [showInfo, getSession]})
+  debugger
+  console.log(userSocket)
+
+  // send message 
+  // id : 
+
 
 
   return (
     <>
-            <header className="bg-[#0c111D] flex text-white items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
-            <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={0} /> 
-            <div onClick={(e) => handleClicked(e)} className="block cursor-pointer" >  
-                                    <Image className="absolute right-[50px] top-[35px]" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
-                                    <Dropdown visible={ clicked ? 'block' : ''}/>
-                                </div>
-    </header>
-
-    <main onClick ={handleMainClick}  className="bg-[#0c111D] h-screen flex justify-center items-center content-center flex-col gap-y-1">
-
-
-  
-      {/* Dropdown menu */}
-      <div id="dropdownSearch" className="z-10 bg-[#0c111D] rounded-lg shadow w-60 border border-gray-500">
-        <div className="p-3">
-          <label htmlFor="input-group-search" className="sr-only">Search</label>
-          <div className="relative">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"  strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-            </div>
-            <input type="text" className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search user" />
-          </div>
+      <header className="bg-[#0c111D] flex text-white items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
+        <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={0} />
+        <div onClick={(e) => handleClicked(e)} className="block cursor-pointer" >
+          <Image className="absolute right-[50px] top-[35px]" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
+          <Dropdown visible={clicked ? 'block' : ''} />
         </div>
+      </header>
 
-      {/* contient la liste des utilsiateurs */}
-        <ul className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-100 " >
-          { USERS.map((USER,index) =>(
+      <main onClick={handleMainClick} className="bg-[#0c111D] h-screen flex justify-center items-center content-center flex-col gap-y-1">
 
-          // contient un seul utilisateur 
-          <li key={index}>
-            <div className="relative peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
-                {/* <input id="peer-checked checkbox-item-11" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/> */}
-                <Link href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
-                    <Image className="w-6 h-6 me-2 rounded-full" src={USER.avatar} alt="Jese image" width={24} height={24} />
-                    { USER.username}
-                    <div className ="absolute bottom-1 left-10">
-                        <SignalGreen online={true} />
-                    </div>
-                </Link>
-                
+
+
+        {/* Dropdown menu */}
+        <div id="dropdownSearch" className="z-10 bg-[#0c111D] rounded-lg shadow w-60 border border-gray-500">
+          <div className="p-3">
+            <label htmlFor="input-group-search" className="sr-only">Search</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+              </div>
+              <input type="text" className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Search user" />
             </div>
-          </li>
-          )
-          )}
-          {/* ... (Repeat the pattern for other list items) ... */}
-        </ul>
+          </div>
 
-        <Link className="flex items-center p-3 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 hover:underline" href={''}>
-          <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-            <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
-          </svg>
-        {" Delete users"} 
-        </Link>
-      </div>
-    </main>
+          <ul className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-100">
+            {userDatabase?.map((user, index) => (
+              <li key={index} onClick={(e) => handleClick(e,user, index)}> 
+                <div className="relative cursor peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
+                  <Link href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
+                    <Image className="w-6 h-6 me-2 rounded-full" src={`/${user.avatar}`} alt="Jese image" width={24} height={24} />
+                    {user.name}
+                  </Link>
+
+                  {userSocket && (
+                    <div className="absolute bottom-1 left-10">
+                      {!userSocket.some((socketUser) => socketUser.idUser === user.id) ? (
+                        <SignalGreen online={false} />
+                      ) : (
+                        <SignalGreen online={true} /> 
+                      )}
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+
+      {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 backdrop-blur-sm bg-gray/30">
+            {/* Contenu de la boîte modale */}
+            <FloatChat setMessage={setMessage} label='envoyer' content={'Salut, Comment tu vas ?'} modal={false} flag={false} chatbox={false} source={showInfo?.avatar}/>
+            <button className="bg-red p-10" onClick={closeModal}>Fermer</button>
+        </div>
+      )}
+
+
+          {/* <input id="peer-checked checkbox-item-11" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/> */}
+          <Link className="flex items-center p-3 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 hover:underline" href={''}>
+            <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+              <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
+            </svg>
+            {" Delete users"}
+          </Link>
+        </div>
+      </main>
     </>
   )
 }
