@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "debug:chrome":"cross-env NODE_OPTIONS='--inspect' next dev",
+    "debug:chrome": "cross-env NODE_OPTIONS='--inspect' next dev",
     "start": "next start",
     "lint": "next lint",
     "sb": "storybook dev -p 6006",
@@ -25,6 +25,7 @@
     "react": "^18",
     "react-docgen": "^7.0.1",
     "react-dom": "^18",
+    "react-input-emoji": "^5.6.5",
     "react-spinners": "^0.13.8",
     "socket.io-client": "^4.7.2",
     "winston": "^3.11.0"

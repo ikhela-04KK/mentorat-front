@@ -1,6 +1,5 @@
 // content the future flaatiing label when with on message who user have send. 
 
-
 import {  BtnSign } from '@/features/ui/buttons/btn-sign'
 import { TextMessage } from '@/features/ui/text-field/text-entry-sign'
 import React, { useState } from 'react'
@@ -21,17 +20,28 @@ import { Online } from '@/features/ui/avatar/online/online';
  */
 type IProps ={
   label:string, 
-  content:string,
+  content?:string,
   modal:boolean, 
   flag:boolean,
   chatbox:boolean,
   source:string |undefined,
+  type?:"submit" | "reset" |"button"
   setMessage: (message:string) => void;
 }
 
+console.log(1)
+const FloatChat:React.FC<IProps> = ({label,type,modal,flag,chatbox,source,setMessage}) => {
+  const [localMessage, setLocalMessage] = useState('');
+  function handleHandleSendMessage(){
+    // event.prototype
+    // console.log(event)
+    setMessage(localMessage)
+    console.log(78945612)
+    console.log(localMessage)
+    // setLocalMessage('')
+  }
 
-const FloatChat:React.FC<IProps> = ({label,content,modal,flag,chatbox,source,setMessage}) => {
-  
+debugger
   //  console.log("voici le contenu du message ", message)
   return (
     <div className="shadow-xxl bg-gray-900 w-[560px] h-[276px] flex flex-col items-center justify-center rounded-xl border border-gray-800">
@@ -57,18 +67,18 @@ const FloatChat:React.FC<IProps> = ({label,content,modal,flag,chatbox,source,set
         </div>
 
       </div>
-
+      
       {/* label for message */}
       {chatbox && (
       <div className='flex items-center justify-center'>
-        <MessageContent content={content} backgroundColor={'violet-500'} extendsClass={'w-[336px] h-[84px] border border-violet-400'} />
+        <MessageContent backgroundColor={'violet-500'} extendsClass={'w-[336px] h-[84px] border border-violet-400'} />
       </div>
       )}
-
+      
       {/* text-input and button for sending message  */}
       <div className='flex gap-3 items-center justify-center pt-8'>
-          <TextMessage onChange={(e) =>setMessage(e.target.value)} name={'message'} placeholder={'message...'} taille={{w:'w-[370px] ',h:'h-11'}}  />
-          <BtnSign label={label} taille={{w:'w-[98px]', h:'h-11'}} />
+          <TextMessage onChange={(e) =>setLocalMessage(e.target.value)} name={'message'} placeholder={'message...'} taille={{w:'w-[370px] ',h:'h-11'}}  />
+          <BtnSign onClick={handleHandleSendMessage}  label={label} type={type} taille={{w:'w-[98px]', h:'h-11'}} />
       </div>
     </div>
   )

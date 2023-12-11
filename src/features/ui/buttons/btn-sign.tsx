@@ -23,9 +23,9 @@ interface btnSignProps extends React.InputHTMLAttributes<HTMLButtonElement>{
 
 
 
-export const BtnSign: React.FC<btnSignProps> = ({label,type = "button", href, method, taille}) =>{
+export const BtnSign: React.FC<btnSignProps> = ({label,type = "button", href, method, taille,onClick }) =>{
     return (
-        <button  type={type} formAction={href} formMethod={method} className={` ${taille?.w ? taille?.w : 'w-full'}  text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none ${taille?.h ? taille?.h : ''}focus:ring-primary-300 font-medium rounded-lg  text-center text-base leading-normal px-4  py-2.5 bg-violet-500  shadow border border-violet-500`}>
+        <button  onClick={onClick} type={type} formAction={href} formMethod={method} className={` ${taille?.w ? taille?.w : 'w-full'}  text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none ${taille?.h ? taille?.h : ''}focus:ring-primary-300 font-medium rounded-lg  text-center text-base leading-normal px-4  py-2.5 bg-violet-500  shadow border border-violet-500`}>
             {label}
             
         </button>

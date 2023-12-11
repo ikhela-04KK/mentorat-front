@@ -2,7 +2,7 @@
 import { Online } from "@features/ui/avatar/online/online";
 import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
 import React, { useEffect, useRef, useState } from "react";
-import { TextSend, TextSpinner } from "./text-field-sms";
+import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
 
 type friendMessage = {
   username:string , 
@@ -10,47 +10,8 @@ type friendMessage = {
   online:boolean, 
   whoam:string, 
   source:string | "", 
-  timestamp:string
+  timestamp?:string
 }
-// Exemple de données de messages pour deux utilisateurs
-// const messages = [
-//   {
-//     username: "Anita Cruz",
-//     timestamp: "Jeudi 12h30",
-//     content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
-//   },
-//   {
-//     username: "Aziz",
-//     timestamp: "Jeudi 12h35",
-//     content: "Salut Anita, je pense que tu devrais faire un test de grossesse pour être sûr.",
-//   },
-//   {
-//     username: "Anita Cruz",
-//     timestamp: "Jeudi 12h30",
-//     content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
-//   },
-//   {
-//     username: "Aziz",  
-//     timestamp: "Jeudi 12h35",
-//     content: "Salut Anita, je pense que tu devrais faire un test de grossesse pour être sûr.",
-//   },
-//   {
-//     username: "Anita Cruz",
-//     timestamp: "Jeudi 12h30",
-//     content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
-//   },
-//   {
-//     username: "Aziz",
-//     timestamp: "Jeudi 12h35",
-//     content: "Salut Anita, je pense que tu devrais faire un test de grossesse pour être sûr.",
-//   },
-//   {
-//     username: "Anita Cruz",
-//     timestamp: "Jeudi 12h30",
-//     content: "Salut Aziz, c'est ta Muse je n'ai pas vu pas mes règles depuis quelques jours",
-//   },
-// ];
-
 
 export const DtMessage: React.FC<Message> = ({ date }) => {
   return (
@@ -103,7 +64,6 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
 
   const [messages, setMessages] = useState<friendMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [loading, getLoading] = useState()
 
   useEffect(() => {
     // Ajouter le premier message après le rendu du composant
@@ -130,12 +90,12 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
   }, [messages]);
 
   // c'est ici on implemente le message qui sera envoyé au socket 
-  const sendMessage = (newMessage: friendMessage): void => {
+  // const sendMessage = (newMessage: friendMessage): void => {
   
-    console.log(newMessage)
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  //   console.log(newMessage)
+  //   setMessages((prevMessages) => [...prevMessages, newMessage]);
   
-  };
+  // };
 
   return (
     <>
@@ -157,7 +117,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
             <ChatMessage
               online={message.online}
               username={message.username}
-              timestamp={message.timestamp}
+              timestamp={message.timestamp} 
               content={message.content}
               source={message.source}
               backgroundColor={message.whoam === "friend" ? "gray-500" : "violet-500"}
@@ -168,8 +128,7 @@ export const ChatStream: React.FC<friendMessage>= ({username , content, online,s
         <div ref={messagesEndRef} />
       </div>
 
-      <TextSend  sendMessage={sendMessage} getLoading={getLoading}/>
-    </>
+      </>
   )
 }
 

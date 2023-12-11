@@ -1,6 +1,8 @@
 "use client";
 import React, { MouseEventHandler, useState } from "react"; 
 import Image from "next/image";
+import { getCurrentTimestamp } from "../conversation/message-info";
+// import { getCurrentTimestamp } from "../conversation/text-field-sms";
 
 
 export type friendMessage  = {
@@ -64,7 +66,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center ">
-                                    <p className="text-white text-sm font-medium">12:23</p>
+                                    <p className="text-white text-sm font-medium">{getCurrentTimestamp()}</p>
                                     <span className={`w-2.5 h-2.5 ${liClicks[idx] ? 'bg-opacity' : 'bg-violet-500'} rounded-full`} > </span>
                                 </div>
                             </li>

@@ -11,7 +11,12 @@ export function regrouperMessagesUtilisateurs(data: { lastMessages: any[]; chats
     // }, {});
 
     // Parcourir les messages
+    console.log("enrtrer here the last message")
+    console.log(JSON.stringify(data))
     data.lastMessages.forEach(messages => {
+        if (messages.length === 0) {
+            return;
+        }
         const message = messages[0];
         const chatId = message.chat_id;
 

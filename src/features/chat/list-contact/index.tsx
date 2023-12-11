@@ -137,45 +137,45 @@ export default function Contact() {
   };
 
   // useEffect to send message 
-    const [message, setMessage] = useState(''); 
+    const [sms, setMessage] = useState(''); 
+
+    console.log("entrer here")
+    console.log(sms); 
+
+
 
   useEffect(()=>{
-    
     async function envoie () {
       const session = await getSession();
       console.log(session?.user)
-
-
-      try {
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: `chat ${session?.user.name} with ${showInfo?.name}`,
-            content: 'Est ce que tu vas',
-            to: showInfo?.id,
-          }),
-        }
+        try {
+          const options = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: `chat ${session?.user.name} with ${showInfo?.name}`,
+              content:sms ,
+              to: showInfo?.id,
+            }),
+          }
         const message = await fetch(`http://localhost:8000/chats/user/${session?.user.id}`, options);
-        const result = await message.json();
 
-        console.log('Message from server:');
-        console.log(result);
-
+        if (message.ok){
+          const result = await message.json();
+          console.log('Message from server:');
+          console.log(result);
           Router.push("/chat")
-
+        }
     } catch(error){
-
+      console.log(error)
     } 
-    envoie()
-  } [showInfo, getSession]})
-  debugger
-  console.log(userSocket)
-
-  // send message 
-  // id : 
+  }
+    if (sms !== '' && session?.user.id !== undefined && showInfo?.id !==undefined) {
+      envoie()
+    }
+}),[sms]
 
 
 
@@ -190,9 +190,6 @@ export default function Contact() {
       </header>
 
       <main onClick={handleMainClick} className="bg-[#0c111D] h-screen flex justify-center items-center content-center flex-col gap-y-1">
-
-
-
         {/* Dropdown menu */}
         <div id="dropdownSearch" className="z-10 bg-[#0c111D] rounded-lg shadow w-60 border border-gray-500">
           <div className="p-3">
@@ -233,8 +230,8 @@ export default function Contact() {
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 backdrop-blur-sm bg-gray/30">
             {/* Contenu de la boîte modale */}
-            <FloatChat setMessage={setMessage} label='envoyer' content={'Salut, Comment tu vas ?'} modal={false} flag={false} chatbox={false} source={showInfo?.avatar}/>
-            <button className="bg-red p-10" onClick={closeModal}>Fermer</button>
+            <FloatChat setMessage={setMessage} label='envoyer' type='button' modal={false} flag={false} chatbox={false} source={showInfo?.avatar}/>
+            <button type='reset' className="bg-red p-10" onClick={closeModal}>Fermer</button>
         </div>
       )}
 
