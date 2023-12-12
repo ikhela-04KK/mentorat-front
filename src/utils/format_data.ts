@@ -26,6 +26,7 @@ export function regrouperMessagesUtilisateurs(data: { lastMessages: any[]; chats
 
         // Créer un objet avec les informations demandées
         const userInfo = {
+            user_id:userInChat.id,
             id: message.id,
             username: userInChat.name,
             message: message.content,

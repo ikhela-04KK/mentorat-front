@@ -3,7 +3,7 @@ import React from "react";
 
 
 type avatar = {
-    label:string;
+    label?:string;
 }
 // pour le texte sous les images 
 

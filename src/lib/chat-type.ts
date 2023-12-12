@@ -7,7 +7,7 @@ export type Message = {
 }
 
 export type Info = {
-    username:string; 
+    username?:string; 
     timestamp?:string;
 }
 
@@ -18,11 +18,11 @@ export type Content = {
 }
 
 export type Online = {
-    online:boolean;
+    online?:boolean;
 } 
 export type Source = {
     source?:string;
 }
 
-export type typeMessage =  { username: string; timestamp?: string; content: string; online:boolean; whoam:string; source:string} 
+export type typeMessage =  { username?: string; timestamp?: string; content?: string; online:boolean; whoam?:string; source?:string} 
 export type Chat = Info & Content & Online & Source

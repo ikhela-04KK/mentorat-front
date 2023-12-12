@@ -3,15 +3,16 @@ import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";
 import { List, friendMessage } from "@/features/chat/list-streamers";
-import { useEffect, useState } from "react";
-import { ChatStream } from "@/features/chat/conversation/message-info";
+import { useEffect, useRef, useState } from "react";
+import { ChatStream, DtMessage } from "@/features/chat/conversation/message-info";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import InputEmoji from "react-input-emoji";
-
 import log from "loglevel";
 import { regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
+
+
 export default function ListFm() {
     const { data: session, status } = useSession();
     console.log(session?.user)
@@ -24,15 +25,13 @@ export default function ListFm() {
         location: "",
         online: false
     }
+
     const [clicked, setCliked] = useState(false);
     const [click, setClick] = useState(false)
     log.info("est ce que ça marche: ", click)
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState);
     const [messages, setMessages] = useState<friendMessage[]>([]);
     const [messageInput, setMessageInput] = useState("");
-
-
-
 
     useEffect(() => {
         async function product() {
@@ -43,7 +42,7 @@ export default function ListFm() {
             const result = await response.json()
             setMessages(regrouperMessagesUtilisateurs(result))
         }
-        if (session?.user?.id !== undefined){
+        if (session?.user?.id !== undefined) {
             product()
         }
     }, [session?.user.id])
@@ -51,13 +50,35 @@ export default function ListFm() {
     function handleClicked(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         setCliked((prevClicked) => !prevClicked)
     }
-
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     // N'importe sur le clik permet de fermer la boites modal
     function handleMainClick() {
         if (clicked) {
             setCliked(false)
         }
     }
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const currentChat ={
+        id:userInfo.user_id,
+        username:userInfo.username,
+        content:userInfo.message, 
+        online:userInfo.online,
+        source:userInfo.source, 
+        timestamp:"22:23"
+    }
+
+    console.log("display the chat between to user ")
+    console.log(currentChat);
+
     return (
         <>
             <div className="">
@@ -66,7 +87,7 @@ export default function ListFm() {
                     <section className="chat-layout">
                         <div className="bg-[#0c111D] text-white chatTopbar">
                             <div className="flex items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
-                                <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={0} />
+                                <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={441} />
                             </div>
                             {click && (
 
@@ -86,19 +107,28 @@ export default function ListFm() {
                         <div className="chatStreamContainer">
                             {click && (
                                 <>
-                                <ChatStream username={userInfo.username} content={userInfo.message} online={userInfo.online} whoam={"friend"} source={userInfo.source} />
-                                
-                                <div className="h-[86px] px-6 pb-6 pt-5  border-t border-gray-800 flex justify-between items-center">
-                                    <InputEmoji
-                                        value={messageInput}
-                                        onChange={setMessageInput}
-                                        // cleanOnEnter
-                                        // onEnter={handleOnEnter}
-                                        placeholder="Type a message..." />
-                                    <BtnSendMessage type="submit" />
-                                </div>
+                                    {/* First message block */}
+                                    <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
+                                        {/* Date component */}
+                                        <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
+                                            {/* ... */}
+                                            <DtMessage date="Aujourd'hui" />
+                                        </div>
+                                        <ChatStream currentChat={currentChat} />
+                                         {/* sendMessage={sendMessage} receiveMessage={receiveMessage} */}
+                                        <div ref={messagesEndRef} />
+                                    </div>
+                                    <div className="h-[86px] px-6 pb-6 pt-5  border-t border-gray-800 flex justify-between items-center">
+                                        <InputEmoji
+                                            value={messageInput}
+                                            onChange={setMessageInput}
+                                            // cleanOnEnter
+                                            // onEnter={handleOnEnter}
+                                            placeholder="Type a message..." />
+                                        <BtnSendMessage type="submit" />
+                                    </div>
                                 </>
-                        )}
+                            )}
                         </div>
                     </section>
                 </main>

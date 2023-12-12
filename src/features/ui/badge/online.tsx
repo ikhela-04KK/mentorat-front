@@ -3,7 +3,7 @@ import React from "react";
 import { SignalGreen } from "./green-sign";
 
 export type badge ={
-    online:boolean
+    online?:boolean
 }
 
 export const Online:React.FC<badge> = ({online})=>{

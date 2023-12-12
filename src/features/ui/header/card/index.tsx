@@ -5,11 +5,11 @@ import { Principal, Location } from "../../avatar/label/label";
 
 
 export type cardHeader = {
-    certified:boolean, 
-    source:string, 
-    location:string, 
-    online:boolean, 
-    username:string
+    certified?:boolean , 
+    source?:string, 
+    location?:string, 
+    online?:boolean, 
+    username?:string
 }
 
 export const Card:React.FC<cardHeader>=({certified, source, location, online, username})=>{

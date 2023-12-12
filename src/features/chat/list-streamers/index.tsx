@@ -6,6 +6,7 @@ import { getCurrentTimestamp } from "../conversation/message-info";
 
 
 export type friendMessage  = {
+    user_id?:number,
     username:string, 
     message:string,
     source:string,
@@ -14,6 +15,11 @@ export type friendMessage  = {
     online:boolean |false,
 }
 // Decrire le type attendues par les props de la liste enusuite rentre dans les items
+// interface ListProps {
+//     setUserInfo: (userInfo:friendMessage) => void;
+//     messages:friendMessage[];
+//     setClick:(click:boolean) => void;
+// }
 interface ListProps {
     setUserInfo: (userInfo:friendMessage) => void;
     messages:friendMessage[];
@@ -45,15 +51,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                 <ul role="list" className="relative divide-y divide-[#1f242f] m-0 overflow-y-auto h-full">
                     {messages.map(
                         (
-                            item:{
-                                
-                                username:string;
-                                message:string; 
-                                source:string; 
-                                certified:boolean;   //pas besoin
-                                location:string; 
-                                online:boolean; // pas besoin
-                            }, 
+                            item:friendMessage, 
                             idx:number,
                         ) =>
                         (
@@ -63,6 +61,7 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-[#f5f5f6]">{item.username}</p>
                                         <p className="text-sm font-normal text-[#94969c]">{item.message}</p>
+                                        
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2 items-center ">

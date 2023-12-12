@@ -3,8 +3,8 @@ import Image from "next/image"
 import React from "react"; 
 
 type person = {
-    source:string;
-    certified:boolean; 
+    source?:string;
+    certified?:boolean; 
 }
 
 export const Certified: React.FC<person> = ({source,certified}) =>{
@@ -25,7 +25,7 @@ export const Certified: React.FC<person> = ({source,certified}) =>{
                     src={`/${source}`} //sesion.user.avatar
                     width={48}
                     height={48}
-                    alt={source}
+                    alt={source ? source : ""}
                     className="rounded-full"
                 />
             </div>
