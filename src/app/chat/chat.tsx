@@ -68,6 +68,7 @@ export default function ListFm() {
     }, [messages]);
 
     const currentChat ={
+        chat_id:userInfo.chat_id,
         id:userInfo.user_id,
         username:userInfo.username,
         content:userInfo.message, 
@@ -75,9 +76,24 @@ export default function ListFm() {
         source:userInfo.source, 
         timestamp:"22:23"
     }
+    console.log(currentChat.chat_id)
+ 
+    useEffect(()=>{ 
+        async function getAllMessage() {
+            const Options = {
+                method: 'GET',
+            };
+            const response = await fetch(`http://localhost:8000/messages/chat/${currentChat.chat_id}`, Options);
+            const result = await response.json()
+            console.log("voici la vrai list des messages ")
+            console.log(result)
+        }
+        getAllMessage()
+    },[currentChat.chat_id])
+
 
     console.log("display the chat between to user ")
-    console.log(currentChat);
+    console.log(messages);
 
     return (
         <>

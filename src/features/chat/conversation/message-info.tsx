@@ -14,6 +14,7 @@ import { getSession, useSession } from "next-auth/react";
 //   timestamp?:string | "", 
 // }
 interface ChatMessageProps {
+  id?:number,
   username: string;
   timestamp: string;
   content: string;
@@ -84,15 +85,15 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat }) => {
 
 
   useEffect(() => {
-    const initialMessage:  ChatMessageProps = {
-      username: currentChat.username,
-      timestamp:currentChat.timestamp,
-      content:currentChat.content,
-      online:currentChat.online,
-      source:currentChat.source,
-    };
+  //   const initialMessage:ChatMessageProps = {
+  //     username: currentChat.username,
+  //     timestamp:currentChat.timestamp,
+  //     content:currentChat.content,
+  //     online:currentChat.online,
+  //     source:currentChat.source,
+  //   };
     
-    setMessages([initialMessage]);
+    setMessages([currentChat]);
   }, [currentChat]);  
 
   
@@ -102,7 +103,7 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat }) => {
         messages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-[118px] flex ${message.username ===  session?.user.name ? "justify-end" : "justify-start"
+            className={`w-full h-[118px] flex ${message.id ===  session?.user.id ? "justify-end" : "justify-start"
               } mb-8 mt-8`}
           >      
             <ChatMessage
@@ -111,7 +112,7 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat }) => {
               timestamp={message.timestamp} 
               content={message.content}
               source={message.source}
-              backgroundColor={message.username == session?.user.name ? "violet-500" : "gray-500"}
+              backgroundColor={message.id == session?.user.id? "violet-500" : "gray-500"}
             />
             
           </div>
