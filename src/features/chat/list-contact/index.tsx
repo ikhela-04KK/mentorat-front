@@ -1,17 +1,13 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-
-
-import { faker } from '@faker-js/faker';
 import HeaderChat from '../header-chat';
 import { getSession, useSession } from 'next-auth/react';
 import { Dropdown } from '@/features/ui/header/profile/dropdown/dropdown';
 import { useState, useEffect } from 'react';
-import { Socket, io } from "socket.io-client";
-import { Online } from '@/features/ui/badge/online';
 import { SignalGreen } from '@/features/ui/badge/green-sign';
 import FloatChat from '../float-options/float-chat/float-chat';
+import { useSocket } from '@/features/providers/socketProvider';
 import { useRouter } from 'next/navigation';
 
 
@@ -29,37 +25,12 @@ type userSokcet = {
 }
 
 export default function Contact() {
-
-
-  const [socket, setSocket] = useState<Socket>()
-  const [userSocket, setUserSocket] = useState<userSokcet[]>()
+  const socket = useSocket();
   const [userDatabase, setUserDatabase] = useState<user[]>()
+  const [userSocket, setUserSocket] = useState<userSokcet[]>()
+
   const Router = useRouter()
 
-
-  useEffect(() => {
-    const initializeSocket = async () => {
-      const session = await getSession();
-
-      if (session?.backendToken.accessToken) {
-        const newSocket: Socket = io('http://localhost:8000/chats', {
-          extraHeaders: {
-            Authorization: `Bearer ${session.backendToken.accessToken}`,
-          },
-          autoConnect: false,
-        });
-
-        // mettre à jour l'état du socket
-        setSocket(newSocket);
-
-        return () => {
-          newSocket.disconnect();
-        };
-      }
-    };
-
-    initializeSocket();
-  }, []);
 
   // Afficher la liste de utilisateurs connectés
   useEffect(() => {
@@ -78,10 +49,6 @@ export default function Contact() {
     async function userSend() {
       const session = await getSession();
       console.log(session?.user)
-      // const idUser = session?.user.id
-      console.log("ikhela ikhela ikhela")
-      // console.log(idUser)
-      // console.log(status) 
 
       try {
         const options = {
@@ -105,16 +72,12 @@ export default function Contact() {
   }, []);
 
 
-
-
-
   const [clicked, setCliked] = useState(false);
 
   function handleClicked(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     setCliked((prevClicked) => !prevClicked)
   }
 
-  // // N'importe sur le clik permet de fermer la boites modal
   function handleMainClick() {
     if (clicked) {
       setCliked(false)

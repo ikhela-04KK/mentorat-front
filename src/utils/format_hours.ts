@@ -11,10 +11,11 @@ export function extractHourAndMinutes(createAt?:string):string | undefined{
         const minutes = dataObject.getMinutes()
     
         const formattedTime = padZero(hour) + ":" + padZero(minutes)
+
+        console.log(`heure formatée avec succès ${formattedTime}`)
         return formattedTime;
     }
     else{
         return undefined
     }
-      // fonction pour ajouter un zéro devant les chiffres de 1 à 8 
 }

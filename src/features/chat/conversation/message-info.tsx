@@ -1,14 +1,13 @@
 "use client";
 import { Online } from "@features/ui/avatar/online/online";
-import { Chat, Message, Content, Info, ChatResult, ChatMessagerie } from "@/lib/chat-type";
-import React, { use, useEffect,useState } from "react";
+import { Chat, Message, Content, Info, ChatResult } from "@/lib/chat-type";
+import React, { useEffect,useState } from "react";
 import { useSession } from "next-auth/react";
 import { extractHourAndMinutes } from "@/utils/format_hours";
 
 interface ChatStreamProps {
   currentChat: ChatResult;
   sendMessage:  ChatResult 
-  // receiveMessage: (message: ChatMessageProps) => void;
 }
 export const DtMessage: React.FC<Message> = ({ date }) => {
   return (
@@ -21,8 +20,6 @@ export const DtMessage: React.FC<Message> = ({ date }) => {
     </>
   )
 } 
-
-
 export const MessageInfo: React.FC<Info> = ({ username, timestamp }) => (
   <div className="self-stretch gap-2 flex">
     <p className="grow shrink basis-0 text-neutral-300 text-sm font-medium leading-tight">{username}</p>
@@ -45,7 +42,7 @@ export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, back
       <div className="w-96 pr-8 h-full items-start">
         <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
           
-    {username !=session?.user.name && <Online person={username} online ={online} source={source}/>}      
+          {username !=session?.user.name && <Online person={username} online ={online} source={source}/>}      
           <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
             <MessageInfo username={username} timestamp={timestamp} />
             <MessageContent content={content} backgroundColor={backgroundColor} />
@@ -71,16 +68,11 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage 
     setMessages(currentChat);
   }, [currentChat]);  
 
-//  display new Message 
 
 useEffect(() => {
-  // Merge the new messages with the existing messages
   setMessages((prevMessages) => [...prevMessages, ...sendMessage]);
 }, [sendMessage])
 
-
-
-  
   return (
     <>
       {
@@ -91,7 +83,7 @@ useEffect(() => {
               } mb-8 mt-8`}
           >      
             <ChatMessage
-              timestamp={message.created_at}
+              timestamp={extractHourAndMinutes(message.created_at)}
               content={message.content}
               // username={message.username}
               backgroundColor={message.user_id == session?.user.id ? "violet-500" : "gray-500"}
@@ -110,4 +102,3 @@ useEffect(() => {
       </>
   )
 }
-

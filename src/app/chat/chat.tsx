@@ -11,9 +11,7 @@ import InputEmoji from "react-input-emoji";
 import log from "loglevel";
 import {  regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
-import { ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
-import { extractHourAndMinutes } from "@/utils/format_hours";
-
+import { ChatResult, responseGetMessage } from "@/lib/chat-type";
 
 export default function ListFm() {
     const { data: session, status } = useSession();
@@ -37,6 +35,11 @@ export default function ListFm() {
     const [messageInput, setMessageInput] = useState("");
     const [currentChat, setCurrentChat] = useState<ChatResult>([])
     const [newMessage, setNewMessage] = useState<ChatResult>([])
+
+    const current_chat_id = userInfo.chat_id;
+    const current_username = userInfo.username;
+    const current_user_statut = userInfo.online;
+    const current_user_source = userInfo.source;
 
     useEffect(() => {
         async function product() {
@@ -72,20 +75,6 @@ export default function ListFm() {
         scrollToBottom();
     }, [newMessage]);
 
-    // const currentChat ={
-    //     chat_id:userInfo.chat_id,
-    //     id:userInfo.user_id,
-    //     username:userInfo.username,
-    //     content:userInfo.message, 
-    //     online:userInfo.online,
-    //     source:userInfo.source, 
-    //     timestamp:"22:23"
-    // }
-
-    const current_chat_id = userInfo.chat_id;
-    const current_username = userInfo.username;
-    const current_user_statut = userInfo.online;
-    const current_user_source = userInfo.source;
     useEffect(()=>{ 
         // caputure chat_id for get all message
         async function getAllMessage() {
@@ -107,7 +96,7 @@ export default function ListFm() {
                         online:current_user_statut,
                         content:current.content, 
                         source:current_user_source,
-                        createdChat:extractHourAndMinutes(current.created_at)
+                        createdChat:current.created_at
                     }
                     currentChat.push(chatInfo)
                 })
@@ -134,8 +123,8 @@ export default function ListFm() {
         setNewMessage(sendMessage)
     }
 
-    console.log("display the chat between to user ")
-    console.log(messages);
+    // use socket.io to send message between users 
+
 
     return (
         <>
@@ -194,6 +183,3 @@ export default function ListFm() {
         </>
     );
 }   
-
-
-// il faut que je recuperer aussi l'heure et la data pour la mettre dans le timestamp , c'est vraiment important 
