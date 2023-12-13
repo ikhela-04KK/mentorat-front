@@ -1,34 +1,15 @@
 "use client";
 import { Online } from "@features/ui/avatar/online/online";
-import { Chat, Message, Content, Info, typeMessage } from "@/lib/chat-type";
-import React, { useEffect, useRef, useState } from "react";
-import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
-import { getSession, useSession } from "next-auth/react";
-
-// type friendMessage = {
-//   username?:string |"" , 
-//   content?:string |"", 
-//   online?:boolean | false, 
-//   whoam?:string | "", 
-//   source?:string | "", 
-//   timestamp?:string | "", 
-// }
-interface ChatMessageProps {
-  id?:number,
-  username: string;
-  timestamp: string;
-  content: string;
-  online: boolean;
-  // whoam: string;
-  source: string;
-}
+import { Chat, Message, Content, Info, ChatResult, ChatMessagerie } from "@/lib/chat-type";
+import React, { use, useEffect,useState } from "react";
+import { useSession } from "next-auth/react";
+import { extractHourAndMinutes } from "@/utils/format_hours";
 
 interface ChatStreamProps {
-  currentChat: ChatMessageProps;
-  // sendMessage: (message: ChatMessageProps) => void;
+  currentChat: ChatResult;
+  sendMessage:  ChatResult 
   // receiveMessage: (message: ChatMessageProps) => void;
 }
-
 export const DtMessage: React.FC<Message> = ({ date }) => {
   return (
     <>
@@ -57,44 +38,47 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor, ex
 );
 
 // ChatMessage component
-export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor,online,source }) => (
-  <div className="w-96 pr-8 h-full items-start">
-    <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
-      
-{username !="vous" && <Online person={username} online ={online} source={source}/>
-}      <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
-        <MessageInfo username={username} timestamp={timestamp} />
-        <MessageContent content={content} backgroundColor={backgroundColor} />
-        
+export const ChatMessage: React.FC<Chat> = ({ username, timestamp, content, backgroundColor,online,source }) => {
+  const {data:session, status:status} = useSession()
+  return(
+  <>
+      <div className="w-96 pr-8 h-full items-start">
+        <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
+          
+    {username !=session?.user.name && <Online person={username} online ={online} source={source}/>}      
+          <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 flex">
+            <MessageInfo username={username} timestamp={timestamp} />
+            <MessageContent content={content} backgroundColor={backgroundColor} />
+          </div>
+          
+        </div>
       </div>
-      
-    </div>
-  </div>
-);
+  </>
+  )
+}
 export const getCurrentTimestamp = () => {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, '0');
   const minutes = now.getMinutes().toString().padStart(2, '0');
   return ` ${hours}:${minutes}`;
 };
-export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat }) => {
-
-  const [messages, setMessages] = useState< ChatMessageProps[]>([]);
-
-  const {data:session , status : status} = useSession();
+export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage }) => {
+  const {data:session, status:status} = useSession()
+  const [messages, setMessages] = useState<ChatResult>([]);
 
 
   useEffect(() => {
-  //   const initialMessage:ChatMessageProps = {
-  //     username: currentChat.username,
-  //     timestamp:currentChat.timestamp,
-  //     content:currentChat.content,
-  //     online:currentChat.online,
-  //     source:currentChat.source,
-  //   };
-    
-    setMessages([currentChat]);
+    setMessages(currentChat);
   }, [currentChat]);  
+
+//  display new Message 
+
+useEffect(() => {
+  // Merge the new messages with the existing messages
+  setMessages((prevMessages) => [...prevMessages, ...sendMessage]);
+}, [sendMessage])
+
+
 
   
   return (
@@ -103,18 +87,23 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat }) => {
         messages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-[118px] flex ${message.id ===  session?.user.id ? "justify-end" : "justify-start"
+            className={`w-full h-[118px] flex ${message.user_id ===  session?.user.id ? "justify-end" : "justify-start"
               } mb-8 mt-8`}
           >      
             <ChatMessage
-              online={message.online}
-              username={message.username}
-              timestamp={message.timestamp} 
+              timestamp={message.created_at}
               content={message.content}
+              // username={message.username}
+              backgroundColor={message.user_id == session?.user.id ? "violet-500" : "gray-500"}
+              online={message.online}
               source={message.source}
-              backgroundColor={message.id == session?.user.id? "violet-500" : "gray-500"}
+              {...(message.user_id !== session?.user.id && {
+                username:message.username
+              })}
+              {...(message.user_id === session?.user.id && {
+                username:session?.user.name,
+              })}
             />
-            
           </div>
         ))
       }

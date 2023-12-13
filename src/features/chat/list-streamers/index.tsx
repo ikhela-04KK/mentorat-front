@@ -6,8 +6,8 @@ import { getCurrentTimestamp } from "../conversation/message-info";
 
 
 export type friendMessage  = {
-    chat_id?:number,
-    user_id?:number,
+    chat_id:number,
+    user_id:number,
     username:string, 
     message:string,
     source:string,

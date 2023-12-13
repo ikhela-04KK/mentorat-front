@@ -1,4 +1,7 @@
+import { ChatMessage } from "@/features/chat/conversation/message-info";
 import { friendMessage } from "@/features/chat/list-streamers";
+import { extractHourAndMinutes } from "./format_hours";
+import { ChatResult } from "@/lib/chat-type";
 
 export function regrouperMessagesUtilisateurs(data: { lastMessages: any[]; chats: any[]; }) {
     const result: friendMessage[] = [];
@@ -48,3 +51,20 @@ export function regrouperMessagesUtilisateurs(data: { lastMessages: any[]; chats
 
     return result;
 }
+
+// export function regroupeCurrentChat(data:ChatResult):ChatResult{
+//     const currentChat:ChatResult = []; 
+
+//     console.log("verify real entry of message"); 
+//     // convert to string 
+//     data.forEach((current) =>{
+//         const chatInfo = {
+//             chat_id: current.chat_id, 
+//             user_id:current.user_id, 
+//             content:current.content, 
+//             timestamp:extractHourAndMinutes(current.created_at)
+//         }
+//         currentChat.push(chatInfo)
+//     })
+//     return currentChat
+// }

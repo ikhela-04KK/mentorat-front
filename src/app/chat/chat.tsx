@@ -9,8 +9,10 @@ import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import InputEmoji from "react-input-emoji";
 import log from "loglevel";
-import { regrouperMessagesUtilisateurs } from "@/utils/format_data";
+import {  regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
+import { ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
+import { extractHourAndMinutes } from "@/utils/format_hours";
 
 
 export default function ListFm() {
@@ -23,15 +25,18 @@ export default function ListFm() {
         source: "",
         certified: false,
         location: "",
-        online: false
+        online: false,
+        chat_id: 0,
+        user_id: 0
     }
-
     const [clicked, setCliked] = useState(false);
     const [click, setClick] = useState(false)
     log.info("est ce que ça marche: ", click)
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState);
     const [messages, setMessages] = useState<friendMessage[]>([]);
     const [messageInput, setMessageInput] = useState("");
+    const [currentChat, setCurrentChat] = useState<ChatResult>([])
+    const [newMessage, setNewMessage] = useState<ChatResult>([])
 
     useEffect(() => {
         async function product() {
@@ -65,32 +70,69 @@ export default function ListFm() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+    }, [newMessage]);
 
-    const currentChat ={
-        chat_id:userInfo.chat_id,
-        id:userInfo.user_id,
-        username:userInfo.username,
-        content:userInfo.message, 
-        online:userInfo.online,
-        source:userInfo.source, 
-        timestamp:"22:23"
-    }
-    console.log(currentChat.chat_id)
- 
+    // const currentChat ={
+    //     chat_id:userInfo.chat_id,
+    //     id:userInfo.user_id,
+    //     username:userInfo.username,
+    //     content:userInfo.message, 
+    //     online:userInfo.online,
+    //     source:userInfo.source, 
+    //     timestamp:"22:23"
+    // }
+
+    const current_chat_id = userInfo.chat_id;
+    const current_username = userInfo.username;
+    const current_user_statut = userInfo.online;
+    const current_user_source = userInfo.source;
     useEffect(()=>{ 
+        // caputure chat_id for get all message
         async function getAllMessage() {
             const Options = {
                 method: 'GET',
             };
-            const response = await fetch(`http://localhost:8000/messages/chat/${currentChat.chat_id}`, Options);
-            const result = await response.json()
-            console.log("voici la vrai list des messages ")
+            const response = await fetch(`http://localhost:8000/messages/chat/${current_chat_id}`, Options);
+            const result:responseGetMessage = await response.json()
             console.log(result)
+            function regroupeCurrentChat(data:ChatResult):ChatResult{
+                const currentChat:ChatResult = []; 
+            
+                console.log("verify real entry of message"); 
+                data.forEach((current) =>{
+                    const chatInfo = {
+                        chat_id: current.chat_id, 
+                        user_id:current.user_id, 
+                        username:current_username,
+                        online:current_user_statut,
+                        content:current.content, 
+                        source:current_user_source,
+                        createdChat:extractHourAndMinutes(current.created_at)
+                    }
+                    currentChat.push(chatInfo)
+                })
+                return currentChat;
+            }
+            if (result.statusCode !== "400"){
+            console.log("voici la vrai list des messages ")
+            console.log(result.result);
+            setCurrentChat(regroupeCurrentChat(result.result))
+        }
         }
         getAllMessage()
-    },[currentChat.chat_id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[current_chat_id])
 
+    function handleSendMessage(){
+        const sendMessage:ChatResult = [{
+            chat_id:current_chat_id,
+            user_id:session?.user.id || 0, 
+            username:session?.user.name || "Non defini",
+            content:messageInput,
+            created_at:(new Date()).toISOString(),    
+        }]
+        setNewMessage(sendMessage)
+    }
 
     console.log("display the chat between to user ")
     console.log(messages);
@@ -130,7 +172,7 @@ export default function ListFm() {
                                             {/* ... */}
                                             <DtMessage date="Aujourd'hui" />
                                         </div>
-                                        <ChatStream currentChat={currentChat} />
+                                        <ChatStream currentChat={currentChat} sendMessage={newMessage} />
                                          {/* sendMessage={sendMessage} receiveMessage={receiveMessage} */}
                                         <div ref={messagesEndRef} />
                                     </div>
@@ -141,7 +183,7 @@ export default function ListFm() {
                                             // cleanOnEnter
                                             // onEnter={handleOnEnter}
                                             placeholder="Type a message..." />
-                                        <BtnSendMessage type="submit" />
+                                        <BtnSendMessage type="submit" onClick={handleSendMessage}/>
                                     </div>
                                 </>
                             )}
@@ -152,3 +194,6 @@ export default function ListFm() {
         </>
     );
 }   
+
+
+// il faut que je recuperer aussi l'heure et la data pour la mettre dans le timestamp , c'est vraiment important 
