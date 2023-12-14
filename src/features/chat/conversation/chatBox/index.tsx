@@ -3,17 +3,21 @@ import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";
 import { List, friendMessage } from "@/features/chat/list-streamers";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { ChatStream, DtMessage } from "@/features/chat/conversation/message-info";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import InputEmoji from "react-input-emoji";
-import log from "loglevel";
 import {  regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
-import { ChatResult, responseGetMessage } from "@/lib/chat-type";
+import { ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
+import { useSocket } from "@/features/providers/socketProvider";
+
 
 export default function ListFm() {
+
+    const socket =useSocket()
+    socket?.connect()
     const { data: session, status } = useSession();
     console.log(session?.user)
     console.log(status)
@@ -27,14 +31,15 @@ export default function ListFm() {
         chat_id: 0,
         user_id: 0
     }
+
     const [clicked, setCliked] = useState(false);
     const [click, setClick] = useState(false)
-    log.info("est ce que ça marche: ", click)
     const [userInfo, setUserInfo] = useState<friendMessage>(defaultState);
     const [messages, setMessages] = useState<friendMessage[]>([]);
     const [messageInput, setMessageInput] = useState("");
     const [currentChat, setCurrentChat] = useState<ChatResult>([])
     const [newMessage, setNewMessage] = useState<ChatResult>([])
+    const [receiveMessage, setReceiveMessage] = useState<ChatResult>([])
 
     const current_chat_id = userInfo.chat_id;
     const current_username = userInfo.username;
@@ -60,11 +65,13 @@ export default function ListFm() {
     }
     const messagesEndRef = useRef<HTMLDivElement>(null);
     // N'importe sur le clik permet de fermer la boites modal
+
     function handleMainClick() {
         if (clicked) {
             setCliked(false)
         }
     }
+
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -103,31 +110,45 @@ export default function ListFm() {
                 return currentChat;
             }
             if (result.statusCode !== "400"){
-            console.log("voici la vrai list des messages ")
-            console.log(result.result);
-            setCurrentChat(regroupeCurrentChat(result.result))
-        }
+                console.log("voici la vrai list des messages ")
+                console.log(result.result);
+                setCurrentChat(regroupeCurrentChat(result.result))
+            }
         }
         getAllMessage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[current_chat_id])
 
     function handleSendMessage(){
-        const sendMessage:ChatResult = [{
+        const data:ChatMessagerie ={
             chat_id:current_chat_id,
             user_id:session?.user.id || 0, 
             username:session?.user.name || "Non defini",
             content:messageInput,
             created_at:(new Date()).toISOString(),    
-        }]
+        }
+        // S'assurer que l'évènement send-message est prêt à recevoir ces données
+        socket?.emit("send-message", data)
+        const sendMessage:ChatResult = [
+            data
+        ]
         setNewMessage(sendMessage)
     }
 
-    // use socket.io to send message between users 
+    // s'assurer aussi que l'évènement receiveMessage est prêt à recevoir ces données du chatResut 
+    useEffect(()=>{
+        socket?.on('receive-message', (data:ChatMessagerie) => {
+            console.log('Received Message:', data);
+            debugger
+            setReceiveMessage([data])
+        });
+    },[socket])
 
+    if (socket) {
 
     return (
         <>
+        
             <div className="">
                 {/* put the header here */}
                 <main onClick={handleMainClick} className="min-h-screen">
@@ -161,7 +182,7 @@ export default function ListFm() {
                                             {/* ... */}
                                             <DtMessage date="Aujourd'hui" />
                                         </div>
-                                        <ChatStream currentChat={currentChat} sendMessage={newMessage} />
+                                        <ChatStream currentChat={currentChat} sendMessage={newMessage} receiveMessage={receiveMessage}  />
                                          {/* sendMessage={sendMessage} receiveMessage={receiveMessage} */}
                                         <div ref={messagesEndRef} />
                                     </div>
@@ -182,4 +203,5 @@ export default function ListFm() {
             </div>
         </>
     );
+    }
 }   

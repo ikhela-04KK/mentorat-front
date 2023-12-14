@@ -7,7 +7,8 @@ import { extractHourAndMinutes } from "@/utils/format_hours";
 
 interface ChatStreamProps {
   currentChat: ChatResult;
-  sendMessage:  ChatResult 
+  sendMessage:  ChatResult;
+  receiveMessage: ChatResult;
 }
 export const DtMessage: React.FC<Message> = ({ date }) => {
   return (
@@ -59,19 +60,23 @@ export const getCurrentTimestamp = () => {
   const minutes = now.getMinutes().toString().padStart(2, '0');
   return ` ${hours}:${minutes}`;
 };
-export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage }) => {
+export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage, receiveMessage }) => {
   const {data:session, status:status} = useSession()
   const [messages, setMessages] = useState<ChatResult>([]);
-
 
   useEffect(() => {
     setMessages(currentChat);
   }, [currentChat]);  
 
+  useEffect(() => {
+    setMessages((prevMessages) => [...prevMessages, ...sendMessage]);
+  }, [sendMessage])
 
-useEffect(() => {
-  setMessages((prevMessages) => [...prevMessages, ...sendMessage]);
-}, [sendMessage])
+  useEffect(()=>{
+    console.log("est ce q'uil rentre dans le receive message")
+    console.log(receiveMessage)
+    setMessages((prevMessages) => [...prevMessages, ...receiveMessage])
+  },[receiveMessage])
 
   return (
     <>

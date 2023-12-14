@@ -1,6 +1,7 @@
-import Chat from "./chat";  
-export default function ListFm(){
+import Chat from "@/features/chat/conversation/chatBox";
+
+export default function Page(){
     return (
-    <Chat />
+            <Chat />
     )
 }    

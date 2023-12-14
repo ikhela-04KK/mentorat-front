@@ -10,11 +10,10 @@ interface Props {
 }
 const SocketContext = createContext<Socket | undefined>(undefined);
 
-export const useSocket = () => {
+export const  useSocket = () => {
     const context = useContext(SocketContext);
     if (!context) {
-        // throw new Error('useSocket must be used within a SocketProvider');
-        console.log("contexte n'est pas fourni")
+        console.log("Le contexte n`est pas fourni")
     }
     return context;
 };
