@@ -1,9 +1,7 @@
 "use client";
-import React, { MouseEventHandler, useState } from "react"; 
+import React, {  useState } from "react"; 
 import Image from "next/image";
-import { getCurrentTimestamp } from "../conversation/message-info";
-// import { getCurrentTimestamp } from "../conversation/text-field-sms";
-
+import { getCurrentTimestamp } from "@/utils/get_current_timestamp";
 
 export type friendMessage  = {
     chat_id:number,
@@ -15,12 +13,7 @@ export type friendMessage  = {
     location:string, 
     online:boolean |false,
 }
-// Decrire le type attendues par les props de la liste enusuite rentre dans les items
-// interface ListProps {
-//     setUserInfo: (userInfo:friendMessage) => void;
-//     messages:friendMessage[];
-//     setClick:(click:boolean) => void;
-// }
+
 interface ListProps {
     setUserInfo: (userInfo:friendMessage) => void;
     messages:friendMessage[];
@@ -29,11 +22,6 @@ interface ListProps {
 
 export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
     const [liClicks, setLiClicks] = useState<boolean[]>(Array(messages.length).fill(false)); 
-
-    
-// function isDuplicateUsername(username:string):boolean{
-//     return messages.some((item) => item.username === username)
-// }
     function handleClick(e:React.MouseEvent<HTMLLIElement, MouseEvent>, item:friendMessage, idx:number)
     {
         const newClicks = [...liClicks];
@@ -41,11 +29,6 @@ export const List:React.FC<ListProps> = ({setUserInfo, messages, setClick } )=>{
         setLiClicks(newClicks)
         setUserInfo(item);
         setClick(newClicks[idx]);
-
-        // if(!isDuplicateUsername(item.username)){
-        // setUserInfo(item);
-        // setClick(newClicks[idx]);
-        // }
     }
     return (
         <>

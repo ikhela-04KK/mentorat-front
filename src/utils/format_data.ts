@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/features/chat/conversation/message-info";
+import { ChatMessage } from "@/features/chat/conversation/chatBox/chat_stream";
 import { friendMessage } from "@/features/chat/list-streamers";
 import { extractHourAndMinutes } from "./format_hours";
 import { ChatResult } from "@/lib/chat-type";

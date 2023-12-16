@@ -3,8 +3,8 @@ import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";
 import { List, friendMessage } from "@/features/chat/list-streamers";
-import { useEffect, useRef, useState, useContext } from "react";
-import { ChatStream, DtMessage } from "@/features/chat/conversation/message-info";
+import { useEffect, useRef, useState } from "react";
+import { ChatStream,} from "@/features/chat/conversation/chatBox/chat_stream";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import InputEmoji from "react-input-emoji";
@@ -17,7 +17,10 @@ import { useSocket } from "@/features/providers/socketProvider";
 export default function ListFm() {
 
     const socket =useSocket()
-    socket?.connect()
+
+    // sans ça je ne me connecte pas au socket 
+    // socket?.connect()
+
     const { data: session, status } = useSession();
     console.log(session?.user)
     console.log(status)
@@ -96,14 +99,14 @@ export default function ListFm() {
             
                 console.log("verify real entry of message"); 
                 data.forEach((current) =>{
-                    const chatInfo = {
+                    const chatInfo:ChatMessagerie = {
                         chat_id: current.chat_id, 
                         user_id:current.user_id, 
                         username:current_username,
                         online:current_user_statut,
                         content:current.content, 
                         source:current_user_source,
-                        createdChat:current.created_at
+                        created_at:current.created_at
                     }
                     currentChat.push(chatInfo)
                 })
@@ -125,7 +128,8 @@ export default function ListFm() {
             user_id:session?.user.id || 0, 
             username:session?.user.name || "Non defini",
             content:messageInput,
-            created_at:(new Date()).toISOString(),    
+            created_at:(new Date()).toISOString(),   
+            source:session?.user.avatar 
         }
         // S'assurer que l'évènement send-message est prêt à recevoir ces données
         socket?.emit("send-message", data)
@@ -138,8 +142,6 @@ export default function ListFm() {
     // s'assurer aussi que l'évènement receiveMessage est prêt à recevoir ces données du chatResut 
     useEffect(()=>{
         socket?.on('receive-message', (data:ChatMessagerie) => {
-            console.log('Received Message:', data);
-            debugger
             setReceiveMessage([data])
         });
     },[socket])
@@ -177,11 +179,6 @@ export default function ListFm() {
                                 <>
                                     {/* First message block */}
                                     <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
-                                        {/* Date component */}
-                                        <div className="w-full h-5 justify-center items-center my-4 gap-2 flex">
-                                            {/* ... */}
-                                            <DtMessage date="Aujourd'hui" />
-                                        </div>
                                         <ChatStream currentChat={currentChat} sendMessage={newMessage} receiveMessage={receiveMessage}  />
                                          {/* sendMessage={sendMessage} receiveMessage={receiveMessage} */}
                                         <div ref={messagesEndRef} />

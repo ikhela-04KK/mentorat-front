@@ -50,3 +50,12 @@ export type responseGetMessage = {
     result :ChatResult,
     statusCode:string
 } 
+
+// import DtMessage from "../dt-messsage"
+
+export interface ChatStreamProps {
+    currentChat: ChatResult;
+    sendMessage:  ChatResult;
+    receiveMessage: ChatResult;
+  }
+  

@@ -6,7 +6,6 @@ export function extractHourAndMinutes(createAt?:string):string | undefined{
     }
     if (createAt){
         const dataObject = new Date(createAt); 
-    
         const hour = dataObject.getUTCHours()
         const minutes = dataObject.getMinutes()
     

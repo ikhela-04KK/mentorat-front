@@ -35,7 +35,7 @@ export default function Contact() {
   // Afficher la liste de utilisateurs connectés
   useEffect(() => {
     if (socket) {
-      socket.connect();
+      // socket.connect();
       socket.on('users', (data) => {
         console.log('Message from socket:', data);
         setUserSocket(data)

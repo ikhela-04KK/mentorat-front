@@ -32,6 +32,7 @@ const SocketProvider = ({ children }:Props) => {
                     },
                     autoConnect: false,
                 });
+                newSocket.connect()
 
                 setSocket(newSocket);
 

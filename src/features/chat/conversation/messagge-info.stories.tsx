@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ChatStream } from './message-info';
+import { ChatStream } from './chatBox/chat_stream';
 
 
 const meta:Meta<typeof ChatStream> = {
