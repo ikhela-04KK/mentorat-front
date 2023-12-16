@@ -1,31 +1,37 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { Standard } from "../../avatar/standard/standard";
 
 type person = {
     label: string;
     source?:string;
     notification:number;
+    onClick?:()=>void
+
 };
 
-const listIcon = [
-    {
-        person: "search",
-        size: 40,
-        source:"/search.svg",   
-    },
-    {
-        person: "seeting",
-        size:40,
-        source:"seeting.svg",
-    },
 
-];
+
 
 
 const Avatar: React.FC<person> = ({label, source,notification}) => {
+    const listIcon = [
+        {
+            person: "search",
+            size: 40,
+            source:"/search.svg",   
+            onClick:() => setShowSearch(true),
+        },
+        {
+            person: "seeting",
+            size:40,
+            source:"seeting.svg",
+        },
+    
+    ];
+    const [showSearch, setShowSearch] = useState(false)
     return (
         <>
             <Standard label={label} source={source}  /> {/*put the source variable */}
@@ -34,11 +40,7 @@ const Avatar: React.FC<person> = ({label, source,notification}) => {
             <div className="flex items-center">
                 {listIcon.map(
                     (
-                        item: {
-                            person: string;
-                            size: number;
-                            source:string;
-                        },
+                        item,
                         idx: number,
                     ) => (
                         <Image
@@ -48,6 +50,7 @@ const Avatar: React.FC<person> = ({label, source,notification}) => {
                             height={item.size}
                             src={item.source}
                             alt={item.person}
+                            onClick={item.onClick}
                         />
                     ),
                 )}
@@ -64,6 +67,13 @@ const Avatar: React.FC<person> = ({label, source,notification}) => {
                             />
                     </div>
             </div>
+            {showSearch && (
+                <div>
+                {/* Zone de texte ou composant de recherche à afficher */}
+                <input type="text" placeholder="Search..." />
+                {/* Ajoutez d'autres éléments ou composants pour la zone de recherche */}
+                </div>
+            )}
         </>
     );
 };
