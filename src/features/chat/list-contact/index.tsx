@@ -171,8 +171,8 @@ export default function Contact() {
             {userDatabase?.map((user, index) => (
               <li key={index} onClick={(e) => handleClick(e,user, index)}> 
                 <div className="relative cursor peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
-                  <Link href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
-                    <Image className="w-6 h-6 me-2 rounded-full" src={`/${user.avatar}`} alt="Jese image" width={24} height={24} />
+                  <Link href="#" className="flex items-center px-6 py-2 hover:bg-gray-100">
+                    <Image className="w-6 h-6  me-2 rounded-full" src={`/${user.avatar}`} alt="Jese image" width={24} height={24} />
                     {user.name}
                   </Link>
 

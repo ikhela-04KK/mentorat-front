@@ -32,49 +32,53 @@ const Avatar: React.FC<person> = ({label, source,notification}) => {
     
     ];
     const [showSearch, setShowSearch] = useState(false)
+
+    const handleSearchClick = ()=>{
+        setShowSearch(true);
+    }
+    const handleBackClick =()=>{
+        setShowSearch(false);
+    }
     return (
         <>
-            <Standard label={label} source={source}  /> {/*put the source variable */}
-
-            
-            <div className="flex items-center">
-                {listIcon.map(
-                    (
-                        item,
-                        idx: number,
-                    ) => (
-                        <Image
-                            key={idx}
-                            className="p-2"
-                            width={item.size}
-                            height={item.size}
-                            src={item.source}
-                            alt={item.person}
-                            onClick={item.onClick}
-                        />
-                    ),
-                )}
-                <div className="ml-1 relative">
-                    <span className="absolute left-4 w-5 h-5 px-1 bg-red-700 rounded-full inline-flex justify-center items-center">
-                        <span className=" text-white text-xs font-medium">{notification}</span>
-                    </span>
-                    <Image
-                                className="p-2"
-                                width={40}
-                                height={40}
-                                src={"/notification.svg"}
-                                alt={"notification"}
-                            />
-                    </div>
+          <Standard label={label} source={source} />
+    
+          {showSearch ? (
+            <div>
+              {/* Zone de texte ou composant de recherche à afficher */}
+              <input type="text" placeholder="Search..." />
+              {/* Ajoutez d'autres éléments ou composants pour la zone de recherche */}
+              <button onClick={handleBackClick}>Retour</button>
             </div>
-            {showSearch && (
-                <div>
-                {/* Zone de texte ou composant de recherche à afficher */}
-                <input type="text" placeholder="Search..." />
-                {/* Ajoutez d'autres éléments ou composants pour la zone de recherche */}
-                </div>
-            )}
+          ) : (
+            <div className="flex items-center">
+              {listIcon.map((item, idx) => (
+                <Image
+                  key={idx}
+                  className="p-2"
+                  width={item.size}
+                  height={item.size}
+                  src={item.source}
+                  alt={item.person}
+                  //onClick={item.person === 'search' ? handleSearchClick : item.onClick}
+                  onClick={item.onClick}
+                />
+              ))}
+              <div className="ml-1 relative">
+                <span className="absolute left-4 w-6 h-6 px-1 bg-red-700 rounded-full inline-flex justify-center items-center">
+                  <span className="text-white text-xs font-medium">{notification}</span>
+                </span>
+                <Image
+                  className="p-2"
+                  width={40}
+                  height={40}
+                  src={"/notification.svg"}
+                  alt={"notification"}
+                />
+              </div>
+            </div>
+          )}
         </>
-    );
+      );
 };
 export default Avatar;

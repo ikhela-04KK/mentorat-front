@@ -135,6 +135,7 @@ export default function ListFm() {
             data
         ]
         setNewMessage(sendMessage)
+        setMessageInput("")
     }
 
     // s'assurer aussi que l'évènement receiveMessage est prêt à recevoir ces données du chatResut 
@@ -204,7 +205,12 @@ export default function ListFm() {
                                             <InputEmoji
                                                 value={messageInput}
                                                 onChange={setMessageInput}
-                                                placeholder="Type a message..." />
+                                                placeholder="Type a message..."
+                                                cleanOnEnter ={true}
+                                                theme="dark"
+                                                onEnter={handleSendMessage}
+                                                />
+                                                
                                             <BtnSendMessage type="submit" onClick={handleSendMessage} />
                                         </div>
                                     </>

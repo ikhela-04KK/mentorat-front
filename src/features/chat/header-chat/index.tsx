@@ -21,7 +21,7 @@ const HeaderChat:React.FC<headerChat> = ({title,size,source,label, nofification}
             
                     <div className="flex">
                     <Image src={"/logo.svg"} alt={title} width={size} height={size}  />   
-                    <p className="pl-2.5 self-center">Untitled UI</p>
+                    <p className="pl-2.5 self-center">Mentorat</p>
                     </div> {/*pour le logo */}
                     <div className="flex items-center">
                         <ProfileBar source={source} label={label} notification={nofification}/>
