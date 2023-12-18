@@ -154,51 +154,51 @@ export default function ListFm() {
                     {/* put the header here */}
                     <main onClick={handleMainClick} className="min-h-screen">
                         <section className="chat-layout">
-                            <div className="bg-[#0c111D] text-white chatTopbar">
+                            <div className="relative bg-[#0c111D] text-white chatTopbar">
 
                                 {/* todo:Mettre le suspense ici pour la gestion du card  */}
-                                <Suspense fallback={<p>Loading feed...</p>}>
+                                {/* <Suspense fallback={<p>Loading feed...</p>}> */}
                                     <div className="flex items-center border-r border-b border-r-[#1F242F] border-b-[#1f242f]">
                                         <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={441} />
                                     </div>
-                                </Suspense>
+                                {/* </Suspense> */}
 
 
 
                                 {/* todo:Mettre le suspense ici pour la gestion du card  */}
                                 {click && (
-                                    <Suspense fallback={<p>Loading Card...</p>}>
+                                    // <Suspense fallback={<p>Loading Card...</p>}>
                                         <div className="pt-5 px-4 flex bg-[#0c111d] border-b border-gray-800">
                                             <Card certified={userInfo.certified} source={userInfo.source} location={userInfo.location} online={userInfo.online} username={userInfo.username} />
                                         </div>
-                                    </Suspense>
+                                    // {/* </Suspense> */}
                                 )}
 
-                                <div onClick={(e) => handleClicked(e)} className="block cursor-pointer" >
-                                    <Image className="absolute right-[50px] top-[35px]" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
+                                <div onClick={(e) => handleClicked(e)} className="absolute right-[50px] top-[35px] block cursor-pointer " >
+                                    <Image className="" src={"/dots-vertical.svg"} width={20} height={20} alt="dropdown" />
                                     <Dropdown visible={clicked ? 'block' : ''} />
                                 </div>
 
                             </div>
 
                             {/* todo: Mettre le suspense pour le chargement de la liste des contacts */}
-                            <Suspense fallback={<p>Loading List...</p>}>
+                            {/* <Suspense fallback={<p>Loading List...</p>}> */}
                                 <div className="conversationList">
                                     <List setUserInfo={setUserInfo} messages={messages} setClick={setClick} />
                                 </div>
-                            </Suspense>
+                            {/* </Suspense> */}
 
 
                             <div className="chatStreamContainer">
                                 {click && (
                                     <>
                                         {/* mettre un suspense pour l'apparition des message dans le chatBox */}
-                                        <Suspense fallback={<p>Loading ChatStream...</p>}>
+                                        {/* <Suspense fallback={<p>Loading ChatStream...</p>}> */}
                                             <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
                                                 <ChatStream currentChat={currentChat} sendMessage={newMessage} receiveMessage={receiveMessage} />
                                                 <div ref={messagesEndRef} />
                                             </div>
-                                        </Suspense>
+                                        {/* </Suspense> */}
 
 
                                         <div className="h-[86px] px-6 pb-6 pt-5  border-t border-gray-800 flex justify-between items-center">

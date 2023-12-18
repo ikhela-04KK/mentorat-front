@@ -24,8 +24,6 @@ const FloatChat: React.FC<IProps> = ({ label, type, modal, flag, chatbox, source
   const [localMessage, setLocalMessage] = useState('');
   function handleHandleSendMessage() {
   }
-
-  debugger
   return (
     <div className="shadow-2xl bg-gray-900 w-[560px] h-[276px] flex flex-col items-center justify-center rounded-xl border border-gray-800">
 

@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 
 
 type user = {
-  id: number,
+  id: number, 
   name: string,
   avatar: string,
   email: string,
@@ -102,13 +102,13 @@ export default function Contact() {
   // useEffect to send message 
     const [sms, setMessage] = useState(''); 
 
-    console.log("entrer here")
     console.log(sms); 
 
 
 
   useEffect(()=>{
     async function envoie () {
+      console.log("entrer here")
       const session = await getSession();
       console.log(session?.user)
         try {
@@ -124,6 +124,7 @@ export default function Contact() {
             }),
           }
         const message = await fetch(`http://localhost:8000/chats/user/${session?.user.id}`, options);
+        console.log(message)
 
         if (message.ok){
           const result = await message.json();
@@ -171,7 +172,7 @@ export default function Contact() {
             {userDatabase?.map((user, index) => (
               <li key={index} onClick={(e) => handleClick(e,user, index)}> 
                 <div className="relative cursor peer flex items-center ps-2 rounded hover:bg-gray-100 hover:text-gray-800">
-                  <Link href="#" className="flex items-center px-6 py-2 hover:bg-gray-100">
+                  <Link href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
                     <Image className="w-6 h-6  me-2 rounded-full" src={`/${user.avatar}`} alt="Jese image" width={24} height={24} />
                     {user.name}
                   </Link>

@@ -11,7 +11,7 @@ export const Dropdown: React.FC<visibleProps> = ({ visible }) => {
         <>
             <div
                 id="dropdownDots"
-                className={`absolute top-[42px]  right-[72px] z-10 ${visible ==="block" ? 'block':'hidden'} border-2 border-gray-800  shadow-xl w-44 bg-transparent overflow-hidden rounded-lg `}
+                className={`absolute top-[5px]  right-[25px] z-10 ${visible ==="block" ? 'block':'hidden'} border-2 border-gray-800  shadow-xl w-44 bg-transparent overflow-hidden rounded-lg `}
             >
                 <ul
                     className=" text-sm text-white "

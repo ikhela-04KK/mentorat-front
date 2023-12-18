@@ -1,8 +1,11 @@
 
 import { friendMessage } from "@/features/chat/list-streamers";
 
+// la logique du offline online qui doit ce gerer ici 
+// el problème c'est que cette fonction doi
 
 export function regrouperMessagesUtilisateurs(data: { lastMessages: any[]; chats: any[]; }) {
+    
     const result: friendMessage[] = [];
     
     // Récupérer les informations de l'utilisateur faisant la requête
