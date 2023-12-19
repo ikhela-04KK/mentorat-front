@@ -12,13 +12,9 @@ import { regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
 import { ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
 import { useSocket } from "@/features/providers/socketProvider";
-
-
 export default function ListFm() {
 
     const socket = useSocket()
-
-
 
     const { data: session, status } = useSession();
     console.log(session?.user)
@@ -145,7 +141,20 @@ export default function ListFm() {
         });
     }, [socket])
 
-    if (socket) {
+    // use socket for typewritting 
+    const handleOnFocus = (): void => {
+        if (socket) {
+            socket.emit('typing', {chatId:current_chat_id ,userId:session?.user.name,isTyping: true});
+        }
+    };
+    
+    const handleBlur = (): void => {
+        socket?.emit('typing', { isTyping: false });
+    };
+
+
+
+    // if (socket) {
 
         return (
             <>
@@ -208,6 +217,8 @@ export default function ListFm() {
                                                 placeholder="Type a message..."
                                                 cleanOnEnter ={true}
                                                 theme="dark"
+                                                onBlur={handleBlur}
+                                                onFocus={handleOnFocus}
                                                 onEnter={handleSendMessage}
                                                 />
                                                 
@@ -221,5 +232,5 @@ export default function ListFm() {
                 </div>
             </>
         );
-    }
+    // }
 }   

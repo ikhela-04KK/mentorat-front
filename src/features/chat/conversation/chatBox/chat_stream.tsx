@@ -29,6 +29,7 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
     setGroupedMessages(grouped);
   }, [messages]);
 
+
   return (
     <>
     {Object.keys(groupedMessages).map((sectionDate, index) => (
