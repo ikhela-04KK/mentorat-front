@@ -61,7 +61,6 @@ export default function ListFm() {
     function handleClicked(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         setCliked((prevClicked) => !prevClicked)
     }
-    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     function handleMainClick() {
         if (clicked) {
@@ -69,15 +68,7 @@ export default function ListFm() {
         }
     }
 
-    const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [newMessage]);
 
     useEffect(() => {
         // caputure chat_id for get all message
@@ -205,7 +196,7 @@ export default function ListFm() {
                                         {/* <Suspense fallback={<p>Loading ChatStream...</p>}> */}
                                             <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
                                                 <ChatStream currentChat={currentChat} sendMessage={newMessage} receiveMessage={receiveMessage} />
-                                                <div ref={messagesEndRef} />
+                                                {/* <div ref={messagesEndRef} /> */}
                                             </div>
                                         {/* </Suspense> */}
 

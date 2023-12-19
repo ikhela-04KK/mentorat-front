@@ -6,6 +6,7 @@ import { extractHourAndMinutes } from "@/utils/format_hours";
 import DtMessage from "../dt-message";
 import { groupMessagesByDate } from "@/utils/group_message_by_date";
 import { ChatMessage } from "./chat_message";
+import { useTyping } from "@/features/providers/typingProvider";
 
 export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage, receiveMessage }) => {
   const {data:session, status:status} = useSession()
@@ -29,6 +30,8 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
     setGroupedMessages(grouped);
   }, [messages]);
 
+  const showTyping = useTyping()
+  console.log(showTyping)  
 
   return (
     <>
@@ -55,6 +58,18 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
                 })}
               />
             </div>
+            // {showTyping && (
+            //   <div className="w-full h-[118px] flex justify-start mb-8 mt-8">
+            //     <ChatMessage
+            //       timestamp={extractHourAndMinutes(new Date())} // Utilisez un timestamp fictif ou supprimez cet attribut si non nécessaire
+            //       content="..."
+            //       backgroundColor="gray-500"
+            //       online={true}
+            //       source="system"
+            //       username="Typing..." // Ajoutez un utilisateur fictif ou supprimez cet attribut si non nécessaire
+            //     />
+            //   </div>
+            // )}
           ))}
         </div>
       ))}

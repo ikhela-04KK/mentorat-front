@@ -15,6 +15,7 @@ export type Content = {
     content?:string; 
     backgroundColor?:string;
     extendsClass?:string;
+    typing?:boolean;
 }
 
 export type Online = {

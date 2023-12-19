@@ -1,32 +1,31 @@
+"use client";
 import { useTyping } from "@/features/providers/typingProvider";
 import { Content } from "@/lib/chat-type";
 import { ReactionBarEmojiPicker, ReactionDisplayPicker } from "@features/chat/float-options/float-like/reaction-emoji-picker";
 import { useState } from "react";
 import { SyncLoader } from "react-spinners";
 
-export const MessageContent: React.FC<Content> = ({ content, backgroundColor, extendsClass }) => {
+export const MessageContent: React.FC<Content> = ({ content, backgroundColor, extendsClass, typing }) => {
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [isReacting, setIsReacting] = useState<boolean>(false)
 
   const handleEmojiSelect = (emoji: string) => {
     setSelectedEmoji(emoji)
-    setIsReacting(false) //cacher la barre d'emoji après le click"
+    setIsReacting(false) // cacher la barre d'emoji après le click"
   }
 
   const handleContentClick = () => {
     setIsReacting(true)
   }
-  const showTyping = useTyping()
+
   return (
     <>
       <div onMouseLeave={() => setIsReacting(false)} onClick={handleContentClick} className={`px-3.5 py-2.5 bg-${backgroundColor} bg-opacity-40 rounded-tr-lg ${extendsClass ? extendsClass : ''} rounded-bl-lg border border-gray-800 rounded-br-lg relative  items-center gap-2 flex `}>
-        {showTyping ? (
-          <SyncLoader color="#85888E" cssOverride={{}} loading margin={2} size={6} speedMultiplier={0.8} />
-        ) : (
+     
           <p className="cursor-pointer grow shrink basis-0 text-neutral-100 text-base font-normal break-all">
             {content}
           </p>
-        )}
+       
 
 
         {isReacting && (

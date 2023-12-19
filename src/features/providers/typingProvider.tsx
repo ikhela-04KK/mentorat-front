@@ -1,4 +1,5 @@
 // socketContext.tsx
+"use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSocket } from './socketProvider';
 
@@ -11,7 +12,7 @@ const TypingContext = createContext<boolean | undefined>(undefined)
 export const useTyping = () => {
     const context = useContext(TypingContext)
     if (!context) {
-        console.log("le contexte n`est pas fourni")
+        console.log("typing ocntext doesn't providing")
     }
     return context
 }
