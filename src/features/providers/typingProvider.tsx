@@ -1,4 +1,4 @@
-// socketContext.tsx
+"use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSocket } from './socketProvider';
 

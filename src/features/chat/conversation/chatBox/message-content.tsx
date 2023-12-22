@@ -4,7 +4,7 @@ import { ReactionBarEmojiPicker, ReactionDisplayPicker } from "@features/chat/fl
 import { useState } from "react";
 import { SyncLoader } from "react-spinners";
 
-export const MessageContent: React.FC<Content> = ({ content, backgroundColor, extendsClass }) => {
+export const MessageContent: React.FC<Content> = ({ content, backgroundColor, extendsClass, typing }) => {
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [isReacting, setIsReacting] = useState<boolean>(false)
 
@@ -16,11 +16,11 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor, ex
   const handleContentClick = () => {
     setIsReacting(true)
   }
-  const showTyping = useTyping()
+  // const typing = useTyping()
   return (
     <>
       <div onMouseLeave={() => setIsReacting(false)} onClick={handleContentClick} className={`px-3.5 py-2.5 bg-${backgroundColor} bg-opacity-40 rounded-tr-lg ${extendsClass ? extendsClass : ''} rounded-bl-lg border border-gray-800 rounded-br-lg relative  items-center gap-2 flex `}>
-        {showTyping ? (
+        {typing ? (
           <SyncLoader color="#85888E" cssOverride={{}} loading margin={2} size={6} speedMultiplier={0.8} />
         ) : (
           <p className="cursor-pointer grow shrink basis-0 text-neutral-100 text-base font-normal break-all">
