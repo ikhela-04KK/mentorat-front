@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 
 export type Message = {
@@ -32,7 +33,7 @@ export type Chat = Info & Content & Online & Source
 export interface ChatMessagerie {
     chat_id: number;
     user_id: number;
-    content: string;
+    content: string | "";
     username:string; 
     online?:boolean; 
     source?:string;
@@ -41,22 +42,18 @@ export interface ChatMessagerie {
     id?: number;
     seen_at?: string | null;
     updated_at?: string;
+    typing?:boolean;
+    children?: ReactNode;
+
 }
 export type ChatResult = ChatMessagerie[];
-
-//  type of result 
-
 export type responseGetMessage = {
     message:string, 
     result :ChatResult,
     statusCode:string
 } 
-
-// import DtMessage from "../dt-messsage"
-
 export interface ChatStreamProps {
     currentChat: ChatResult;
     sendMessage:  ChatResult;
     receiveMessage: ChatResult;
-  }
-  
+}

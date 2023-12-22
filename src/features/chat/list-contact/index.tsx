@@ -25,12 +25,12 @@ type userSokcet = {
 }
 
 export default function Contact() {
-  const socket = useSocket();
+  const socketContext = useSocket();
   const [userDatabase, setUserDatabase] = useState<user[]>()
   const [userSocket, setUserSocket] = useState<userSokcet[]>()
 
   const Router = useRouter()
-
+  const socket = socketContext?.socket
 
   // Afficher la liste de utilisateurs connectés
   useEffect(() => {

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import Providers from "@/features/providers/sessionProvider"
 import "./globals.css";
 import SocketProvider from "@/features/providers/socketProvider";
-import TypingProvider from "@/features/providers/typingProvider";
+// import TypingProvider from "@/features/providers/typingProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,11 +22,11 @@ export default function RootLayout({
         <body className={inter.className}>
             <Providers>    
               <SocketProvider>
-                <TypingProvider>
+                {/* <TypingProvider> */}
                   {children}
-                  </TypingProvider>
-                </SocketProvider>
-              </Providers>  
+                {/* </TypingProvider> */}
+              </SocketProvider>
+            </Providers>  
         </body>
     </html>
   );

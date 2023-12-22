@@ -64,7 +64,6 @@
 .chat-layout .conversationList{
     border-right: 1px solid #1F242F;
     height: 100%;
-    overflow: hidden;
     grid-area: 2/1/3/2;
     overflow: hidden;
     background-color:#0c111d ;
@@ -78,4 +77,23 @@
   grid-template-rows: 1fr auto;
   overflow-y: hidden;
   background-color: #0c111d;
+}
+
+
+@media (max-width: 1024px){
+    .chat-layout{
+      grid-template-columns: 300px auto;
+  }
+  .chat-layout .chatTopbar {
+    grid-area: 1/1/2/3;
+    display: grid;
+    grid-template-columns: 300px auto;
+  }
+}
+
+@media (max-width: 769px){
+    .chat-layout .conversationList {
+        width: -moz-fit-content;
+        width: fit-content;
+    }
 }

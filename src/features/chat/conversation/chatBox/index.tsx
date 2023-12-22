@@ -3,18 +3,20 @@ import Image from "next/image";
 import HeaderChat from "@/features/chat/header-chat";
 import { Card } from "@/features/ui/header/card";
 import { List, friendMessage } from "@/features/chat/list-streamers";
-import { Suspense, useEffect, useRef, useState } from "react";
+import {  useEffect,  useState } from "react";
 import { ChatStream, } from "@/features/chat/conversation/chatBox/chat_stream";
 import { useSession } from "next-auth/react";
 import { Dropdown } from "@/features/ui/header/profile/dropdown/dropdown";
 import InputEmoji from "react-input-emoji";
 import { regrouperMessagesUtilisateurs } from "@/utils/format_data";
 import { BtnSendMessage } from "@/features/ui/buttons/btn-sign";
-import { ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
+import {  ChatMessagerie, ChatResult, responseGetMessage } from "@/lib/chat-type";
 import { useSocket } from "@/features/providers/socketProvider";
 export default function ListFm() {
 
-    const socket = useSocket()
+    const socketContext = useSocket()
+    const socket  = socketContext?.socket
+
 
     const { data: session, status } = useSession();
     console.log(session?.user)
@@ -68,8 +70,6 @@ export default function ListFm() {
         }
     }
 
-
-
     useEffect(() => {
         // caputure chat_id for get all message
         async function getAllMessage() {
@@ -117,6 +117,7 @@ export default function ListFm() {
             source: session?.user.avatar
         }
         // S'assurer que l'évènement send-message est prêt à recevoir ces données
+        // todo: Quand il change conversation il faut changer renitialisé le input 
         socket?.emit("send-message", data)
         const sendMessage: ChatResult = [
             data
@@ -127,25 +128,26 @@ export default function ListFm() {
 
     // s'assurer aussi que l'évènement receiveMessage est prêt à recevoir ces données du chatResut 
     useEffect(() => {
-        socket?.on('receive-message', (data: ChatMessagerie) => {
-            setReceiveMessage([data])
-        });
+            const handleReceiveMessage = (data: ChatMessagerie) => {
+                setReceiveMessage([data]);
+            };
+        socket?.on('receive-message',handleReceiveMessage);
+        return () =>{
+            socket?.off("receive-message",handleReceiveMessage)
+        }
     }, [socket])
 
     // use socket for typewritting 
     const handleOnFocus = (): void => {
-        if (socket) {
-            socket.emit('typing', {chatId:current_chat_id ,userId:session?.user.name,isTyping: true});
+        if (socket && current_chat_id &&session) {
+            socket.emit('typing', {chat_id:current_chat_id ,user_id:session?.user.name,isTyping: true, source:session?.user.avatar,online:true });
         }
     };
-    
     const handleBlur = (): void => {
-        socket?.emit('typing', { isTyping: false });
+        if (socket && current_chat_id &&session) {
+            socket.emit('typing', {chatId:current_chat_id ,userId:session?.user.name,isTyping: false, source:session?.user.avatar,online:false});
+        }
     };
-
-
-
-    // if (socket) {
 
         return (
             <>
@@ -171,7 +173,6 @@ export default function ListFm() {
                                         <div className="pt-5 px-4 flex bg-[#0c111d] border-b border-gray-800">
                                             <Card certified={userInfo.certified} source={userInfo.source} location={userInfo.location} online={userInfo.online} username={userInfo.username} />
                                         </div>
-                                    // {/* </Suspense> */}
                                 )}
 
                                 <div onClick={(e) => handleClicked(e)} className="absolute right-[50px] top-[35px] block cursor-pointer " >
@@ -196,7 +197,6 @@ export default function ListFm() {
                                         {/* <Suspense fallback={<p>Loading ChatStream...</p>}> */}
                                             <div className="h-[588px] overflow-y-auto px-4 pb-6 flex flex-col">
                                                 <ChatStream currentChat={currentChat} sendMessage={newMessage} receiveMessage={receiveMessage} />
-                                                {/* <div ref={messagesEndRef} /> */}
                                             </div>
                                         {/* </Suspense> */}
 

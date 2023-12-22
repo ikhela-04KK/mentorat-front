@@ -6,7 +6,7 @@ import { extractHourAndMinutes } from "@/utils/format_hours";
 import DtMessage from "../dt-message";
 import { groupMessagesByDate } from "@/utils/group_message_by_date";
 import { ChatMessage } from "./chat_message";
-import { useTyping } from "@/features/providers/typingProvider";
+import { useSocket } from "@/features/providers/socketProvider";
 
 export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage, receiveMessage }) => {
   const {data:session, status:status} = useSession()
@@ -30,8 +30,16 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
     setGroupedMessages(grouped);
   }, [messages]);
 
-  const showTyping = useTyping()
-  console.log(showTyping)  
+
+  const socketContext = useSocket()
+  const typing = socketContext?.typing
+    if(typing){
+      setMessages([typing])
+    }
+    else {
+      console.log("never typing is defined")      
+    }
+
 
   return (
     <>
@@ -41,9 +49,19 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
   {groupedMessages[sectionDate].map((message, msgIndex) => (
             <div
               key={msgIndex}
-              className={`w-full h-[118px] flex ${message.user_id === session?.user.id ? "justify-end" : "justify-start"
+              className={`w-full h-auto flex ${message.user_id === session?.user.id ? "justify-end" : "justify-start"
                 } mb-8 mt-8`}
             >
+          {message.typing ? (
+              // Render this when someone is typing
+              <ChatMessage
+              timestamp={extractHourAndMinutes(message.created_at)}
+              backgroundColor={message.user_id == session?.user.id ? "violet-500" : "gray-500"}
+              online={message.online}
+              source={message.source} 
+              typing={message.typing}/>
+            ) : (
+              // Render ChatMessage when no one is typing
               <ChatMessage
                 timestamp={extractHourAndMinutes(message.created_at)}
                 content={message.content}
@@ -57,22 +75,12 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
                   username: session?.user.name,
                 })}
               />
-            </div>
-            // {showTyping && (
-            //   <div className="w-full h-[118px] flex justify-start mb-8 mt-8">
-            //     <ChatMessage
-            //       timestamp={extractHourAndMinutes(new Date())} // Utilisez un timestamp fictif ou supprimez cet attribut si non nécessaire
-            //       content="..."
-            //       backgroundColor="gray-500"
-            //       online={true}
-            //       source="system"
-            //       username="Typing..." // Ajoutez un utilisateur fictif ou supprimez cet attribut si non nécessaire
-            //     />
-            //   </div>
-            // )}
-          ))}
-        </div>
-      ))}
+            )}
+          </div>
+        ))}
+      </div>
+    ))}
       </>
   )
 }
+

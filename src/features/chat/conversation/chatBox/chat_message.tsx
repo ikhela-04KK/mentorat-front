@@ -4,7 +4,6 @@ import { MessageContent } from "./message-content";
 import { MessageInfo } from "./message-info";
 import { Chat } from "@/lib/chat-type";
 import { Online } from "@/features/ui/avatar/online/online";
-import { TextSpinner } from "../text-field-sms";
 import { useEffect, useRef } from "react";
 
 // ChatMessage component
@@ -15,7 +14,7 @@ export const ChatMessage: React.FC<Chat> = ({
   backgroundColor,
   online,
   source,
-  // typing
+  typing
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -32,8 +31,8 @@ useEffect(() => {
   const { data: session, status: status } = useSession();
   return (
     <>
-      <div className="max-w-96 pr-8 h-full items-start">
-        <div className="grow shrink basis-0 h-auto  items-start flex gap-4 justify-start">
+      <div className="max-w-[50%] pr-8 h-full items-start">
+        <div className="grow shrink basis-0 h-auto items-start flex gap-4 justify-start">
           {username != session?.user.name && (
             <Online person={username} online={online} source={source} />
           )}
@@ -42,11 +41,13 @@ useEffect(() => {
             <MessageContent
               content={content}
               backgroundColor={backgroundColor}
-              // typing={typing}
+              typing={typing}
             />
           </div>
         </div>
       </div>
+      <div ref={messagesEndRef} />
+
     </>
   );
 };

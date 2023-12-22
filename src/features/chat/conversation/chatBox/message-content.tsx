@@ -1,5 +1,5 @@
 "use client";
-import { useTyping } from "@/features/providers/typingProvider";
+// import { useTyping } from "@/features/providers/typingProvider";
 import { Content } from "@/lib/chat-type";
 import { ReactionBarEmojiPicker, ReactionDisplayPicker } from "@features/chat/float-options/float-like/reaction-emoji-picker";
 import { useState } from "react";
@@ -22,11 +22,13 @@ export const MessageContent: React.FC<Content> = ({ content, backgroundColor, ex
     <>
       <div onMouseLeave={() => setIsReacting(false)} onClick={handleContentClick} className={`px-3.5 py-2.5 bg-${backgroundColor} bg-opacity-40 rounded-tr-lg ${extendsClass ? extendsClass : ''} rounded-bl-lg border border-gray-800 rounded-br-lg relative  items-center gap-2 flex `}>
      
+      {typing ? (
+          <SyncLoader color="#85888E" cssOverride={{}} loading={true} margin={2} size={6} speedMultiplier={0.8} />
+        ) : (
           <p className="cursor-pointer grow shrink basis-0 text-neutral-100 text-base font-normal break-all">
             {content}
           </p>
-       
-
+        )}
 
         {isReacting && (
           <div className="shadow-2xl  absolute -top-1/4 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
