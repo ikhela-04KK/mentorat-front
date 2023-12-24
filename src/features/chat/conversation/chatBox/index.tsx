@@ -115,7 +115,7 @@ export default function ListFm() {
             created_at: (new Date()).toISOString(),
             source: session?.user.avatar
         }
-        // S'assurer que l'évènement send-message est prêt à recevoir ces données
+        // S'assurer que l'évèneme  fhnt send-message est prêt à recevoir ces données
         socket?.emit("send-message", data)
         const sendMessage: ChatResult = [
             data
