@@ -1,29 +1,35 @@
 "use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSocket } from './socketProvider';
+import { ChatMessagerie } from '@/lib/chat-type';
 
 
 interface Iprops {
     children: React.ReactNode;
 }
 
-const TypingContext = createContext<boolean | undefined>(undefined)
+type typingMessagerie = {
+    chat_id: number, 
+    user_name: string, 
+    typing: boolean
+    source?:string;
+}
+const TypingContext = createContext<typingMessagerie  | undefined>(undefined)
 export const useTyping = () => {
     const context = useContext(TypingContext)
     if (!context) {
-        console.log("le contexte n`est pas fourni")
+        console.log("le Typing contexte n`est pas fourni")
     }
     return context
 }
-
-
 const TypingProvider = ({ children }: Iprops) => {
     const socket = useSocket()
-    const [showTypingGesture, setShowTypingGesture] = useState<boolean>(false);
+    const [showTypingGesture, setShowTypingGesture] = useState<typingMessagerie >();
 
     useEffect(() => {
-        socket?.on('typing', (res: {chatId:number,userId:number, isTyping: boolean }) => {
-            setShowTypingGesture(res.isTyping);
+        socket?.on('typing', (res: typingMessagerie ) => {
+            console.log(res)
+            setShowTypingGesture(res);
         });
     }, [socket])
 

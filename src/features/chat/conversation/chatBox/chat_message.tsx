@@ -3,7 +3,6 @@ import { MessageContent } from "./message-content";
 import { MessageInfo } from "./message-info";
 import { Chat } from "@/lib/chat-type";
 import { Online } from "@/features/ui/avatar/online/online";
-import { TextSpinner } from "../text-field-sms";
 import { useEffect, useRef } from "react";
 
 // ChatMessage component
@@ -46,7 +45,7 @@ useEffect(() => {
           </div>
         </div>
       </div>
-       <div ref={messagesEndRef} />
+      <div ref={messagesEndRef} />
                                             
     </>
   );

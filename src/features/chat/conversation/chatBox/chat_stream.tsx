@@ -31,6 +31,8 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
   }, [messages]);
   const typing = useTyping();
 
+  console.log(typing?.typing)
+
   return (
     <>
       {Object.keys(groupedMessages).map((sectionDate, index) => (
@@ -69,7 +71,7 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
         </div>
       ))}
       
-      {typing && (
+      {typing?.typing  && typing?.user_name !=session?.user.name  && (
             <div className="w-full h-[118px] flex justify-start mb-8 mt-8">
               <ChatMessage
                 timestamp={extractHourAndMinutes(
@@ -77,8 +79,8 @@ export const ChatStream: React.FC<ChatStreamProps>= ({ currentChat, sendMessage,
                 )}
                 backgroundColor="gray-500"
                 online={true}
-                source="1701851274950.jpg"
-                typing={typing}
+                source={typing.source}
+                typing={typing.typing}
               />
             </div>
           )}

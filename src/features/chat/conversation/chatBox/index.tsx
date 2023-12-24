@@ -134,18 +134,14 @@ export default function ListFm() {
     // use socket for typewritting 
     const handleOnFocus = (): void => {
         if (socket) {
-            socket.emit('typing', {chatId:current_chat_id ,userId:session?.user.name,isTyping: true});
+            socket.emit('typing', {chat_id:current_chat_id ,user_name:session?.user.name,typing: true, source:session?.user.avatar});
         }
     };
     
     const handleBlur = (): void => {
         socket?.emit('typing', { isTyping: false });
     };
-
-
-
     // if (socket) {
-
         return (
             <>
 
@@ -161,8 +157,6 @@ export default function ListFm() {
                                         <HeaderChat title="logo" size={40} source={session?.user.avatar} label="" nofification={441} />
                                     </div>
                                 {/* </Suspense> */}
-
-
 
                                 {/* todo:Mettre le suspense ici pour la gestion du card  */}
                                 {click && (
