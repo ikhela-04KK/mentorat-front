@@ -1,0 +1,54 @@
+
+> mentorat_front@0.1.0 build
+> next build
+
+   ▲ Next.js 14.0.4
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+ ⨯ ESLint: Failed to load config "@repo/eslint-config/index.js" to extend from. Referenced from: C:\Users\Administrateur\Documents\Mentoring\.eslintrc.js
+   Collecting page data ...
+   Generating static pages (0/10) ...
+Le contexte n`est pas fourni
+Le contexte n`est pas fourni
+1
+Le contexte n`est pas fourni
+
+Le contexte n`est pas fourni
+Le contexte n`est pas fourni
+Le contexte n`est pas fourni
+Le contexte n`est pas fourni
+Le contexte n`est pas fourni
+undefined
+loading
+Le contexte n`est pas fourni
+   Generating static pages (2/10) 
+   Generating static pages (4/10) 
+   Generating static pages (7/10) 
+ ✓ Generating static pages (10/10) 
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    137 B            82 kB
+├ ○ /_not-found                          866 B          82.7 kB
+├ λ /api/auth/[...nextauth]              0 B                0 B
+├ ○ /chat                                49.8 kB         173 kB
+├ ○ /contact                             4.79 kB         128 kB
+├ ○ /login                               3.33 kB         108 kB
+├ ○ /register                            2.28 kB        96.4 kB
+└ ○ /selection-role                      1.54 kB        88.9 kB
++ First Load JS shared by all            81.9 kB
+  ├ chunks/16-a9553c341b63d728.js        26.7 kB
+  ├ chunks/1dd3208c-2ce1d2556fbf87fd.js  53.3 kB
+  ├ chunks/main-app-5d3840dd8fe0c391.js  220 B
+  └ chunks/webpack-6c6d6402fab4123b.js   1.68 kB
+
+
+ƒ Middleware                             75.2 kB
+
+○  (Static)   prerendered as static content
+λ  (Dynamic)  server-rendered on demand using Node.js
+
